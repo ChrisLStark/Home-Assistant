@@ -58,14 +58,12 @@ recorder:
 ## Components
 #################################################################
 
-nest:
-    client_id: !secret nest_client_id
-    client_secret: !secret nest_secret
 
-media_player:
-        platform: kodi
-        host: 192.168.86.39
-        port: 80
+nest:
+  client_id: !secret nest_client_id
+  client_secret: !secret nest_secret
+  project_id: !secret nest_projectid
+  subscriber_id:  !secret nest_subscriberid
 
 tts:
   - platform: google_translate
@@ -163,18 +161,19 @@ weather:
 
 speedtestdotnet:
 
-badnest:
-  issue_token: !secret badnest_token
-  cookie: !secret badnest_cookie
-  region: eu
-
-climate:
-  - platform: badnest
-    scan_interval: 10
-
 monkey_patch_nest_camera_event_end_date:
 
 mobile_app:
+
+proximity:
+  home:
+    ignored_zones:
+      - work
+    devices:
+      - person.chris
+      - person.aimee
+    tolerance: 5
+    unit_of_measurement: mi
 
 #################################################################
 ## Includes
@@ -195,5 +194,5 @@ camera: !include cameras.yaml
 timer: !include timers.yaml
 switch: !include switch.yaml
 device_tracker: !include device_tracker.yaml
-yeelight: !include yeelight.yaml
+#yeelight: !include yeelight.yaml
 #googlehome: !include googlehome.yaml
