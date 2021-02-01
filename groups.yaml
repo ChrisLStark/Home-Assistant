@@ -35,6 +35,20 @@ zigbee_group:
       - input_select.zigbee2mqtt_log_level
       - automation.zigbee2mqtt_log_level
 
+automation_lights:
+    name: Automation Light Control
+    entities:
+        - group.household_lights
+
+automation_heating:
+    name: Automation Heating Control
+    entities:
+        - group.household_heating
+
+automation_alarm:
+    name: Automation Alarm Control
+    entities:
+        - group.household_alarm
 cameras:
     name: Cameras
     icon: mdi:camera
@@ -47,7 +61,12 @@ family:
     name: Family
     entities:
         - group.person_keith
-        - group.household
+
+person_keith:
+    name: Keith
+    icon: mdi:account-multiple
+    entities:
+        - device_tracker.keith_phone_ping
 
 visitors:
     name: Visitors
@@ -298,7 +317,7 @@ Interior Lights:
       - light.downstairs_light
       - light.upstairs_hallway
       - light.bottom_man_cave
-      - light.man_cave_landing
+      - light.hue_man_cave_landing
       - switch.hallway_lamp
 
 Exterior Lights:
@@ -312,7 +331,7 @@ living:
         - group.livingroom_lights
         - media_player.living_room_tv
         - media_player.living_room_home
-        - media_player.kodi
+        - media_player.kodi_osmc_living_room
         - remote.harmony_hub
 
 motion_announcements:
@@ -333,11 +352,11 @@ Man_Cave_Lights:
     name: Man Cave Lights
     entities:
         - light.man_cave_desk_light
-        - light.man_cave_desk_strip
-        - light.man_cave_lamp
         - light.hue_man_cave
         - light.hue_man_cave_desk_strip
-        - light.man_cave_console_strip
+        - light.hue_man_cave_desk_strip
+        - light.man_cave_console_l
+        - light.man_cave_console_r
 
 Man_Cave_Switches:
     name: Man Cave Switches
@@ -469,10 +488,27 @@ Alarm:
       - input_boolean.panic_mode
       - input_boolean.alarm_tripped
 
-Household:
+household:
     entities:
-      - group.person_chris
-      - group.person_aimee
+      - person.chris
+      - person.aimee
+
+household_lights:
+    entities:
+        - group.household
+        - group.family
+
+household_alarm:
+    entities:
+        - group.household
+        - group.family
+
+household_heating:
+    entities:
+        - device_tracker.chris_tado
+        - device_tracker.aimee_tado
+        - group.household
+        - group.family
 
 Alarm_SafeList:
     - group.household
@@ -487,25 +523,25 @@ person_chris:
   name: Chris
   icon: mdi:account-multiple
   entities:
-      - device_tracker.chris_android
-      - device_tracker.oneplus7tpro_Bluetooth
-      - device_tracker.tado_chris_s_phone
+      - device_tracker.chris_phone_ping
+      - device_tracker.chris_phone_bluetooth
+      - device_tracker.chris_tado
+      - device_tracker.chris_watch
+      - device_tracker.chris_bag
+      - device_tracker.chris_wallet
+      - device_tracker.chris_keys
+      - device_tracker.chris_tile
+      - device_tracker.chris_tile_ipad
 
 person_aimee:
   name: Aimee
   icon: mdi:account-multiple
   entities:
-      - device_tracker.aimee_iphone
-      - device_tracker.aimees_iphone
-     # - device_tracker.hue_aimees_iphone
-      - device_tracker.tado_aimees_phone
+      - device_tracker.aimee_phone_ping
+      - device_tracker.aimee_phone_bluetooth
+      - device_tracker.aimee_tado
+      - device_tracker.aimee_watch
  
-person_keith:
-  name: Keith
-  icon: mdi:account-multiple
-  entities:
-      - device_tracker.aimeedad
-
 person_charlotte:
   name: Charlotte
   icon: mdi:account-multiple
@@ -573,7 +609,7 @@ automation:
       - group.all_automations
       - group.alarm
 
-Google_Home:
+google_home:
     name: Google Home Devices
     icon: mdi:google-home
     entities:
@@ -584,6 +620,17 @@ Google_Home:
         - media_player.kitchen_display
         - media_player.man_cave_room_display      
         - media_player.dining_room_speaker
+
+automation_gh_reminders:
+    name: Google Home Reminders
+    icon: mdi:google-home
+    entities:
+        - media_player.man_cave_display
+        - media_player.kitchen_display
+        - media_player.nest_hub_display_living_room
+        - media_player.hallway_home
+        - media_player.kitchen_display
+        - media_player.dining_room_wifi
 
 htpc:
     name: HTPC
