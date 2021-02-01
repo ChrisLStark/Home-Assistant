@@ -6,7 +6,7 @@
     password: !secret tile_password   
 
   - platform: bluetooth_tracker
-    track_new_devices: true
+    track_new_devices: false
     interval_seconds: 10
     consider_home: 150
     
@@ -65,13 +65,14 @@
    #   track_new_devices: false
 
   - platform: ping
-    track_new_devices: false
+    track_new_devices: true
    #interval_seconds: 5
     consider_home: 300
     scan_interval: 1
     hosts:
-      aimee_iphone: 192.168.86.61
-      chris_android: 192.168.86.60
+      aimee_phone_ping: 192.168.86.61
+      chris_phone_ping: 192.168.86.60
+      keith_phone_ping: 192.168.86.54
       starky_pc: 192.168.86.34
 
   - platform: nmap_tracker
@@ -84,7 +85,7 @@
     interval_seconds: 5
 
   - platform: nmap_tracker
-    track_new_devices: false
+    track_new_devices: true
     scan_options: " --privileged -sP "
     hosts:
       - 192.168.86.41-255
