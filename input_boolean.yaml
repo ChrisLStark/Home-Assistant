@@ -10,6 +10,9 @@
     initial: on
     icon: mdi:shield-outline
 
+  nzbwarning:
+    name: NZB Warning
+
   enable_security:
     name: Alarm
     icon: mdi:shield-outline
@@ -42,6 +45,7 @@
     name: Disable Downloads
 
   boost_heating:
+    initial: on
     name: Boost Heating
 
   trash_reminders:
