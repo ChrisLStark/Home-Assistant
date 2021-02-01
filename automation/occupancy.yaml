@@ -218,7 +218,7 @@
         # Tado state change to home
         ##########################################################
 
-    - alias: 'Tado state change to homee'
+    - alias: 'Tado state change to home'
       initial_state: on
       trigger:
         platform: state

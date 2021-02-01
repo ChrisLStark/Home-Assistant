@@ -14,7 +14,7 @@
       
       condition:
         condition: state
-        entity_id: group.household
+        entity_id: group.automation_lights
         state: 'home'
 
       action:
@@ -45,7 +45,7 @@
         platform: state
         from: 'not_home'
         to: 'home'
-        entity_id: group.household
+        entity_id: group.automation_lights
 
       condition:
         condition: time
@@ -66,7 +66,7 @@
         platform: state
         from: 'home'
         to: 'not_home'
-        entity_id: group.household
+        entity_id: group.automation_lights
 
       action:
         - service: homeassistant.turn_off
