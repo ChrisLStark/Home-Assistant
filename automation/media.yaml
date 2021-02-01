@@ -80,7 +80,7 @@
       initial_state: on
       trigger:
         platform: state
-        entity_id: media_player.kodi
+        entity_id: media_player.kodi_osmc_living_room
         to: 'paused'
         from: 'playing'
 
@@ -105,7 +105,7 @@
       initial_state: on
       trigger:
         platform: state
-        entity_id: media_player.kodi
+        entity_id: media_player.kodi_osmc_living_room
         to: 'playing'
         from: 'idle'
 
@@ -132,7 +132,7 @@
       initial_state: on
       trigger:
         platform: state
-        entity_id: media_player.kodi
+        entity_id: media_player.kodi_osmc_living_room
         to: 'paused'
         from: 'playing'
 
@@ -153,7 +153,7 @@
       initial_state: on
       trigger:
         platform: state
-        entity_id: media_player.kodi
+        entity_id: media_player.kodi_osmc_living_room
         to: 'playing'
         from: 'paused'
       condition:
@@ -173,7 +173,7 @@
       initial_state: on
       trigger:
         platform: state
-        entity_id: media_player.kodi
+        entity_id: media_player.kodi_osmc_living_room
         to: 'idle'
         from: 'playing'
 
@@ -353,3 +353,66 @@
               {% elif is_state("sensor.remote_front_room", "Amazon") %}53679772
               {% elif is_state("sensor.remote_front_room", "Virgin") %}53679772 
               {% endif %}
+
+        ##########################################################
+        ## NZBGet Space warning
+        ##########################################################
+
+    - alias: 'NZBGet Space warning'
+      initial_state: on
+      trigger:
+        platform: numeric_state
+        entity_id: sensor.nzbget_disk_free
+        below: 70000
+
+      condition:
+       - condition: state
+         entity_id: input_boolean.nzbwarning
+         state: 'off'    
+
+      action:
+        - service: notify.telegram
+          data:
+            message: 'NZBGet is running low on space'
+        - service: homeassistant.toggle
+          entity_id: input_boolean.nzbwarning
+
+        ##########################################################
+        ## NZBGet Space recovered
+        ##########################################################
+
+    - alias: 'NZBGet Space recovered'
+      initial_state: on
+      trigger:
+        platform: numeric_state
+        entity_id: sensor.nzbget_disk_free
+        above: 70000
+
+      condition:
+       - condition: state
+         entity_id: input_boolean.nzbwarning
+         state: 'on'
+
+      action:
+        - service: notify.telegram
+          data:
+            message: 'NZBGet has enough space'
+        - service: homeassistant.toggle
+          entity_id: input_boolean.nzbwarning
+
+        ##########################################################
+        ## NZBGet is paused
+        ##########################################################
+
+    - alias: 'NZBGet is paused'
+      initial_state: on
+      trigger:
+        platform: state
+        entity_id: sensor.nzbget_download_paused
+        to: 'True'
+
+      action:
+        - service: notify.telegram
+          data:
+            message: 'NZBGet has paused - check downloads/space'
+
