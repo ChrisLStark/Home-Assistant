@@ -111,7 +111,7 @@
         #  data:
         #    - 'Trash Left:/trash_left, Remind Later:/trash_remind_later'
       - service: tts.google_say
-        entity_id: group.google_home
+        entity_id: group.automation_gh_reminders
         data_template:
           message: >
             {% if states.sensor.recycle_day.state == "yes" %}
