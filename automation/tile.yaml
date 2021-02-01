@@ -1,0 +1,129 @@
+#################################################################
+## Tile Automations
+#################################################################
+
+  ##########################################################
+  ## keys Away
+  ##########################################################
+
+    - alias: 'Keys Away'
+      initial_state: on
+      trigger:
+        platform: state
+        entity_id: device_tracker.keys
+        from: 'Nearby'
+        to: 'Away'
+
+      action:
+       - service: notify.telegram
+         data:
+           message: 'KEYS is no longer nearby'
+
+  ##########################################################
+  ## Wallet Away
+  ##########################################################
+
+    - alias: 'Wallet Away'
+      initial_state: on
+      trigger:
+        platform: state
+        entity_id: device_tracker.wallet
+        from: 'Nearby'
+        to: 'Away'
+
+      action:
+       - service: notify.telegram
+         data:
+           message: 'WALLET is no longer nearby'
+
+  ##########################################################
+  ## Backpack Away
+  ##########################################################
+
+    - alias: 'Backpack Away'
+      initial_state: on
+      trigger:
+        platform: state
+        entity_id: device_tracker.backpack
+        from: 'Nearby'
+        to: 'Away'
+
+      action:
+       - service: notify.telegram
+         data:
+           message: 'BACKPACK is no longer nearby'
+
+  ##########################################################
+  ## Keys - Left at home
+  ##########################################################
+
+    - alias: 'Keys left at home'
+      initial_state: on
+      trigger:
+        platform: state
+        entity_id: group.person_chris
+        from: 'home'
+        to: 'not_come'
+
+      condition:
+        - condition: state
+          entity_id: sensor.phone_keys
+          state: 'Away'
+
+      action:
+       - service: notify.telegram
+         data:
+           message: 'KEYS left at home'
+
+  ##########################################################
+  ## Wallet - Left at home
+  ##########################################################
+
+    - alias: 'Wallet left at home'
+      initial_state: on
+      trigger:
+        platform: state
+        entity_id: group.person_chris
+        from: 'home'
+        to: 'not_home'
+
+      condition:
+        - condition: state
+          entity_id: sensor.phone_wallet
+          state: 'Away'
+
+      action:
+       - service: notify.telegram
+         data:
+           message: 'WALLET left at home'
+
+  ##########################################################
+  ## Backpack - Left at home
+  ##########################################################
+
+    - alias: 'Backpack left at home'
+      initial_state: on
+      trigger:
+        platform: state
+        entity_id: group.person_chris
+        from: 'home'
+        to: 'not_home'
+
+      condition:
+        - condition: state
+          entity_id: sensor.phone_backpack
+          state: 'Away'
+
+      action:
+       - service: notify.telegram
+         data:
+           message: 'BACKPACK left at home'
+
+
+           
+
+
+           
+           
+
+           
