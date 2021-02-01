@@ -80,26 +80,32 @@
         #########################################################
 
     - alias: 'Boost heating'
-      
+      initial_state: on
+
       trigger:
         platform: state
         entity_id: sensor.tado_temp_met
         from: 'true'
         to: 'false'
 
-   #   condition:
-    #   - condition: state
-     #    entity_id: group.household
-      #   state: 'home' 
+     # condition:
+      #  condition: or
+       # conditions:
+        #  - condition: state
+         #   entity_id: group.family
+          #  state: 'home' 
+          #- condition: state
+           # entity_id: group.household
+            #state: 'home' 
 
       action:
-       - delay: '00:05:00'
        - service: climate.set_preset_mode
          data:
-           entity_id: climate.kitchen_thermostat
+           entity_id: climate.nest
            preset_mode: "none"
+       - delay: '00:00:05'
        - service: climate.set_temperature
-         entity_id: climate.kitchen_thermostat
+         entity_id: climate.nest
          data_template:
            temperature: '{{ states("sensor.heating_current_temperature") | float + 2 }}'
        - service: homeassistant.toggle
@@ -110,29 +116,25 @@
         #########################################################
 
     - alias: 'Decrease heating'
-      
+      initial_state: on
+
       trigger:
         platform: state
         entity_id: sensor.tado_temp_met
         from: 'false'
         to: 'true'
 
-  #   condition:
-   #    - condition: state
-    #     entity_id: group.household
-     #    state: 'home'          
-
       action:
        - service: climate.set_temperature
-         entity_id: climate.kitchen_thermostat
+         entity_id: climate.nest
          data_template:
             temperature: '{{ states("sensor.heating_current_temperature") | float -2 }}'
-       - service: homeassistant.toggle
-         entity_id: input_boolean.boost_heating
        - service: climate.set_preset_mode
          data:
-           entity_id: climate.kitchen_thermostat
+           entity_id: climate.nest
            preset_mode: "eco"
+       - service: homeassistant.toggle
+         entity_id: input_boolean.boost_heating
 
         #########################################################
         ## Heating - Check if min temperature is met when household changes to home
@@ -144,7 +146,7 @@
         platform: state
         from: 'not_home'
         to: 'home'
-        entity_id: group.family
+        entity_id: group.automation_heating
 
       condition:
        - condition: state
@@ -154,10 +156,11 @@
       action:
       - service: climate.set_preset_mode
         data:
-          entity_id: climate.kitchen_thermostat
+          entity_id: climate.nest
           preset_mode: "none"
+      - delay: '00:00:05'
       - service: climate.set_temperature
-        entity_id: climate.kitchen_thermostat
+        entity_id: climate.nest
         data_template:
            temperature: '{{ states("sensor.heating_current_temperature") | float + 2 }}'
       - service: homeassistant.toggle
@@ -171,36 +174,38 @@
       
       trigger:
         platform: state
-        from: 'idle'
-        to: 'heating'
         entity_id: sensor.nest_heating_status
-
+        to: 'heating'
+       
       condition:
       - condition: state
         entity_id: sensor.tado_temp_met
-        state: 'true'    
+        state: 'true'
 
       action:
       - service: climate.set_temperature
-        entity_id: climate.kitchen_thermostat
+        entity_id: climate.nest
         data_template:
           temperature: '{{ states("sensor.heating_current_temperature") | float - 2 }}'
       - service: climate.set_preset_mode
         data:
-         entity_id: climate.kitchen_thermostat
+         entity_id: climate.nest
          preset_mode: "eco"
+      - service: homeassistant.toggle
+        entity_id: input_boolean.boost_heating
 
         #########################################################
-        ## Heating > Idle check Tado temp met
+        ## Heating > off check Tado temp met
         #########################################################
 
-    - alias: 'Heating > Idle check Tado temp met'
+    - alias: 'Heating > off check Tado temp met'
       
       trigger:
         platform: state
         from: 'heating'
-        to: 'idle'
+        to: 'off'
         entity_id: sensor.nest_heating_status
+        for: "00:00:30"
 
       condition:
       - condition: state
@@ -210,12 +215,16 @@
       action:
       - service: climate.set_preset_mode
         data:
-          entity_id: climate.kitchen_thermostat
+          entity_id: climate.nest
           preset_mode: "none"
+      - delay: '00:00:05'
       - service: climate.set_temperature
-        entity_id: climate.kitchen_thermostat
+        entity_id: climate.nest
         data_template:
           temperature: '{{ states("sensor.heating_current_temperature") | float + 2 }}'
+      - service: homeassistant.toggle
+        entity_id: input_boolean.boost_heating
+
 
         #########################################################
         ## Chris WFH 
@@ -236,12 +245,12 @@
 
       #action:
       #- service: climate.set_temperature
-       # entity_id: climate.kitchen_thermostat
+       # entity_id: climate.nest
        # data_template:
       #    temperature: '{{ states("sensor.heating_current_temperature") | float - 2 }}'
      # - service: climate.set_preset_mode
         #data:
-      #   entity_id: climate.kitchen_thermostat
+      #   entity_id: climate.nest
        #  preset_mode: "eco"
 
      # - service: climate.set_hvac_mode
@@ -313,12 +322,12 @@
 
       #action:
      # - service: climate.set_temperature
-     #   entity_id: climate.kitchen_thermostat
+     #   entity_id: climate.nest
       #  data_template:
        #   temperature: '{{ states("sensor.heating_current_temperature") | float - 2 }}'
       #- service: climate.set_preset_mode
        # data:
-        # entity_id: climate.kitchen_thermostat
+        # entity_id: climate.nest
          #preset_mode: "eco"
 
      # - service: climate.set_hvac_mode
