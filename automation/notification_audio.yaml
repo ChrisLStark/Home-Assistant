@@ -40,7 +40,7 @@
         ##########################################################
 
 - alias: 'Aimee is home'
-  initial_state: off
+  initial_state: on
   trigger:
     platform: state
     from: 'not_home'
@@ -81,18 +81,23 @@
 
   condition:
     - condition: time
-      after: '08:00:00'
+      after: '07:00:00'
       before: '22:00:00'
 
   action:
-    - wait_template: "{{ states.binary_sensor.front_door.state == 'on' }}"
+    - wait_template: "{{ is_state('binary_sensor.aqara_front_door_contact', 'on') or is_state('binary_sensor.aqara_back_door_contact', 'on') }}"
       timeout: 00:03:00
       continue_on_timeout: 'false'
     - delay: 00:00:03
     - service: media_player.volume_set
       data_template:
-        entity_id: media_player.hallway_home
-        volume_level: 0.5
+        entity_id: >
+          {% if is_state('binary_sensor.aqara_front_door_contact', 'on') %}
+            media_player.hallway_home  
+          {% else %}
+            media_player.dining_room_speaker
+          {% endif %}
+          volume_level: 0.5
     - service: tts.google_say
       entity_id: media_player.hallway_home
       data_template:
