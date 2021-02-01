@@ -2,8 +2,6 @@
 ## Cameras
 #################################################################
 
-  - platform: badnest
-  
   #- platform: yi
    # name: Man Cave
    # host: '192.168.86.52'
@@ -11,21 +9,21 @@
    # path: /tmp/sd/record
    # ffmpeg_arguments: '-vf scale=800:450'
 
-  - platform: ffmpeg
-    name: Upstairs
-    input: -rtsp_transport tcp -i rtsp://192.168.86.70/ch0_0.h264
+  #- platform: ffmpeg
+  #  name: Upstairs
+   # input: -rtsp_transport tcp -i rtsp://192.168.86.70/ch0_0.h264
 
-  - platform: ffmpeg
-    name: Man Cave
-    input: -rtsp_transport tcp -i rtsp://192.168.86.71/ch0_0.h264
+  #- platform: ffmpeg
+   # name: Man Cave
+    #input: -rtsp_transport tcp -i rtsp://192.168.86.71/ch0_0.h264
 
-  - platform: ffmpeg
-    name: Downstairs
-    input: -rtsp_transport tcp -i rtsp://192.168.86.72/ch0_0.h264
+  #- platform: ffmpeg
+   # name: Downstairs
+    #input: -rtsp_transport tcp -i rtsp://192.168.86.72/ch0_0.h264
 
-  - platform: ffmpeg
-    name: Garden
-    input: -rtsp_transport tcp -i rtsp://192.168.86.73/ch0_0.h264 
+  #- platform: ffmpeg
+   # name: Garden
+    #input: -rtsp_transport tcp -i rtsp://192.168.86.73/ch0_0.h264 
 
   #- platform: ffmpeg
    # name: Nursery
@@ -36,13 +34,13 @@
   #  still_image_url: "http://192.168.86.122:81/image/Nursery"
  #   stream_source: "http://192.168.86.122:81/nursery/temp.m3u8"
 
-  - platform: ffmpeg
-    name: Kitchen
-    input: -rtsp_transport tcp -i rtsp://192.168.86.75/ch0_0.h264   
+  #- platform: ffmpeg
+   # name: Kitchen
+    #input: -rtsp_transport tcp -i rtsp://192.168.86.75/ch0_0.h264   
 
-  - platform: ffmpeg
-    name: Outhouse
-    input: -rtsp_transport tcp -i rtsp://192.168.86.76/ch0_0.h264
+  #- platform: ffmpeg
+   # name: Outhouse
+    #input: -rtsp_transport tcp -i rtsp://192.168.86.76/ch0_0.h264
 
  # - platform: mjpeg
   #  mjpeg_url: http://192.168.86.7:81/mjpg/nursery
@@ -51,7 +49,7 @@
     #password: !secret bi_password
     #authentication: basic
 
-  - platform: generic
-    still_image_url: "http://192.168.86.7:81/h264/nursery"
-    stream_source: "http://192.168.86.7:81/h264/nursery/temp.m3u8"
-    name: Nursery
+  #- platform: generic
+    #still_image_url: "http://192.168.86.7:81/h264/nursery"
+   # stream_source: "http://192.168.86.7:81/h264/nursery/temp.m3u8"
+    #name: Nursery
