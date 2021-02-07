@@ -1,5 +1,6 @@
+<b>Updated 07-02-2021</b><br /><br />
+
 Using Home Assistant running on hassio to control all things smart.<br />
-<b>Updated 07-02-2021</b><br />
 
 <b>Special thanks to the following github pages:</b>
 
