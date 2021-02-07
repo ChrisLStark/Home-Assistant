@@ -1,4 +1,4 @@
-Using Home Assistant running on hassio to control all things smart.<br />
+Using Home Assistant running on hassio to control all things smart.<br /> Updated 07-02-2021<br />
 
 <b>Special thanks to the following github pages:</b>
 
@@ -10,7 +10,7 @@ Using Home Assistant running on hassio to control all things smart.<br />
 <b>Controller:</b>
 
 Raspberry Pi 4 running Hassio (Home Assistant)<br />
-Running zigbee2mqtt https://github.com/danielwelch/hassio-zigbee2mqtt  via CC2531 USB sniffer.
+Running zigbee2mqtt https://github.com/danielwelch/hassio-zigbee2mqtt onCC2652R - Electrolama zig-a-zig-ah! (zzh!).
 
 <b>Assistants:</b>
 
@@ -18,7 +18,7 @@ Running zigbee2mqtt https://github.com/danielwelch/hassio-zigbee2mqtt  via CC253
 <a href="https://store.google.com/gb/product/google_home_mini">3x Google Home Minis</a><br />
 <a href="https://store.google.com/product/google_nest_hub2">2x Google Nest Hub</a><br />
 <a href="https://store.google.com/product/google_nest_hub_max2">1x Google Home Max</a><br />
-<a href="https://store.google.com/product/google_nest_hub_max">1x Google Nest Hub Max</a>
+<a href="https://store.google.com/product/google_nest_hub_max">1x Google Nest Hub Max</a><br />
 <a href="https://store.google.com/gb/product/nest_audio">2x Google Nest Audio</a><br />
 
 <b>Internet:</b>
