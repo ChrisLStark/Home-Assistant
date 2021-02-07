@@ -15,14 +15,17 @@ Running zigbee2mqtt https://github.com/danielwelch/hassio-zigbee2mqtt  via CC253
 <b>Assistants:</b>
 
 <a href="https://store.google.com/gb/product/google_home">1x Google Home</a><br />
-<a href="https://store.google.com/gb/product/google_home_mini">5x Google Home Minis</a><br />
+<a href="https://store.google.com/gb/product/google_home_mini">3x Google Home Minis</a><br />
 <a href="https://store.google.com/product/google_nest_hub2">2x Google Nest Hub</a><br />
 <a href="https://store.google.com/product/google_nest_hub_max2">1x Google Home Max</a><br />
 <a href="https://store.google.com/product/google_nest_hub_max">1x Google Nest Hub Max</a>
+<a href="https://store.google.com/gb/product/nest_audio">2x Google Nest Audio</a><br />
 
 <b>Internet:</b>
 
-<a href="https://amzn.to/35OQ7wh">5x Google Wifi</a>
+<a href="https://store.google.com/gb/product/nest_wifi"2x Nest Wifi Router</a>
+<a href="https://store.google.com/gb/product/nest_wifi"1x Nest Wifi AP</a>
+<a href="https://amzn.to/35OQ7wh"1x Google Wifi</a>
 
 <b>Cameras:</b>
 
@@ -35,26 +38,30 @@ Running zigbee2mqtt https://github.com/danielwelch/hassio-zigbee2mqtt  via CC253
 
 <a href="https://amzn.to/2GoukzO">Philips Hue - numerous of bulbs</a><br />
 <a href="https://amzn.to/3aDko3u">5x Philips Hue Light dimmers</a><br />
-<a href="https://amzn.to/30NC6gi">1x Philips Hue Strip + extension</a><br />
-3x Xiaomi Yeelight AC220V RGBW E27 Smart LED Bulb<br />
-3x Xiaomi Yeelight YLDD01YL Smart Light Strip<br />
+<a href="https://amzn.to/30NC6gi">2x Philips Hue Strip + extension</a><br />
 1x Xiaomi Mijia Yeelight MJTD01YL Smart LED Desk Lamp<br />
+2x Silvercrest (Lidl Smart Home) Light Strip
+4x Silvercrest (Lidl Smart Home) GU10 Colour
 <a href="https://www.ikea.com/gb/en/p/tradfri-led-bulb-gu10-400-lumen-wireless-dimmable-white-spectrum-90408603/">5x TRÅDFRI LED bulb GU10 400 lumen</a><br />
 <a href="https://www.ikea.com/gb/en/p/tradfri-led-bulb-e27-600-lumen-wireless-dimmable-colour-and-white-spectrum-opal-white-00408612/">1x TRÅDFRI LED bulb E27 600 lumen</a><br />
 
 <b>Sensors:</b>
 
 <a href="https://www.banggood.com/custlink/KDKmBiMJ9C">4x Xiaomi Aqara temperature humidity Sensor</a><br />
-<a href="https://www.banggood.com/custlink/KK3DBIUC9j">6x Xiaomi Aqara Door/Window Sensor</a><br />
-<a href="https://amzn.to/36o1NVR">5x Philips Hue Motion sensors</a><br />
+<a href="https://www.banggood.com/custlink/KK3DBIUC9j">7x Xiaomi Aqara Door/Window Sensor</a><br />
+<a href="https://amzn.to/36o1NVR">6x Philips Hue Motion sensors</a><br />
 1x Xiaomi Aqara Vibration Sensor (Washing machine)<br />
+
+Smart Alarms:
+1x Nest Protect Smoke & CO alarm
 1x Xiaomi MiJia Honeywell smoke detector
 
 <b>Plugs:</b>
 
 <a href="https://amzn.to/2sVtuHZ">1x TP-Link HS110 - Kasa Smart Wi-Fi Plug with Energy Monitoring</a><br />
-<a href="https://amzn.to/36nPUiz">5x TP-Link HS100 - Kasa Smart Wi-Fi Plug</a><br />
-<a href="https://www.ikea.com/gb/en/p/tradfri-wireless-control-outlet-00364477/">2x TRÅDFRI Wireless control outlet (Zigbee repeater)</a><br />
+<a href="https://amzn.to/36nPUiz">2x TP-Link HS100 - Kasa Smart Wi-Fi Plug</a><br />
+1x Silvercrest (Lidl Smart Home) Extension plug
+<a href="https://www.ikea.com/gb/en/p/tradfri-wireless-control-outlet-00364477/">4x TRÅDFRI Wireless control outlet (Zigbee repeater)</a><br />
 1x Sonoff Plug
 
 <b>Thermostat:</b>
