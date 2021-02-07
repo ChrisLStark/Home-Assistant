@@ -11,7 +11,7 @@ Using Home Assistant running on hassio to control all things smart.<br />
 <b>Controller:</b>
 
 Raspberry Pi 4 running Hassio (Home Assistant)<br />
-Running zigbee2mqtt https://github.com/danielwelch/hassio-zigbee2mqtt">on CC2652R - Electrolama zig-a-zig-ah! (zzh!).
+Running <a href="https://github.com/danielwelch/hassio-zigbee2mqtt">zigbee2mqtt</a>on CC2652R - Electrolama zig-a-zig-ah! (zzh!).
 
 <b>Assistants:</b>
 
@@ -87,7 +87,7 @@ Running zigbee2mqtt https://github.com/danielwelch/hassio-zigbee2mqtt">on CC2652
 <a href="https://osmc.tv/vero/">1x Vero 4K (used for Kodi)</a><br />
 <a href="https://store.google.com/gb/product/chromecast_google_tv">2x Google Chromecast TV</a><br />
 <a href="https://store.google.com/product/chromecast_ultra">1x Chromecast Ultra</a><br />
-<a href="https://store.google.com/product/chromecast">1x Chromecast (3rd generation)></a><br />
+<a href="https://store.google.com/product/chromecast">1x Chromecast (3rd generation)</a><br />
 <a href="http://www.plex.tv">Plex</a> running as a VM (CentOS) on a Dell T20 server<br />
 1x HP Microserver N54L running TrueNAS (previosuly called FreeNAS)<br />
 1x HP Microserver Gen 8 running unRaid<br />
