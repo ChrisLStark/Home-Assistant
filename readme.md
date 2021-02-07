@@ -24,8 +24,8 @@ Running zigbee2mqtt https://github.com/danielwelch/hassio-zigbee2mqtt">on CC2652
 
 <b>Internet:</b>
 
-<a href="https://store.google.com/gb/product/nest_wifi"2x Nest Wifi Router</a>
-<a href="https://store.google.com/gb/product/nest_wifi"1x Nest Wifi AP</a>
+<a href="https://store.google.com/gb/product/nest_wifi">2x Nest Wifi Router</a>
+<a href="https://store.google.com/gb/product/nest_wifi">1x Nest Wifi AP</a>
 <a href="https://amzn.to/35OQ7wh"1x Google Wifi</a>
 
 <b>Cameras:</b>
@@ -41,8 +41,8 @@ Running zigbee2mqtt https://github.com/danielwelch/hassio-zigbee2mqtt">on CC2652
 <a href="https://amzn.to/3aDko3u">5x Philips Hue Light dimmers</a><br />
 <a href="https://amzn.to/30NC6gi">2x Philips Hue Strip + extension</a><br />
 1x Xiaomi Mijia Yeelight MJTD01YL Smart LED Desk Lamp<br />
-2x Silvercrest (Lidl Smart Home) Light Strip
-4x Silvercrest (Lidl Smart Home) GU10 Colour
+2x Silvercrest (Lidl Smart Home) Light Strip<br />
+4x Silvercrest (Lidl Smart Home) GU10 Colour<br />
 <a href="https://www.ikea.com/gb/en/p/tradfri-led-bulb-gu10-400-lumen-wireless-dimmable-white-spectrum-90408603/">5x TRÅDFRI LED bulb GU10 400 lumen</a><br />
 <a href="https://www.ikea.com/gb/en/p/tradfri-led-bulb-e27-600-lumen-wireless-dimmable-colour-and-white-spectrum-opal-white-00408612/">1x TRÅDFRI LED bulb E27 600 lumen</a><br />
 
