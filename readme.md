@@ -6,7 +6,7 @@ Using Home Assistant running on hassio to control all things smart.<br />
 
 <a href="https://github.com/geekofweek/homeassistant">geekofweek/homeassistant</a> - Loads of great automations, this got me started and you'll notice my scripts follow the same format<br />
 <a href="https://github.com/skalavala/mysmarthome">skalavala/smarthome</a> - Trash & Recycle automation is from here! wicked automation.<br />
-<b>Kit list</b>
+<br /><b>Kit list</b>
 
 <b>Controller:</b>
 
