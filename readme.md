@@ -26,7 +26,7 @@ Running zigbee2mqtt https://github.com/danielwelch/hassio-zigbee2mqtt">on CC2652
 
 <a href="https://store.google.com/gb/product/nest_wifi">2x Nest Wifi Router</a>
 <a href="https://store.google.com/gb/product/nest_wifi">1x Nest Wifi AP</a>
-<a href="https://amzn.to/35OQ7wh"1x Google Wifi</a>
+<a href="https://amzn.to/35OQ7wh">1x Google Wifi</a>
 
 <b>Cameras:</b>
 
