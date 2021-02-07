@@ -11,7 +11,7 @@ Using Home Assistant running on hassio to control all things smart.<br />
 <b>Controller:</b>
 
 Raspberry Pi 4 running Hassio (Home Assistant)<br />
-Running <a href="https://github.com/danielwelch/hassio-zigbee2mqtt">zigbee2mqtt</a>on CC2652R - Electrolama zig-a-zig-ah! (zzh!).
+Running <a href="https://github.com/danielwelch/hassio-zigbee2mqtt">zigbee2mqtt</a> on CC2652R - Electrolama zig-a-zig-ah! (zzh!).
 
 <b>Assistants:</b>
 
