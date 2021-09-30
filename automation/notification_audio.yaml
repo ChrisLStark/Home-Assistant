@@ -40,7 +40,7 @@
         ##########################################################
 
 - alias: 'Aimee is home'
-  initial_state: on
+  initial_state: off
   trigger:
     platform: state
     from: 'not_home'
@@ -146,13 +146,13 @@
   trigger:
     platform: state
     from: 'vibration'
-    entity_id: sensor.washing_machine
+    entity_id: sensor.washing_machine_action
 
   action:    
     - delay: '00:10:00'
 
     - condition: template
-      value_template: "{{ not is_state('sensor.washing_machine', 'vibration') }}"
+      value_template: "{{ not is_state('sensor.washing_machine_action', 'vibration') }}"
         
     - service: media_player.volume_set
       data_template:
