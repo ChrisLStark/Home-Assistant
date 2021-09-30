@@ -61,6 +61,7 @@ family:
     name: Family
     entities:
         - group.person_keith
+        - group.person_bert
 
 person_keith:
     name: Keith
@@ -68,6 +69,12 @@ person_keith:
     entities:
         - device_tracker.keith_phone_ping
 
+person_bert:
+    name: Roberta
+    icon: mdi:account-multiple
+    entities:
+        - device_tracker.bert_phone_ping
+                
 visitors:
     name: Visitors
     entities:
@@ -109,7 +116,7 @@ sensors:
 Temperatures:
 
      - sensor.aqara_bedroom_temperature     
-     - sensor.aqara_man_cave_temperature
+     - sensor.ble_temperature_man_cave_ble
      - sensor.aqara_nursery_temperature
      - sensor.bathroom_sensor_temperature
      - sensor.dining_room_sensor_temperature
@@ -351,12 +358,19 @@ Livingroom_Media:
 Man_Cave_Lights:
     name: Man Cave Lights
     entities:
-        - light.man_cave_desk_light
-        - light.hue_man_cave
-        - light.hue_man_cave_desk_strip
-        - light.hue_man_cave_desk_strip
-        - light.man_cave_console_l
-        - light.man_cave_console_r
+          - light.hue_man_cave
+          - light.man_cave_console_l
+          - light.man_cave_console_r
+          - light.man_cave_desk_strip
+          - light.man_cave_ceiling_light_1
+          - light.man_cave_ceiling_light_2
+          - light.man_cave_ceiling_light_3
+          - light.man_cave_ceiling_light_4
+          - light.man_cave_ceiling_light_5
+          - light.man_cave_ceiling_light_6
+          - light.man_cave_ceiling_light_7
+          - light.man_cave_under_sofa_light
+          - light.man_cave_tv_unit_1
 
 Man_Cave_Switches:
     name: Man Cave Switches
@@ -524,23 +538,21 @@ person_chris:
   icon: mdi:account-multiple
   entities:
       - device_tracker.chris_phone_ping
-      - device_tracker.chris_phone_bluetooth
       - device_tracker.chris_tado
       - device_tracker.chris_watch
       - device_tracker.chris_bag
       - device_tracker.chris_wallet
       - device_tracker.chris_keys
-      - device_tracker.chris_tile
-      - device_tracker.chris_tile_ipad
+      - device_tracker.sm_g998b
 
 person_aimee:
   name: Aimee
   icon: mdi:account-multiple
   entities:
-      - device_tracker.aimee_phone_ping
+      - device_tracker.aimees_iphone
       - device_tracker.aimee_phone_bluetooth
       - device_tracker.aimee_tado
-      - device_tracker.aimee_watch
+      - device_tracker.aimee_iwatch
  
 person_charlotte:
   name: Charlotte
