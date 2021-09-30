@@ -10,6 +10,16 @@
     initial: on
     icon: mdi:shield-outline
 
+  climate_automations:
+    name: Climate Automations
+    initial: on
+    icon: mdi:heating
+
+  boiler_service:
+    name: Boiler Service
+    initial: off
+    icon: mdi:heating
+
   nzbwarning:
     name: NZB Warning
 
@@ -18,7 +28,7 @@
     icon: mdi:shield-outline
 
   disable_occupancy:
-    name: Disable Occupancy Automation
+    name: Occupancy Automations
     icon: mdi:eye-off
 
   baby_sitter:
@@ -26,7 +36,7 @@
     icon: mdi:eye-off
 
   disable_doorbell:
-    name: Disable Doorbell Automation
+    name: Doorbell Automations
     icon: mdi:bell-off
 
   panic_mode:
@@ -51,8 +61,9 @@
   trash_reminders:
     name: Trash Reminders
 
-  disable_light_automations:
-    name: Disable Light Automations
+  light_automations:
+    name: Light Automations
+    icon: mdi:light
 
 # Input boolean for enabling/disabling joining
   zigbee_permit_join:
@@ -66,18 +77,10 @@
   party_mode:
     name: Party Mode   
 
-  chris_mancave_presence:
-    name: chris Man Cave Presence
-    initial: false
-  chris_living_room_presence:
-    name: chris Living Room Presence
-    initial: false
-  chris_bedroom_presence:
-    name: chris Bedroom Presence
-    initial: false
-  chris_bitchen_presence:
-    name: chris Kitchen Presence
-    initial: false
-  chris_guestroom_presence:
-    name: chris Guest Room Presence
-    initial: false        
+  on_call:
+    name: Call
+    icon: mdi:phone
+
+  aircon:
+    name: Aircon
+    icon: mdi:fan

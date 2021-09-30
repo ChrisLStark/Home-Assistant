@@ -198,7 +198,7 @@
         platform: state
         from: 'not_home'
         to: 'home'
-        entity_id: group.household
+        entity_id: group.household_lights
 
       condition:
          condition: state
@@ -337,3 +337,24 @@
         - service: notify.telegram
           data:
             message: 'Tado changed to home'
+
+       ##########################################################
+        # Household Away Lights
+        ##########################################################
+
+    - alias: 'Household Home'
+      initial_state: on
+      trigger:
+        platform: state
+        from: 'home'
+        to: 'not_home'
+        entity_id: group.household_lights
+
+      condition:
+         condition: state
+         entity_id: sun.sun
+         state: 'below_horizon'
+
+      action:
+        - service: light.turn_off
+          entity_id:  all

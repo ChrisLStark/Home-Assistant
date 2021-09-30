@@ -169,3 +169,42 @@
         data_template:
           entity_id: input_select.recycle_pickup_week
           option: "{{states.sensor.recycle_pickup_week.state}}"
+
+###############################################################################
+#  Reminder code - Reminds 5 times every hour starting 4 PM
+#  Conditions: Only notifies when someone is at home
+###############################################################################
+  - alias: Garden Waste Pickup Reminder
+    initial_state: true
+    trigger:
+      - platform: time
+        at: '18:00:00'
+      - platform: time
+        at: '19:30:00'
+      - platform: time
+        at: '20:30:00'
+      - platform: time
+        at: '21:30:00'
+
+    condition:
+      - condition: template
+        value_template: '{{ states.input_boolean.trash_reminders.state == "on" }}'
+
+      - condition: state
+        entity_id: sensor.garden_bin
+        state: 'today'
+        
+    action:
+      - service: notify.telegram
+        data_template:
+          message: >
+              Tomorrow is the Garden Waste Pickup day.
+              Put the Garden Waste (green) outside, please!
+        #  data:
+        #    - 'Trash Left:/trash_left, Remind Later:/trash_remind_later'
+      - service: tts.google_say
+        entity_id: group.automation_gh_reminders
+        data_template:
+          message: >
+              Attention!: Tomorrow is the Garden Waste Pickup day.
+              Please don't forget to put the garden bin (green) outside tonight!

@@ -20,93 +20,6 @@
              - light.porch 
              - group.interior_lights
 
-        #########################################################
-        ## Man Cave Door - Open
-        ##########################################################
-
-    - alias: Man Cave Door - Open & Sunset
-      initial_state: on
-      trigger:
-        platform: state
-        entity_id: binary_sensor.aqara_man_cave_door_contact
-        from: 'off'
-        to: 'on'
-
-      action:
-        - service: light.turn_on
-          entity_id:
-             - light.hue_man_cave_desk_strip 
-
-        #########################################################
-        ## Man Cave Door - Open & Sunset
-        ##########################################################
-
-    - alias: Man Cave Door - Open & Sunset
-      initial_state: on
-      trigger:
-        platform: state
-        entity_id: binary_sensor.aqara_man_cave_door_contact
-        from: 'off'
-        to: 'on'
-
-      condition:
-        condition: state
-        entity_id: sun.sun
-        state: below_horizon
-
-      action:
-        - service: light.turn_on
-          entity_id:
-             - light.hue_man_cave_desk_strip
-             - light.hue_man_cave
-
-        ##########################################################
-        ## Man Cave Door closed and no motion - Turn off lights
-        ##########################################################
-
-    - alias: 'Man Cave Door Closed, no motion - Turn off lights'
-      initial_state: on
-      trigger:
-        - platform: state
-          entity_id: binary_sensor.aqara_man_cave_door_contact
-          to: 'off'
-          for: '00:03:00'
-
-      action:
-        - service: light.turn_off
-          entity_id:
-            - group.man_cave_lights
- 
-        #########################################################
-        ## Man Cave Door - Closed - Turn on landing light
-        #########################################################
-
-    - alias: Man Cave Door - Closed - Turn on landing light
-      initial_state: on
-      trigger:
-        platform: state
-        entity_id: binary_sensor.aqara_man_cave_door_contact
-        from: 'on'
-        to: 'off'
-
-      condition:
-        - condition: state
-          entity_id: sun.sun
-          state: below_horizon
-
-      action:
-        - service: light.turn_on
-          entity_id: light.hue_man_cave_landing
-          data_template:
-            brightness: >
-              {% if now().hour > 20 %}64
-              {% else %}100
-              {% endif %}
-        - delay: 00:05:00
-        - service: light.turn_off
-          entity_id: light.hue_man_cave_landing
-
-
         ##########################################################
         ## Front Door - Open
         ##########################################################
@@ -147,10 +60,10 @@
              - light.outside
 
         ##########################################################
-        ## Upstairs motion - Turn on Man Cave Landing
+        ## Upstairs motion - Turn on Man Cave Landing & Stair Light
         ##########################################################
 
-    - alias: 'Upstairs motion - Turn on Man Cave Landing'
+    - alias: 'Upstairs motion - Turn on Man Cave Landing & Stair Light'
       initial_state: on
       trigger:
         - platform: state
@@ -175,6 +88,11 @@
           data_template:
             brightness: '{% if now().hour > 20 %}64{% else %}100{% endif %}'
 
+        - service: light.turn_on
+          entity_id: light.yeelight_stripe_man_cave_stairs
+          data_template:
+            brightness: '{% if now().hour > 20 %}64{% else %}100{% endif %}'
+
         ##########################################################
         ## Upstairs motion - Turn off Man Cave Landing
         ##########################################################
@@ -185,12 +103,13 @@
         - platform: state
           entity_id: binary_sensor.upstairs_sensor_motion
           to: 'off'
-          for: '00:00:30'
+          for: '00:01:00'
 
       action:
         - service: light.turn_off
           entity_id:
             - light.hue_man_cave_landing
+            - light.yeelight_stripe_man_cave_stairs
 
         ##########################################################
         ## No-one home - lights on
@@ -207,7 +126,7 @@
       action:
         - delay: 00:02:00
         - condition: template
-          value_template: "{{ is_state('group.household_lights_lights.state', 'not_home') }}"
+          value_template: "{{ is_state('group.household_lights.state', 'not_home') }}"
         - service: notify.telegram
           data_template:
             message: >
@@ -256,7 +175,7 @@
 
       condition:
         condition: state
-        entity_id: input_boolean.disable_light_automations
+        entity_id: input_boolean.light_automations
         state: 'off'
 
       action:
@@ -276,7 +195,7 @@
 
       condition:
         - condition: state
-          entity_id: input_boolean.disable_light_automations
+          entity_id: input_boolean.light_automations
           state: 'off'    
 
         - condition: state
@@ -303,13 +222,14 @@
 
       condition:
         condition: state
-        entity_id: input_boolean.disable_light_automations
+        entity_id: input_boolean.light_automations
         state: 'off'
 
       action:
         service: light.turn_off
         entity_id:
              - light.porch
+             - light.outside
 
         ##########################################################
         ## Nursery Bedroom Button Pressed

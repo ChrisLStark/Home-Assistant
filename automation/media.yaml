@@ -146,6 +146,27 @@
          entity_id: scene.livingroom_normal
 
         ##########################################################
+        ## OSMC Man Cave changed state - playing > paused
+        ##########################################################
+
+    - alias: 'OSMC paused'
+      initial_state: on
+      trigger:
+        platform: state
+        entity_id: media_player.man_cave_osmc
+        to: 'paused'
+        from: 'playing'
+
+      condition:
+         condition: state
+         entity_id: sun.sun
+         state: 'below_horizon'
+
+      action:
+         service: scene.turn_on
+         entity_id: scene.man_cave_normal
+
+        ##########################################################
         ## OSMC changed state - paused > playing
         ##########################################################
 
@@ -164,6 +185,26 @@
       action:
          service: scene.turn_on
          entity_id: scene.living_room_media_playing
+
+        ##########################################################
+        ## OSMC Man Cave changed state - paused > playing
+        ##########################################################
+
+    - alias: 'OSMC playing from paused'
+      initial_state: on
+      trigger:
+        platform: state
+        entity_id: media_player.man_cave_osmc
+        to: 'playing'
+        from: 'paused'
+      condition:
+         condition: state
+         entity_id: sun.sun
+         state: 'below_horizon'
+
+      action:
+         service: scene.turn_on
+         entity_id: scene.man_cave_dim
 
         ##########################################################
         ## OSMC Idle - Normal Lights
@@ -185,6 +226,27 @@
       action:
          service: scene.turn_on
          entity_id: scene.livingroom_normal
+
+        ##########################################################
+        ## OSMC Man Cave Playing - Normal Lights
+        ##########################################################
+
+    - alias: 'OSMC Playing'
+      initial_state: on
+      trigger:
+        platform: state
+        entity_id: media_player.man_cave_osmc
+        to: 'idle'
+        from: 'playing'
+
+      condition:
+         condition: state
+         entity_id: sun.sun
+         state: 'below_horizon'
+
+      action:
+         service: scene.turn_on
+         entity_id: scene.man_cave_normal
 
         ##########################################################
         ## Chromecast Playing Below Horizon - Dim lights
@@ -336,9 +398,10 @@
     - alias: 'Nest Doorbell Ring - Pause TV'
       initial_state: on
       trigger:
-        platform: state
-        entity_id: binary_sensor.front_door_camera_person_detected
-        to: 'on'
+        platform: device
+        device_id: fc2545770afbd0c12b36c880f5d1d7c3
+        domain: nest
+        type: doorbell_chime
 
       action:
         - service: remote.send_command
@@ -347,12 +410,13 @@
            command:
              - Pause            
            device: >
-              {% if is_state("sensor.remote_front_room", "Watch TV") %}53679772
-              {% elif is_state("sensor.remote_front_room", "NetFlix") %}53679772
-              {% elif is_state("sensor.remote_front_room", "Kodi") %}58159254           
-              {% elif is_state("sensor.remote_front_room", "Amazon") %}53679772
-              {% elif is_state("sensor.remote_front_room", "Virgin") %}53679772 
+              {% if is_state("sensor.remote_front_room", "Watch TV") %}39931695
+              {% elif is_state("sensor.remote_front_room", "Kodi") %}39931760           
               {% endif %}
+
+        - service: media_player.media_pause
+          data_template:
+            entity_id: media_player.nest_chromecast_tv_living_room
 
         ##########################################################
         ## NZBGet Space warning
@@ -416,3 +480,24 @@
           data:
             message: 'NZBGet has paused - check downloads/space'
 
+        ##########################################################
+        ## Kodi playing Man Cave - Turn off Man Cave Landing if turned on
+        ##########################################################
+
+    - alias: 'Upstairs motion - Turn off Man Cave Landing'
+      initial_state: on
+      trigger:
+        - platform: state
+          entity_id: light.hue_man_cave_landing
+          from: 'off'
+          to: 'on'
+
+      condition:
+       - condition: state
+         entity_id: media_player.man_cave_tv_lg
+         state: 'on'
+
+      action:
+        - service: light.turn_off
+          entity_id:
+            - light.hue_man_cave_landing

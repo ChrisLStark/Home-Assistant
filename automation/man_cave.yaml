@@ -18,9 +18,7 @@
       action:
         - service: light.turn_on
           entity_id:
-             - light.hue_man_cave_desk_strip
-        - service: switch.turn_on
-          entity_id: switch.aircon
+             - light.man_cave_desk_strip
 
         #########################################################
         ## Man Cave Door - Open & Sunset
@@ -42,10 +40,8 @@
       action:
         - service: light.turn_on
           entity_id:
-             - light.hue_man_cave_desk_strip
-             - light.hue_man_cave
-        - service: switch.turn_on
-          entity_id: switch.aircon
+             - light.man_cave_desk_strip
+             - light.man_cave
 
         #########################################################
         ## Man Cave Door - Closed - Turn on landing light
@@ -64,9 +60,192 @@
           entity_id: sun.sun
           state: below_horizon
 
+      action:
+        - service: light.turn_on
+          entity_id:
+          - light.hue_man_cave_landing
+          - light.yeelight_stripe_man_cave_stairs
+          data_template:
+            brightness: >
+              {% if now().hour > 20 %}64
+              {% else %}100
+              {% endif %}
+
+        - delay: 00:05:00
+        - service: light.turn_off
+          entity_id:
+          - light.hue_man_cave_landing
+          - light.yeelight_stripe_man_cave_stairs
+
+       #########################################################
+        ## Man Cave Window Open - Rain
+       #########################################################
+
+    - alias: Man Cave Door - Window Open Rain
+      initial_state: on
+      trigger:
+        platform: state
+        entity_id: sensor.openweathermap_condition
+        to: 'rainy'
+
+      condition:
         - condition: state
-          entity_id: device_tracker.starky_pc
-          state: 'not_home'
+          entity_id: group.person_chris
+          state: 'home'
+
+        - condition: state
+          entity_id: binary_sensor.man_cave_window_contact
+          state: "on"
+
+      action:
+        - service: media_player.volume_set
+          data_template:
+            entity_id: media_player.man_cave_display
+            volume_level: 0.4
+
+        - service: tts.google_say
+          entity_id: media_player.man_cave_display
+          data:
+            message: 'Its raining you may want to close the window'
+
+       #########################################################
+        ## Man Cave Window Open - Snowy
+       #########################################################
+
+    - alias: Man Cave Door - Window Open Snowy
+      initial_state: on
+      trigger:
+        platform: state
+        entity_id: sensor.openweathermap_condition
+        to: 'snowy'
+
+      condition:
+        condition: state
+        entity_id: binary_sensor.man_cave_window_contact
+        state: "on"
+
+      action:
+        - service: media_player.volume_set
+          data_template:
+            entity_id: media_player.man_cave_display
+            volume_level: 0.4
+
+        - service: tts.google_say
+          entity_id: media_player.man_cave_display
+          data:
+            message: 'Its snowing you may want to close the window'
+
+       #########################################################
+        ## Man Cave - On call
+       #########################################################
+
+    - alias: Man Cave - On call
+      initial_state: on
+      trigger:
+        platform: state
+        entity_id: input_boolean.on_call
+        from: 'off'
+        to: 'on'
+
+      action:
+        - service: light.turn_on
+          entity_id: light.hue_man_cave_landing
+          data:
+            entity_id: light.hue_man_cave_landing
+            rgb_color: [255, 56, 19]
+            brightness: 255
+            transition: 50
+
+       #########################################################
+        ## Man Cave - Off call
+       #########################################################
+
+    - alias: Man Cave - Off call
+      initial_state: on
+      trigger:
+        platform: state
+        entity_id: input_boolean.on_call
+        from: 'on'
+        to: 'off'
+
+      action:
+        - service: light.turn_off
+          entity_id: light.hue_man_cave_landing
+
+       #########################################################
+        ## Man Cave - Turn off lights
+       #########################################################
+
+    - alias: Man Cave - Turn off lights
+      initial_state: on
+      trigger:
+        platform: state
+        entity_id: sensor.man_cave_presence
+        from: 'occupied'
+        to: 'not_occupied'
+        for: "00:10:00"
+      
+      action:
+        - service: light.turn_off
+          entity_id: light.man_cave
+
+
+        #########################################################
+        ## Man Cave Door - Open
+        ##########################################################
+
+    - alias: Man Cave Door - Open & Sunset
+      initial_state: on
+      trigger:
+        platform: state
+        entity_id: binary_sensor.aqara_man_cave_door_contact
+        from: 'off'
+        to: 'on'
+
+      action:
+        - service: light.turn_on
+          entity_id:
+             - light.man_cave_desk_strip 
+
+        #########################################################
+        ## Man Cave Door - Open & Sunset
+        ##########################################################
+
+    - alias: Man Cave Door - Open & Sunset
+      initial_state: on
+      trigger:
+        platform: state
+        entity_id: binary_sensor.aqara_man_cave_door_contact
+        from: 'off'
+        to: 'on'
+
+      condition:
+        condition: state
+        entity_id: sun.sun
+        state: below_horizon
+
+      action:
+        - service: light.turn_on
+          entity_id:
+             - light.man_cave_desk_strip
+             - light.man_cave
+ 
+        #########################################################
+        ## Man Cave Door - Closed - Turn on landing light
+        #########################################################
+
+    - alias: Man Cave Door - Closed - Turn on landing light
+      initial_state: on
+      trigger:
+        platform: state
+        entity_id: binary_sensor.aqara_man_cave_door_contact
+        from: 'on'
+        to: 'off'
+
+      condition:
+        - condition: state
+          entity_id: sun.sun
+          state: below_horizon
 
       action:
         - service: light.turn_on
@@ -80,3 +259,208 @@
         - service: light.turn_off
           entity_id: light.hue_man_cave_landing
 
+        #########################################################
+        ## Heating - Man Cave > 25c TTS
+        #########################################################
+
+    - alias: 'Heating - Man Cave > 25c TTS'
+      
+      trigger:
+        platform: numeric_state
+        above: '24'
+        entity_id: sensor.ble_temperature_man_cave_ble
+
+      condition:
+        - condition: state
+          entity_id: group.person_chris
+          state: 'home'
+
+
+      action:
+      - service: notify.telegram
+        data:
+          message: 'Man Cave Temperature: {{ states.climate.man_cave.attributes.current_temperature}}'
+
+      - service: tts.google_say
+        entity_id: media_player.man_cave_display
+        data:
+          message: 'You may want to turn on the aircon'
+
+        #########################################################
+        ## Man Cave Aircon - 6am turn on
+        #########################################################
+
+    - alias: 'Man Cave Aircon - 6am turn on'
+      initial_state: on
+      trigger:
+         platform: time
+         at: "06:00:00"
+
+      condition:
+        - condition: state
+          entity_id: group.person_chris
+          state: 'home'
+          
+        - condition: state
+          entity_id: sensor.aircon
+          state: 'off'
+
+      action:
+        - service: remote.send_command
+          data:
+           entity_id: remote.man_cave
+           command:
+             - PowerToggle
+           device: 74775488
+
+        #########################################################
+        ## Man Cave Aircon - > 22 turn off if unoccupied
+        #########################################################
+
+ #   - alias: 'Man Cave Aircon - > 22 turn off if unoccupied'
+  #    initial_state: on
+    #  trigger:
+   #      platform: state
+      #   entity_id: sensor.man_cave_presence
+     #    from: 'occupied'
+       #  to: 'not_occupied'
+
+      #condition:
+      #  - condition: state
+       #   entity_id: group.person_chris
+        #  state: 'home'
+
+       # - condition: time
+        #  after: '22:00:00'
+
+        #- condition: state
+         # entity_id: sensor.aircon
+          #state: 'on'
+
+        #- condition: numeric_state
+         # platform: 
+          #below: '21'
+         # entity_id: sensor.ble_temperature_man_cave_ble
+
+     # action:
+      #  - service: remote.send_command
+       #   data:
+        #   entity_id: remote.man_cave
+         #  command:
+          #   - PowerToggle
+           #device: 74775488
+
+        #########################################################
+        ## Man Cave Manual Aircon Turn On
+        #########################################################
+
+ #   - alias: 'Man Cave Manual Aircon Turn On'
+  #    initial_state: on
+   #   trigger:
+    #     platform: state
+     #    entity_id: input_boolean.aircon
+      #   from: 'off'
+       #  to: 'on'
+
+    #  condition:
+     #   - condition: state
+      #    entity_id: group.person_chris
+       #   state: 'home'
+
+      #  - condition: state
+       #   entity_id: sensor.aircon
+        #  state: 'off'
+
+     # action:
+      #  - service: remote.send_command
+       #   data:
+        #   entity_id: remote.man_cave
+         #  command:
+          #   - PowerToggle
+           #device: 74775488
+
+        #########################################################
+        ## Man Cave Manual Aircon Turn Off
+        #########################################################
+
+    - alias: 'Man Cave Manual Aircon Turn Off'
+      initial_state: on
+      trigger:
+         platform: state
+         entity_id: input_boolean.aircon
+         from: 'on'
+         to: 'off'
+
+      condition:
+        - condition: state
+          entity_id: group.person_chris
+          state: 'home'
+
+        - condition: state
+          entity_id: sensor.aircon
+          state: 'on'
+
+      action:
+        - service: remote.send_command
+          data:
+           entity_id: remote.man_cave
+           command:
+             - PowerToggle
+           device: 74775488
+
+        #########################################################
+        ## Aircon - Man Cave > 21 Turn on
+        #########################################################
+
+    - alias: 'Aircon - Man Cave > 21 Turn on'
+      
+      trigger:
+        platform: numeric_state
+        above: '21'
+        entity_id: sensor.ble_temperature_man_cave_ble
+
+      condition:
+        - condition: state
+          entity_id: sensor.aircon
+          state: 'off'
+
+      action:
+        - service: remote.send_command
+          data:
+           entity_id: remote.man_cave
+           command:
+             - PowerToggle
+           device: 74775488
+
+        - service: input_boolean.turn_off
+          entity_id: input_boolean.aircon
+
+        #########################################################
+        ## Aircon - Man Cave < 21 Turn off
+        #########################################################
+
+    - alias: 'Aircon - Man Cave < 21 Turn off'
+      
+      trigger:
+        platform: numeric_state
+        below: '21'
+        entity_id: sensor.ble_temperature_man_cave_ble
+
+      condition:
+        - condition: state
+          entity_id: sensor.aircon
+          state: 'on'
+
+      action:
+        - service: remote.send_command
+          data:
+           entity_id: remote.man_cave
+           command:
+             - PowerToggle
+           device: 74775488
+
+        - service: input_boolean.turn_on
+          entity_id: input_boolean.aircon
+
+
+           

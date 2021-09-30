@@ -1,0 +1,15 @@
+#################################################################
+## Magic Cube Test
+#################################################################
+
+alias: Aqara Magic Cube (Z2M)
+description: ''
+use_blueprint:
+  path: luckypoppy/z2m-xiaomi-cube-controller.yaml
+  input:
+    remote: sensor.aqara_cube_action
+    shake:
+        device_id: f94d34f5ddb647e4a2d97745c488c914
+        domain: light
+        entity_id: light.hue_dining_room_3a
+        type: flash

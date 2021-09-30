@@ -7,12 +7,12 @@
         ##########################################################
 
     - alias: 'Front Door Person Detected'
-      initial_state: off
+      initial_state: on
       trigger:
-        platform: state
-        entity_id: binary_sensor.hue_front_outdoor_motion_sensor_motion
-        from: 'off'
-        to: 'on'
+        platform: device
+        device_id: fc2545770afbd0c12b36c880f5d1d7c3
+        domain: nest
+        type: camera_person
 
       condition:
 
@@ -36,11 +36,10 @@
       action:
         - service: tts.google_say
           data:
-            message: 'Motion detected in the front garden'
+            message: 'Person detected in the front garden'
             entity_id:
-              - media_player.living_room_home
-              - media_player.dining_room_speaker
               - media_player.hallway_home
+
 
         ##########################################################
         ## Turn On Outside Light when Motion Detected
@@ -88,7 +87,7 @@
       condition:
 
         - condition: state
-          entity_id: input_boolean.disable_light_automations
+          entity_id: input_boolean.light_automations
           state: 'off'    
 
         - condition: state

@@ -13,13 +13,17 @@
         at: '07:00:00'
       
       condition:
-        condition: state
-        entity_id: group.automation_lights
-        state: 'home'
+        - condition: state
+          entity_id: group.automation_lights
+          state: 'home'
+
+        - condition: state
+          entity_id: input_select.season
+          state: 'Christmas'
 
       action:
         - service: homeassistant.turn_on
-          entity_id: switch.christmas_tree_lights
+          entity_id: switch.living_room_gang_l3
 
       ##########################################################
       ## Turn off Christmas Tree Lights at 23.00
@@ -30,10 +34,15 @@
       trigger:
         platform: time
         at: '23:00:00'
+
+      condition:
+        - condition: state
+          entity_id: input_select.season
+          state: 'Christmas'
       
       action:
         - service: homeassistant.turn_off
-          entity_id: switch.christmas_tree_lights
+          entity_id: switch.living_room_gang_l3
 
       ##########################################################
       ## Someone is home, turn on Christmas Tree Lights
@@ -48,13 +57,17 @@
         entity_id: group.automation_lights
 
       condition:
-        condition: time
-        after: '07:00:00'
-        before: '23:00:00'
+        - condition: time
+          after: '07:00:00'
+          before: '23:00:00'
+
+        - condition: state
+          entity_id: input_select.season
+          state: 'Christmas'
 
       action:
         - service: homeassistant.turn_on
-          entity_id: switch.christmas_tree_lights
+          entity_id: switch.living_room_gang_l3
 
       ##########################################################
       ## No-one home, turn off Christmas Tree Lights
@@ -68,28 +81,214 @@
         to: 'not_home'
         entity_id: group.automation_lights
 
+      condition:
+        - condition: state
+          entity_id: input_select.season
+          state: 'Christmas'
+
       action:
         - service: homeassistant.turn_off
-          entity_id: switch.christmas_tree_lights          
+          entity_id: switch.living_room_gang_l3
 
-#######################################################################
-#  HA MODE SET SCENES                                                 #
-#######################################################################
 
-    - alias: HA Mode set
+        ##########################################################
+        ## Enable Halloween Lighting
+        ##########################################################
+
+    - alias: Holiday - Enable Halloween Lighting
+      id: 'holiday_enable_halloween_lighting'
+
       trigger:
-        platform: state
-        entity_id: input_boolean.ha_mode_home,
-                  input_boolean.ha_mode_away,
-                  input_boolean.ha_mode_holiday, 
-                  input_boolean.ha_mode_summer, 
-                  input_boolean.ha_mode_party,
-                  input_boolean.ha_mode_christmas,
-                  input_boolean.ha_mode_night
-        to: 'on'
+        - platform: state
+          entity_id: calendar.holidays_in_the_united_kingdom
+          to: 'on'
+          for:
+            hours: 9
+            minutes: 0
+            seconds: 0
+
+      condition:
+        - condition: state
+          entity_id: sensor.holidays_calendar
+          state: 'Halloween'
+
       action:
-        - service: input_boolean.turn_off
-          data_template:
-            entity_id: >
-              {% set booleans = [ 'input_boolean.ha_mode_home', 'input_boolean.ha_mode_away', 'input_boolean.ha_mode_holiday', 'input_boolean.ha_mode_summer', 'input_boolean.ha_mode_party', 'input_boolean.ha_mode_christmas', 'input_boolean.ha_mode_night' ] | reject('equalto', trigger.entity_id) %}
-              {{ booleans | list | join(', ') }}
+        - service: input_select.select_option
+          data:
+            entity_id: input_select.season
+            option: 'Halloween'
+
+        ##########################################################
+        ## Halloween Lighting
+        ##########################################################
+
+    - alias: Holiday - Halloween Lighting
+      id: 'holiday_halloween_lighting'
+
+      trigger:
+        - platform: sun
+          event: 'sunset'
+          offset: '-00:15:00'
+
+      condition:
+        - condition: state
+          entity_id: input_select.season
+          state: 'Halloween'
+
+      action:
+        - service: light.turn_on
+          entity_id: light.porch
+          data:
+            transition: 900
+            brightness_pct: 100
+            rgb_color: [255,85,7]
+        - service: light.turn_on
+          entity_id: light.outside
+          data:
+            transition: 900
+            brightness_pct: 100
+            rgb_color: [160,6,255]
+
+        ##########################################################
+        ## Halloween Lighting Rotate on the Hour
+        ##########################################################
+
+    - alias: Holiday - Halloween Lighting Rotate on the Hour
+      id: 'holiday_halloween_lighting_rotate_on_the_hour'
+
+      trigger:
+        platform: time_pattern
+        minutes: 0
+
+      condition:
+        - condition: state
+          entity_id: sun.sun
+          state: 'below_horizon'
+        - condition: time
+          after: '15:00:00'
+          before: '23:59:00'
+        - condition: state
+          entity_id: input_select.season
+          state: 'Halloween'
+
+      action:
+        - service: light.turn_on
+          entity_id: light.porch
+          data:
+            transition: 5
+            brightness_pct: 100
+            rgb_color: [160,6,255]
+        - service: light.turn_on
+          entity_id: light.outside
+          data:
+            transition: 5
+            brightness_pct: 100
+            rgb_color: [255,85,7]
+
+        ##########################################################
+        ## Halloween Lighting Rotate 15 mins after the Hour
+        ##########################################################
+
+    - alias: Holiday - Halloween Lighting Rotate 15 mins after the Hour
+      id: 'holiday_halloween_lighting_rotate_15_mins_after_the_hour'
+
+      trigger:
+        platform: time_pattern
+        minutes: 15
+
+      condition:
+        - condition: state
+          entity_id: sun.sun
+          state: 'below_horizon'
+        - condition: time
+          after: '15:00:00'
+          before: '23:59:00'
+        - condition: state
+          entity_id: input_select.season
+          state: 'Halloween'
+
+      action:
+        - service: light.turn_on
+          entity_id: light.porch
+          data:
+            transition: 5
+            brightness_pct: 100
+            rgb_color: [255,85,7]
+        - service: light.turn_on
+          entity_id: light.outside
+          data:
+            transition: 5
+            brightness_pct: 100
+            rgb_color: [160,6,255]
+
+        ##########################################################
+        ## Halloween Lighting Rotate 30 mins after the Hour
+        ##########################################################
+
+    - alias: Holiday - Halloween Lighting Rotate 30 mins after the Hour
+      id: 'holiday_halloween_lighting_rotate_30_mins_after_the_hour'
+
+      trigger:
+        platform: time_pattern
+        minutes: 30
+
+      condition:
+        - condition: state
+          entity_id: sun.sun
+          state: 'below_horizon'
+        - condition: time
+          after: '17:00:00'
+          before: '23:59:00'
+        - condition: state
+          entity_id: input_select.season
+          state: 'Halloween'
+
+      action:
+        - service: light.turn_on
+          entity_id: light.porch
+          data:
+            transition: 5
+            brightness_pct: 100
+            rgb_color: [160,6,255]
+        - service: light.turn_on
+          entity_id: light.outside
+          data:
+            transition: 5
+            brightness_pct: 100
+            rgb_color: [255,85,7]
+
+        ##########################################################
+        ## Halloween Lighting Rotate 45 Mins After the Hour
+        ##########################################################
+
+    - alias: Holiday - Halloween Lighting Rotate 45 Mins After the Hour
+      id: 'holiday_halloween_lighting_rotate_45_mins_after_the_hour'
+
+      trigger:
+        platform: time_pattern
+        minutes: 45
+
+      condition:
+        - condition: state
+          entity_id: sun.sun
+          state: 'below_horizon'
+        - condition: time
+          after: '17:00:00'
+          before: '23:59:00'
+        - condition: state
+          entity_id: input_select.season
+          state: 'Halloween'
+
+      action:
+        - service: light.turn_on
+          entity_id: light.porch
+          data:
+            transition: 5
+            brightness_pct: 100
+            rgb_color: [255,85,7]
+        - service: light.turn_on
+          entity_id: light.outside
+          data:
+            transition: 5
+            brightness_pct: 100
+            rgb_color: 152,39,25

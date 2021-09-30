@@ -66,3 +66,17 @@
       - delay: '00:05:01'
       - service: switch.turn_off
         entity_id: switch.pihole_temp_disable
+
+        ##########################################################
+        ##  Create All Lights Group on Startup
+        ##########################################################
+
+  - alias: Create All Lights Group on Startup
+    trigger:
+      platform: homeassistant
+      event: start
+    action:
+      - service: python_script.create_all_group
+        data:
+          domain: light
+          group: all_lights
