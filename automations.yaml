@@ -1,0 +1,11 @@
+- id: '1628506095182'
+  alias: Zigbee2MQTT - Aqara Magic Cube (MFKZQ01LM)
+  description: ''
+  use_blueprint:
+    path: golles/zigbee2mqtt_aqara_magic_cube.yaml
+    input:
+      remote: sensor.aqara_cube_action
+      rotate_left_side_0:
+      - service: automation.trigger
+        target:
+          entity_id: automation.man_cave_aircon_6am_turn_on
