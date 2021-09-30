@@ -31,20 +31,27 @@
           - light.outside
 
     - platform: group
-      name: Yeelight Lights
-      entities:
-          - light.man_cave_desk_light
-          - light.man_cave_desk_strip
-          - light.man_cave_lamp
-          - light.man_cave_light
-
-    - platform: group
       name: Man Cave
       entities:
-          - light.man_cave_desk_light
+          - light.hue_man_cave
+          - light.man_cave_console_l
+          - light.man_cave_console_r
           - light.man_cave_desk_strip
-          - light.man_cave_lamp
-          - light.man_cave_light
+          - light.man_cave_ceiling_light_1
+          - light.man_cave_ceiling_light_2
+          - light.man_cave_ceiling_light_3
+          - light.man_cave_ceiling_light_4
+          - light.man_cave_ceiling_light_5
+          - light.man_cave_ceiling_light_6
+          - light.man_cave_ceiling_light_7
+          - light.man_cave_under_sofa_light
+          - light.man_cave_tv_light_r
+          - light.man_cave_tv_light_l
+          - light.man_cave_desk_light_l
+          - light.man_cave_desk_light_r
+          - light.hue_man_cave_tv_unit
+          - light.man_cave_console_unit
+
 
     - platform: group
       name: Living Room
