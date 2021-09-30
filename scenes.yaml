@@ -50,3 +50,24 @@
            state: on
            brightness: 40
            transition: 2
+
+  - name: Study Mode
+    entities:
+         light.man_cave:
+           state: on
+           brightness: 75
+
+
+  - name: Man Cave Dim
+    entities:
+        light.man_cave:
+           state: on
+           brightness: 20
+           transition: 2
+
+  - name: Man Cave Normal
+    entities:
+        light.man_cave:
+           state: on
+           brightness: 40
+           transition: 2
