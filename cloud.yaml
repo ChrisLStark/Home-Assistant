@@ -18,6 +18,7 @@
             - camera.outhouse
             - camera.garden
             - input_boolean.stream_camera_to_chromecast_living_room
+            - light.man_cave
         include_domains:
             - automation
             - input_boolean
