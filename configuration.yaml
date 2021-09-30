@@ -27,19 +27,18 @@ panel_iframe:
     url: '/local/community/zigbee2mqtt_networkmap/map.html'
     icon: 'mdi:graphql'  
 
-hacs:
-  token: !secret hacs
-  appdaemon: true
+#hacs:
+ # token: !secret hacs
+  #appdaemon: true
   
 config:
 
 system_health:
 
-#http:
-  #api_password: !secret api_password
-
 updater:
 discovery:
+
+energy:
 
 conversation:
 history:
@@ -79,6 +78,7 @@ google:
 hue:
   bridges:
      - host: 192.168.86.46
+     - host: 192.168.86.31
        allow_unreachable: true
        allow_hue_groups: false
 
@@ -87,7 +87,7 @@ ffmpeg:
 stream:
 
 mqtt:
- broker: 192.168.86.27 # This will have to be your mqtt broker
+ broker: 192.168.86.27
  discovery: true
  discovery_prefix: homeassistant
  username: !secret mqtt_username
@@ -117,51 +117,21 @@ telegram_bot:
         - !secret telegram_chris_chat
         - !secret telegram_aimee_chat
 
-pi_hole:
-    host: 192.168.86.95
-    verify_ssl: false     
+ 
 
 influxdb:
   host: 192.168.86.9
 
-remote:
-  - platform: harmony
-    name: Front room
-    host: 192.168.86.30
-  - platform: harmony
-    name: Man Cave
-    host: 192.168.86.31
-
-nzbget:
-  host: 192.168.86.20
-  username: !secret nzbget_username
-  password: !secret nzbget_password
-
-tado:
-  username: !secret tado_user
-  password: !secret tado_password  
-
-apcupsd:
-  host: 192.168.86.9
+#apcupsd:
+ # host: 192.168.86.9
 
 tplink:
- # discovery: false
-  #switch:
-   # - host: 192.168.86.50
-    #- host: 192.168.86.51
-    #- host: 192.168.86.52
-    #- host: 192.168.86.53
-    #- host: 192.168.86.54
-    #- host: 192.168.86.55  
-    #- host: 192.168.86.56
 
 weather:
 #  - platform: metoffice
   #  api_key: !secret metoffice_api
 
-speedtestdotnet:
-
-monkey_patch_nest_camera_event_end_date:
+#monkey_patch_nest_camera_event_end_date:
 
 mobile_app:
 
@@ -174,6 +144,20 @@ proximity:
       - person.aimee
     tolerance: 5
     unit_of_measurement: mi
+
+webostv:
+  host: 192.168.86.44
+  name: Man Cave TV LG
+  turn_on_action:
+    service: persistent_notification.create
+    data:
+      message: "Turn on action"
+  customize:
+    sources:
+      - livetv
+      - youtube
+      - makotv
+      - netflix
 
 #################################################################
 ## Includes
