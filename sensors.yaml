@@ -2,7 +2,11 @@
 ## Sensors
 #################################################################
   
+  - platform: season
+
   - platform: uptime
+
+  #- platform: garbage_collection
 
   #- platform: metoffice
    # api_key: !secret metoffice_api
@@ -32,12 +36,6 @@
       - upcoming
       - movies
       - status
-    days: 7
-
-  - platform: sonarr
-    host: 192.168.86.9
-    port: 8989
-    api_key: !secret sonarr_api
     days: 7
 
 # Sensor for monitoring the bridge state
@@ -240,11 +238,31 @@
       upstairs_target_temp_met:
         value_template: "{% if is_state_attr('climate.upstairs', 'hvac_action', 'heating')%}false{% else %}true{% endif %}"
 
+
+  - platform: template
+    sensors:
+      bathroom_target_temp_met:
+        value_template: "{% if is_state_attr('climate.bathroom', 'hvac_action', 'heating')%}false{% else %}true{% endif %}"
+
+  - platform: template
+    sensors:
+      holidays_calendar:
+        friendly_name: 'Holiday'
+        value_template: '{{ states.calendar.holidays_in_the_united_kingdom.attributes.message }}'
+
+  - platform: template
+    sensors:
+       aircon:
+         value_template: >-
+           {% if states.sensor.aircon_current_consumption.state | float > 5 %}on
+           {% else %}off
+           {% endif %}
+
   - platform: template
     sensors:
        phone_keys:
          value_template: >-
-           {% if distance('device_tracker.keys', 'device_tracker.phone_ha')|float < 0.2 and is_state('device_tracker.phone_ha', 'not_home') and is_state('device_tracker.keys', 'not_home') %}Nearby
+           {% if distance('device_tracker.chris_keys', 'device_tracker.phone_ha')|float < 0.2 and is_state('device_tracker.phone_ha', 'not_home') and is_state('device_tracker.chris_keys', 'not_home') %}Nearby
            {% elif is_state('device_tracker.phone_ha', 'home') and is_state('device_tracker.keys', 'home') %}Home
            {% else %}Away
            {% endif %}
@@ -253,8 +271,8 @@
     sensors:
        phone_backpack:
          value_template: >-
-           {% if distance('device_tracker.backpack', 'device_tracker.phone_ha')|float < 0.2 and is_state('device_tracker.phone_ha', 'not_home') and is_state('device_tracker.backpack', 'not_home') %}Nearby
-           {% elif is_state('device_tracker.oneplus_7t_pro', 'home') and is_state('device_tracker.backpack', 'home') %}Home
+           {% if distance('device_tracker.chris_backpack', 'device_tracker.phone_ha')|float < 0.2 and is_state('device_tracker.phone_ha', 'not_home') and is_state('device_tracker.chris_backpack', 'not_home') %}Nearby
+           {% elif is_state('device_tracker.phone_ha', 'home') and is_state('device_tracker.chris_backpack', 'home') %}Home
            {% else %}Away
            {% endif %}
 
@@ -262,68 +280,42 @@
     sensors:
        phone_wallet:
          value_template: >-
-           {% if distance('device_tracker.wallet', 'device_tracker.phone_ha')|float < 0.2 and is_state('device_tracker.phone_ha', 'not_home') and is_state('device_tracker.wallet', 'not_home') %}Nearby
-           {% elif is_state('device_tracker.phone_ha', 'home') and is_state('device_tracker.wallet', 'home') %}Home
+           {% if distance('device_tracker.chris_wallet', 'device_tracker.phone_ha')|float < 0.2 and is_state('device_tracker.phone_ha', 'not_home') and is_state('device_tracker.chris_wallet', 'not_home') %}Nearby
+           {% elif is_state('device_tracker.phone_ha', 'home') and is_state('device_tracker.chris_wallet', 'home') %}Home
            {% else %}Away
            {% endif %}
 
-#################################################################
-## Google Home RSSI
-#################################################################
+  - platform: template
+    sensors:
+       man_cave_presence:
+         value_template: >-
+           {% if is_state('device_tracker.starky_pc', 'home') or is_state('media_player.man_cave_tv_lg', 'on') or is_state('binary_sensor.hue_motion_sensor_man_cave', 'on') %}occupied
+           {% else %}not_occupied
+           {% endif %}           
 
- # - platform: template
-  #  sensors:
-  #    kitchen_chris_gh_rssi:
-   #     value_template: '{{ states.device_tracker.chris_bt_kitchen.attributes.rssi }}'
-
- # - platform: template
- #   sensors:
- #     bedroom_chris_gh_rssi:
- #       value_template: '{{ states.device_tracker.chris_bt_bedroom.attributes.rssi }}'
-
- # - platform: template
-   # sensors:
-   #   guestroom_chris_gh_rssi:
-    #    value_template: '{{ states.device_tracker.chris_bt_guestroom.attributes.rssi }}'
-
- # - platform: template
- #   sensors:
-    #  mancave_chris_gh_rssi:
-    #    value_template: '{{ states.device_tracker.chris_bt_mancave.attributes.rssi }}'
-
- # - platform: template
-   # sensors:
-   #   livingroom_chris_gh_rssi:
-    #    value_template: '{{ states.device_tracker.chris_bt_livingroom.attributes.rssi }}'
-
- # - platform: template
-  #  sensors:
-  #    hallway_chris_gh_rssi:
-   #     value_template: '{{ states.device_tracker.chris_bt_hallway.attributes.rssi }}'
-
-  - platform: apcupsd
-    resources:
-      - apc
-      - date
-      - hostname
-      - version
-      - upsname
-      - cable
-      - driver
-      - upsmode
-      - starttime
-      - model
-      - status
-      - linev
-      - loadpct
-      - bcharge
-      - timeleft
-      - mbattchg
-      - mintimel
-      - maxtime
-      - maxlinev
-      - minlinev
-      - outputv
+  #- platform: apcupsd
+    #resources:
+      #- apc
+      #- date
+      #- hostname
+      #- version
+      #- upsname
+      #- cable
+      #- driver
+      #- upsmode
+      #- starttime
+      #- model
+      #- status
+      #- linev
+      #- loadpct
+      #- bcharge
+      #- timeleft
+      #- mbattchg
+      #- mintimel
+      #- maxtime
+     # - maxlinev
+    #  - minlinev
+   #   - outputv
 
 #################################################################
 ## MISC
