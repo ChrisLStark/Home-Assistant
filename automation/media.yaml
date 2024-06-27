@@ -1,0 +1,539 @@
+#################################################################
+## Media Player Automations
+#################################################################
+
+        ##########################################################
+        ## Downloads - Unrestricted
+        ##########################################################
+
+    - alias: 'Downloads - Unrestricted'
+      initial_state: on
+      trigger:
+        platform: state
+        entity_id: input_boolean.disable_downloads
+        to: 'on'
+
+      action:
+        service: sabnzbd.set_speed
+        data:
+            speed: 0
+
+        ##########################################################
+        ## Downloads - restricted
+        ##########################################################
+
+    - alias: 'Downloads - Restrict'
+      initial_state: on
+      trigger:
+        platform: state
+        entity_id: input_boolean.disable_downloads
+        to: 'off'
+
+      action:
+        service: sabnzbd.set_speed
+        data:
+            speed: 200000
+
+        ##########################################################
+        ## Cinema Day
+        ##########################################################
+
+    - alias: 'Cinema Day'
+      initial_state: on
+      trigger:
+        platform: sun
+        event: sunrise
+
+      condition:
+        condition: state
+        entity_id: group.household
+        state: home
+
+      action:
+        service: remote.send_command
+        data:
+          entity_id: remote.front_room
+          command:
+            - CinemaDay
+          device: 53468354
+
+        ##########################################################
+        ## Cinema Night
+        ##########################################################
+
+    - alias: 'Cinema Night'
+      initial_state: on
+      trigger:
+        platform: sun
+        event: sunset
+
+      condition:
+        condition: state
+        entity_id: group.household
+        state: home
+
+      action:
+        service: remote.send_command
+        data:
+          entity_id: remote.front_room
+          command:
+           - CinemaNight
+          device: 53468354
+
+        ##########################################################
+        ## OSMC playing Above Horizon - Cinema Day
+        ##########################################################
+
+    - alias: 'OSMC playing Above Horizon - Cinema Day'
+      initial_state: on
+      trigger:
+        platform: state
+        entity_id: media_player.kodi_osmc_living_room
+        to: 'paused'
+        from: 'playing'
+
+      condition:
+         condition: state
+         entity_id: sun.sun
+         state: 'above_horizon'
+
+      action:
+         service: remote.send_command
+         data:
+          entity_id: remote.front_room
+          command:
+            - CinemaDay
+          device: 53468354
+
+        ##########################################################
+        ## OSMC Playing Below Horizon
+        ##########################################################
+
+    - alias: 'OSMC Playing Below Horizon'
+      initial_state: on
+      trigger:
+        platform: state
+        entity_id: media_player.kodi_osmc_living_room
+        to: 'playing'
+        from: 'idle'
+
+      condition:
+         condition: state
+         entity_id: sun.sun
+         state: 'below_horizon'
+
+      action:
+       - service: scene.turn_on
+         entity_id: scene.living_room_media_playing
+       - service: remote.send_command
+         data:
+          entity_id: remote.front_room
+          command:
+            - CinemaNight
+          device: 53468354
+
+        ##########################################################
+        ## OSMC changed state - playing > paused
+        ##########################################################
+
+    - alias: 'OSMC paused'
+      initial_state: on
+      trigger:
+        platform: state
+        entity_id: media_player.kodi_osmc_living_room
+        to: 'paused'
+        from: 'playing'
+
+      condition:
+         condition: state
+         entity_id: sun.sun
+         state: 'below_horizon'
+
+      action:
+         service: scene.turn_on
+         entity_id: scene.livingroom_normal
+
+        ##########################################################
+        ## OSMC Man Cave changed state - playing > paused
+        ##########################################################
+
+    - alias: 'OSMC paused'
+      initial_state: on
+      trigger:
+        platform: state
+        entity_id: media_player.man_cave_osmc
+        from: 'playing'
+        to: 'paused'
+ 
+
+      condition:
+         condition: state
+         entity_id: sun.sun
+         state: 'below_horizon'
+
+      action:
+         service: scene.turn_on
+         entity_id: scene.man_cave_normal
+
+        ##########################################################
+        ## OSMC changed state - paused > playing
+        ##########################################################
+
+    - alias: 'OSMC playing from paused'
+      initial_state: on
+      trigger:
+        platform: state
+        entity_id: media_player.kodi_osmc_living_room
+        to: 'playing'
+        from: 'paused'
+      condition:
+         condition: state
+         entity_id: sun.sun
+         state: 'below_horizon'
+
+      action:
+         service: scene.turn_on
+         entity_id: scene.living_room_media_playing
+
+        ##########################################################
+        ## OSMC Man Cave changed state - paused > playing
+        ##########################################################
+
+    - alias: 'OSMC playing from paused'
+      initial_state: on
+      trigger:
+        platform: state
+        entity_id: media_player.man_cave_osmc
+        from: 'paused'
+        to: 'playing'
+
+
+      condition:
+         condition: state
+         entity_id: sun.sun
+         state: 'below_horizon'
+
+      action:
+         service: scene.turn_on
+         entity_id: scene.man_cave_dim
+
+        ##########################################################
+        ## OSMC Idle - Normal Lights
+        ##########################################################
+
+    - alias: 'OSMC idle'
+      initial_state: on
+      trigger:
+        platform: state
+        entity_id: media_player.kodi_osmc_living_room
+        to: 'idle'
+        from: 'playing'
+
+      condition:
+         condition: state
+         entity_id: sun.sun
+         state: 'below_horizon'
+
+      action:
+         service: scene.turn_on
+         entity_id: scene.livingroom_normal
+
+        ##########################################################
+        ## OSMC Man Cave Idle - Normal Lights
+        ##########################################################
+
+    - alias: 'OSMC Idle'
+      initial_state: on
+      trigger:
+        platform: state
+        entity_id: media_player.man_cave_osmc
+        from: 'playing'
+        to: 'idle'
+
+      condition:
+         condition: state
+         entity_id: sun.sun
+         state: 'below_horizon'
+
+      action:
+         service: scene.turn_on
+         entity_id: scene.man_cave_normal
+
+        ##########################################################
+        ## OSMC Man Cave Idle > Playing - Dim Lights
+        ##########################################################
+
+    - alias: 'OSMC Idle'
+      initial_state: on
+      trigger:
+        platform: state
+        entity_id: media_player.man_cave_osmc
+        from: 'idle'
+        to: 'playing'
+
+      condition:
+         condition: state
+         entity_id: sun.sun
+         state: 'below_horizon'
+
+      action:
+         service: scene.turn_on
+         entity_id: scene.man_cave_dim
+
+
+
+
+        ##########################################################
+        ## Chromecast Playing Below Horizon - Dim lights
+        ##########################################################
+
+    - alias: 'Chromecast Playing Below Horizon - Dim lights'
+      initial_state: on
+      trigger:
+        platform: state
+        entity_id: media_player.living_room_tv
+        to: 'playing'
+        from: 'idle'
+
+      condition:
+         condition: state
+         entity_id: sun.sun
+         state: 'below_horizon'
+
+      action:
+        - service: scene.turn_on
+          entity_id: scene.living_room_media_playing
+        - service: remote.send_command
+          data:
+           entity_id: remote.front_room
+           command:
+             - CinemaNight
+           device: 53468354
+
+        ##########################################################
+        ## Chromecast Playing Above Horizon - Cinema Day
+        ##########################################################
+
+    - alias: 'Chromecast Playing Above Horizon - Cinema Day'
+      initial_state: on
+      trigger:
+        platform: state
+        entity_id: media_player.living_room_tv
+        to: 'playing'
+        from: 'idle'
+
+      condition:
+         condition: state
+         entity_id: sun.sun
+         state: 'above_horizon'
+
+      action:
+        - service: scene.turn_on
+          entity_id: scene.living_room_media_playing
+        - service: remote.send_command
+          data:
+           entity_id: remote.front_room
+           command:
+             - CinemaDay
+           device: 53468354
+
+        ##########################################################
+        ## Chromecase Idle - Normal Lights
+        ##########################################################
+
+    - alias: 'Chomecast - idle'
+      initial_state: on
+      trigger:
+        platform: state
+        entity_id: media_player.living_room_tv
+        to: 'off'
+        from: 'playing'
+
+      condition:
+         condition: state
+         entity_id: sun.sun
+         state: 'below_horizon'
+
+      action:
+         service: scene.turn_on
+         entity_id: scene.livingroom_normal
+
+        ##########################################################
+        ## Netflix - Dim lights
+        ##########################################################
+
+    - alias: 'MNetflix Below Horizon - Dim lights'
+      initial_state: on
+      trigger:
+        platform: state
+        entity_id: remote.front_room
+ 
+      condition:
+        condition: and
+        conditions:
+
+          - condition: state
+            entity_id: sun.sun
+            state: 'below_horizon'
+
+          - condition: or
+            conditions:
+              - condition: template
+                value_template: '{{ trigger.to_state.attributes.current_activity == "Netflix"}}'              
+
+      action:
+        - service: scene.turn_on
+          entity_id: scene.living_room_media_playing
+        - service: remote.send_command
+          data:
+           entity_id: remote.front_room
+           command:
+             - CinemaNight
+           device: 53468354
+
+        ##########################################################
+        ## Watch TV - Normal lights
+        ##########################################################
+
+    - alias: 'Watch TV - Normal lights'
+      initial_state: on
+      trigger:
+        platform: state
+        entity_id: remote.front_room
+ 
+      condition:
+        condition: and
+        conditions:
+
+          - condition: state
+            entity_id: sun.sun
+            state: 'below_horizon'
+
+          - condition: or
+            conditions:
+              - condition: template
+                value_template: '{{ trigger.to_state.attributes.current_activity == "Watch TV" }}'              
+
+      action:
+        - service: scene.turn_on
+          entity_id: scene.livingroom_normal
+
+        - service: remote.send_command
+          data:
+           entity_id: remote.front_room
+           command:
+             - CinemaNight
+           device: 53468354
+
+
+        ##########################################################
+        ## Nest Doorbell Ring - Pause TV
+        ##########################################################
+
+    - alias: 'Nest Doorbell Ring - Pause TV'
+      initial_state: on
+      trigger:
+        platform: device
+        device_id: fc2545770afbd0c12b36c880f5d1d7c3
+        domain: nest
+        type: doorbell_chime
+
+      action:
+        - service: remote.send_command
+          data_template:
+           entity_id: remote.front_room
+           command:
+             - Pause            
+           device: >
+              {% if is_state("sensor.remote_front_room", "Watch TV") %}39931695
+              {% elif is_state("sensor.remote_front_room", "Kodi") %}39931760           
+              {% endif %}
+
+        - service: media_player.media_pause
+          data_template:
+            entity_id: media_player.nest_chromecast_tv_living_room
+
+        ##########################################################
+        ## sabnzbd Space warning
+        ##########################################################
+
+    - alias: 'sabnzbd Space warning'
+      initial_state: on
+      trigger:
+        platform: numeric_state
+        entity_id: sensor.sabnzbd_disk_free
+        below: 70000
+
+      condition:
+       - condition: state
+         entity_id: input_boolean.nzbwarning
+         state: 'off'    
+
+      action:
+        - service: notify.telegram
+          data:
+            message: 'sabnzbd is running low on space'
+        - service: homeassistant.toggle
+          entity_id: input_boolean.sabnzbdwarning
+
+        ##########################################################
+        ## sabnzbd Space recovered
+        ##########################################################
+
+    - alias: 'sabnzbd Space recovered'
+      initial_state: on
+      trigger:
+        platform: numeric_state
+        entity_id: sensor.sabnzbd_disk_free
+        above: 70000
+
+      condition:
+       - condition: state
+         entity_id: input_boolean.nzbwarning
+         state: 'on'
+
+      action:
+        - service: notify.telegram
+          data:
+            message: 'sabnzbd has enough space - resuming downloads'
+        - service: homeassistant.toggle
+          entity_id: input_boolean.nzbwarning
+        - service: sabnzbd.resume
+
+        ##########################################################
+        ## sabnzbd is paused
+        ##########################################################
+
+    - alias: 'sabnzbd is paused'
+      initial_state: on
+      trigger:
+        platform: state
+        entity_id: sensor.sabnzbd_status
+        to: 'Paused'
+
+      action:
+        - service: notify.telegram
+          data:
+            message: 'sabnzbd has paused - check downloads/space'
+
+        ##########################################################
+        ## Kodi playing Man Cave - Turn off Man Cave Landing if turned on
+        ##########################################################
+
+    - alias: 'Upstairs motion - Turn off Man Cave Landing'
+      initial_state: off
+      trigger:
+        - platform: state
+          entity_id: light.hue_man_cave_landing
+          from: 'off'
+          to: 'on'
+
+      condition:
+       - condition: state
+         entity_id: media_player.man_cave_tv_lg
+         state: 'on'
+
+      action:
+        - service: light.turn_off
+          entity_id:
+            - light.hue_man_cave_landing

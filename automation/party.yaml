@@ -1,0 +1,25 @@
+##################################################################
+## Party Mode Automations
+##################################################################
+
+  #  - alias: Party - Set Dining Room to Random Color
+
+   #   trigger:
+    #    - platform: time
+     #     minutes: '/2'
+      #    seconds: 0
+
+    #  condition:
+     #   - condition: state
+      #    entity_id: input_boolean.living_rainbow
+       #   state: 'on'
+
+      #action:
+       # - service: light.turn_on
+        #  entity_id:
+         #   - light.living_room_lights
+          #  - light.hallway_light
+          #data:
+           # effect: random
+            #transition: 5
+            #brightness_pct: 100

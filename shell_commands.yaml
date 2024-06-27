@@ -1,0 +1,1 @@
+turn_off_optiplex_7040: "ssh -i /config/ssh_keys/id_rsa_homeassistant -o 'StrictHostKeyChecking=no' root@192.168.86.17 /sbin/poweroff"

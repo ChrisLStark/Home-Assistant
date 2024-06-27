@@ -1,0 +1,161 @@
+#################################################################
+## Home Assistant
+#################################################################
+
+homeassistant:
+  #name: Home
+  #latitude: !secret home_latitude
+  #longitude: !secret home_longitude
+  #elevation: !secret home_elevation
+  #unit_system: metric
+  #time_zone: Europe/London
+  customize: !include customize.yaml
+  allowlist_external_dirs:
+  - /config/camera_snapshot
+  packages: !include_dir_named packages
+  external_url: https://exnutj7nea20ztvg2t5bg778yd2ffmw1.ui.nabu.casa
+  internal_url: https://exnutj7nea20ztvg2t5bg778yd2ffmw1.ui.nabu.casa
+
+frontend:
+  themes: !include_dir_merge_named themes
+
+webhook:
+
+my:
+
+powercalc:
+  
+config:
+
+system_health:
+
+energy:
+
+conversation:
+history:
+logbook:
+#map:
+sun:
+
+recorder:
+  db_url: !secret mariadbha_url
+  purge_keep_days: 7
+
+wake_on_lan:
+
+#lovelace:
+ #mode: yaml
+
+#################################################################
+## Components
+#################################################################
+
+
+#nest:
+  #client_id: !secret nest_client_id
+  #client_secret: !secret nest_secret
+  #project_id: !secret nest_projectid
+ #subscriber_id:  !secret nest_subscriberid
+
+tts:
+  - platform: google_translate
+    service_name: google_say
+    cache: true
+    cache_dir: /tmp/tts
+    time_memory: 300
+
+media_source:
+
+#google:
+  # client_id: !secret google_id
+ #  client_secret: !secret google_secret
+
+#hue:
+ # bridges:
+  #   - host: 192.168.86.46
+   #  - host: 192.168.86.31
+    #   allow_unreachable: true
+     #  allow_hue_groups: false
+
+ffmpeg:
+
+stream:
+
+notify:
+  - name: telegram
+    platform: telegram
+    chat_id: !secret telegram_chat
+
+  - name: telegram_chris
+    platform: telegram
+    chat_id: !secret telegram_chris_chat
+
+telegram_bot:
+    platform: polling
+    api_key: !secret telegram_api
+    parse_mode: html
+    allowed_chat_ids:
+        - !secret telegram_chat
+        - !secret telegram_chris_chat
+        - !secret telegram_aimee_chat
+
+ 
+
+influxdb:
+  host: 192.168.86.9
+
+#apcupsd:
+ # host: 192.168.86.9
+
+weather:
+#  - platform: metoffice
+  #  api_key: !secret metoffice_api
+
+#monkey_patch_nest_camera_event_end_date:
+
+mobile_app:
+
+#roximity:
+ # home:
+  #  ignored_zones:
+      - work
+  #  devices:
+   #   - person.chris
+    #  - person.aimee
+    #tolerance: 0.3
+    #unit_of_measurement: mi
+
+#  home_aimee:
+ #   devices:
+  #    - person.aimee
+   # tolerance: 0.3
+   # unit_of_measurement: mi
+
+python_script: 
+
+#################################################################
+## Includes
+#################################################################
+
+cloud: !include cloud.yaml
+#automation: !include_dir_merge_list automation
+automation manual: !include_dir_merge_list automation
+automation: !include automations.yaml
+sensor: !include sensors.yaml
+scene: !include scenes.yaml
+group: !include groups.yaml
+script: !include scripts.yaml
+mqtt: !include mqtt.yaml
+light: !include light_group.yaml
+binary_sensor: !include binary_sensor.yaml
+input_boolean: !include input_boolean.yaml
+rest_command: !include rest_command.yaml
+input_select: !include input_select.yaml
+camera: !include cameras.yaml
+timer: !include timers.yaml
+switch: !include switch.yaml
+device_tracker: !include device_tracker.yaml
+shell_command: !include shell_commands.yaml
+command_line: !include command_line.yaml
+#yeelight: !include yeelight.yaml
+#googlehome: !include googlehome.yaml

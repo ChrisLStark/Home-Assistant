@@ -1,0 +1,710 @@
+#################################################################
+## Groups
+#################################################################
+
+default_view:
+    icon: mdi:home
+    entities:
+        - persistent_notification.1
+        - group.trash_status
+        - group.household
+        - group.interior_lights
+        - camera.front_door
+        - camera.man_cave
+        - group.exterior_lights
+        - group.climate_control
+        - group.automation_on_demand
+        - group.motion_sensors
+        - group.zigbee_group
+
+chris_room_location:
+    name: Chris Room Location
+    entities:
+        input_select.chris_room_location
+
+zigbee_group:
+    name: Zigbee2mqtt
+    entities:
+      - input_boolean.zigbee_permit_join
+      - timer.zigbee_permit_join
+      - sensor.zigbee2mqtt_bridge_state
+      - switch.zigbee2mqtt_main_join
+      - automation.enable_zigbee_joining
+      - automation.disable_zigbee_joining
+      - automation.disable_zigbee_joining_by_timer
+      - input_select.zigbee2mqtt_log_level
+      - automation.zigbee2mqtt_log_level
+
+automation_lights:
+    name: Automation Light Control
+    entities:
+        - group.household_lights
+
+automation_heating:
+    name: Automation Heating Control
+    entities:
+        - group.household_heating
+
+automation_alarm:
+    name: Automation Alarm Control
+    entities:
+        - group.household_alarm
+cameras:
+    name: Cameras
+    icon: mdi:camera
+    entities:
+        - camera.front_door
+        - camera.man_cave
+        - camera.downstairs
+        - camera.upstairs
+family:
+    name: Family
+    entities:
+        - person.keith
+        - person.roberta
+
+person_keith:
+    name: Keith
+    icon: mdi:account-multiple
+    entities:
+        - device_tracker.keith_phone_ping
+
+person_bert:
+    name: Roberta
+    icon: mdi:account-multiple
+    entities:
+        - device_tracker.bert_phone_ping
+                
+visitors:
+    name: Visitors
+    entities:
+        - group.person_charlotte
+
+calendar_events:
+    name: Calendar Events
+    entities:
+        - calendar.contacts
+        - calendar.family
+        - calendar.chris_stark_main
+        - calendar.holidays_in_united_kingdom
+        - calendar.liverpool
+        - calendar.my_meetups
+        - calendar.work
+
+sensors:
+    name: Sensors
+    icon: mdi:gauge
+    entities:
+        - camera.front_door
+        - group.battery_levels
+        - group.door_bell
+        - group.occupancy
+        - group.door_bell_status
+        - group.nest_thermostat
+        - group.tado
+        - group.household
+        - group.motion_sensors
+        - group.pi_hole
+        - group.temperatures
+        - group.monitor_devices
+        - group.servers
+        - group.family
+        - group.internet
+        - group.humidity
+        - group.wireless_buttons
+
+Temperatures:
+
+     - sensor.aqara_bedroom_temperature     
+     - sensor.ble_temperature_man_cave_ble
+     - sensor.aqara_nursery_temperature
+     - sensor.bathroom_sensor_temperature
+     - sensor.dining_room_sensor_temperature
+     - sensor.downstairs_sensor_temperature
+     - sensor.downstairs_toilet_sensor_temperature
+     - sensor.kitchen_sensor_temperature
+     - sensor.upstairs_sensor_temperature
+     - sensor.heating_thermostat_temperature
+     - sensor.aqara_living_room_temperature
+     - sensor.average_house_temp
+
+Tado_Temperatures:
+
+  - sensor.average_tado_temp
+  - sensor.bedroom_temperature
+  - sensor.downstairs_temperature
+  - sensor.guest_room_temperature
+  - sensor.kitchen_temperature
+  - sensor.living_room_temperature
+  - sensor.man_cave_temperature
+  - sensor.nursery_temperature
+  - sensor.upstairs_temperature
+
+
+bedrooms:
+    name: Bedrooms
+    icon: mdi:hotel
+    entities:
+      - group.bedroom
+      - group.guest_bedroom
+      - group.small_bedroom
+
+Bathroom:
+    name: Bathroom
+    icon: mdi:hot-tub
+    entities:
+        - group.bathroom_lights
+
+Downstairs Toilet:
+    - light.hue_downstairs_toilet
+
+Small Bedroom:
+    - sensor.small_bedroom_temperature
+    - light.hue_small_bedroom
+
+Wireless Buttons:
+    entities:
+      - sensor.small_bedroom_button
+
+All Input Boolean:
+      - input_boolean.panic_mode
+      - input_boolean.master_security
+      - input_boolean.alarm_tripped
+      - input_boolean.enable_security
+      - input_boolean.disable_intruder
+      - input_boolean.disable_downloads
+      - input_boolean.trash_reminders
+
+Sabnzbd:
+    entities:
+        - sensor.sabnzbd_daily_total
+        - sensor.sabnzbd_disk
+        - sensor.sabnzbd_disk_free
+        - sensor.sabnzbd_left
+        - sensor.sabnzbd_monthly_total
+        - sensor.sabnzbd_queue
+        - sensor.sabnzbd_queue_count
+        - sensor.sabnzbd_speed
+        - sensor.sabnzbd_status
+        - sensor.sabnzbd_total
+        - sensor.sabnzbd_weekly_total
+
+
+Radarr:
+    entities:
+      - sensor.radarr_movies
+      - sensor.radarr_status
+      - sensor.radarr_upcoming
+
+Sonarr:
+    entities:
+      - sensor.sonarr_upcoming
+      - sensor.sonarr_queue
+      - sensor.sonarr_series
+      - sensor.sonarr_wanted
+
+Door Bell Status:
+     entities:
+       - binary_sensor.front_door_camera_garden_activity
+       - binary_sensor.front_door_camera_motion_detected
+       - binary_sensor.front_door_camera_online
+       - binary_sensor.front_door_camera_person_detected
+       - binary_sensor.front_door_camera_sound_detected
+
+Pi Hole:
+    entities:
+     - sensor.pi_hole_ads_blocked_today
+     - sensor.pi_hole_ads_percentage_blocked_today
+     - sensor.pi_hole_dns_queries_cached
+     - sensor.pi_hole_dns_queries_forwarded
+     - sensor.pi_hole_dns_queries_today
+     - sensor.pi_hole_dns_unique_clients
+     - sensor.pi_hole_dns_unique_domains
+     - sensor.pi_hole_domains_blocked
+
+Guest Bedroom:
+    entities:
+        - light.hue_guest_room
+        - media_player.guest_room_home
+
+Outdoors:
+    name: Outdoors
+    icon: mdi:tree
+    entities:
+        - group.exterior_lights
+        - camera.front_door
+
+Bedroom:
+    entities:
+      - light.bedroom
+      - media_player.bedroom_home
+      - sensor.bedroom_temperature
+
+Weather:
+    - sun.sun
+    - sensor.moon
+
+Battery Levels:
+    - sensor.motion_downstairs_battery
+    - sensor.motion_upstairs_battery
+    - sensor.motion_kitchen_battery
+    - sensor.back_door_battery
+    - sensor.motion_dining_room_battery
+    - sensor.porch_door_battery
+    - sensor.front_door_battery
+    - sensor.motion_bathroom_battery
+    - sensor.man_cave_door_battery
+    - sensor.dining_room_switch_battery
+    - sensor.guest_room_switch_battery
+    - sensor.living_room_switch_battery
+    - sensor.downstairs_toilet_switch_battery
+    - sensor.bathroom_room_switch_battery
+
+security_doors:
+    - binary_sensor.aqara_front_door_contact
+    - binary_sensor.aqara_back_door_contact
+
+exterior_doors:
+    - binary_sensor.aqara_porch_door_contact
+    - binary_sensor.aqara_front_door_contact
+
+Doors:
+    - binary_sensor.aqara_porch_door_contact
+    - binary_sensor.aqara_front_door_contact
+    - binary_sensor.aqara_back_door_contact
+    - binary_sensor.aqara_man_cave_door_contact
+    
+Motion Sensors:
+    - binary_sensor.downstairs_sensor_motion
+    - binary_sensor.dining_room_sensor_motion
+    - binary_sensor.upstairs_sensor_motion
+    - binary_sensor.kitchen_sensor_motion
+    - binary_sensor.bathroom_sensor_motion
+    - binary_sensor.aqara_porch_door_contact
+    - binary_sensor.aqara_front_door_contact
+    - binary_sensor.aqara_back_door_contact
+    - binary_sensor.aqara_mancave_door_contact
+    - binary_sensor.front_door_camera_garden_activity
+    - binary_sensor.front_door_camera_road_activity
+    - binary_sensor.front_door_camera_motion_detected
+
+Livingroom_Lights:
+    name: Living Room Lights
+    entities:
+        - light.living_ceiling_light_1
+        - light.living_ceiling_light_2
+        - light.living_ceiling_light_3
+        - light.living_wall_light_1
+        - light.living_wall_light_2
+        - light.hue_livingroom_lightstrip
+
+livingroom_twigs:
+    name: Living Room Twig Lights
+    entities:
+        - switch.twig_left
+        - switch.twig_right
+
+
+LivingRoom_TVLight:
+    name: "Living Room TV Light"
+    entities:
+        - light.hue_livingroom_lightstrip
+
+Interior:
+    entities:
+      - light.hue_downstairs_hallway_2
+      - light.downstairs_light
+      - light.upstairs_hallway
+      - light.bottom_man_cave
+      - switch.hallway_lamp
+      - light.hue_man_cave_landing
+
+Interior Lights:
+      - light.hue_downstairs_hallway_2
+      - light.downstairs_light
+      - light.upstairs_hallway
+      - light.bottom_man_cave
+      - light.hue_man_cave_landing
+      - switch.hallway_lamp
+
+Exterior Lights:
+      - light.porch
+      - light.outside
+
+living:
+    name: Living
+    icon: mdi:sofa
+    entities:
+        - group.livingroom_lights
+        - media_player.living_room_tv
+        - media_player.living_room_home
+        - media_player.kodi_osmc_living_room
+        - remote.harmony_hub
+
+motion_announcements:
+        name: Nest Hello Motion Announcements
+        entities:
+          - media_player.hallway_home
+          - media_player.man_cave_home
+          - media_player.bedroom_home
+
+Livingroom_Media:
+  name: Livingroom Media lights
+  entities:
+        - light.living_wall_light_1
+        - light.living_wall_light_2
+        - light.hue_livingroom_lightstrip
+
+Man_Cave_Lights:
+    name: Man Cave Lights
+    entities:
+          - light.hue_man_cave
+          - light.man_cave_console_l
+          - light.man_cave_console_r
+          - light.man_cave_desk_strip
+          - light.man_cave_ceiling_light_1
+          - light.man_cave_ceiling_light_2
+          - light.man_cave_ceiling_light_3
+          - light.man_cave_ceiling_light_4
+          - light.man_cave_ceiling_light_5
+          - light.man_cave_ceiling_light_6
+          - light.man_cave_ceiling_light_7
+          - light.man_cave_under_sofa_light
+          - light.man_cave_tv_unit_1
+
+Man_Cave_Switches:
+    name: Man Cave Switches
+    entities:
+        - switch.man_cave_console_lights
+
+dining:
+    name: Dining
+    icon: mdi:silverware-variant
+    entities:
+      - group.kitchen_lights
+      - group.dining_room_Lights
+      - media_player.dining_room_speaker
+
+Internet:
+  - sensor.speedtest_download
+  - sensor.speedtest_upload
+  - sensor.speedtest_ping
+  - sensor.uptime
+
+Man_Cave_Room:
+    name: Man Cave
+    icon: mdi:google-controller
+    entities:
+        - group.man_cave_lights
+        - group.man_cave_switches
+
+Bathroom_Lights:
+    name: Bathroom Lights
+    entities:
+        - light.bathroom_1
+        - light.bathroom_2
+        - light.bathroom_3
+        - light.bathroom_4        
+
+Kitchen_Lights:
+    name: Kitchen Lights
+    entities:
+        - light.kitchen_light_1
+        - light.kitchen_light_2
+        - light.kitchen_3
+
+Dining_Room_Lights:
+    name: Dining Room Lights
+    entities:
+        - light.hue_dining_room_1
+        - light.hue_dining_room_2
+        - light.hue_dining_room_3a
+
+Utility_Room_Lights:
+    name: Utility Room Lights
+        - light.hue_utility
+       
+
+Thermostat:
+    entities:
+        - sensor.heating_thermostat_temperature
+
+Humidity:
+    entities:
+       - sensor.heating_thermostat_humidity
+       - sensor.living_room_humidity
+       - sensor.man_cave_humidity
+       - sensor.small_bedroom_humidity
+       - sensor.bedroom_humidity
+       - sensor.living_room_humidity
+
+#Automation On Demand:
+   # entities:
+      # - group.trash_automation
+
+Trash Status:
+    name: Trash Status
+    entities:
+        - sensor.trash_day
+        - sensor.recycle_day
+        - input_boolean.trash_reminders
+
+nest_thermostat:
+    name: Nest Thermostat
+    entities:
+        - binary_sensor.heating_thermostat_online
+        - climate.heating
+        - sensor.heating_thermostat_temperature
+        - sensor.heating_thermostat_target
+        - sensor.heating_thermostat_operation_mode
+        - binary_sensor.heating_thermostat_fan
+        - binary_sensor.heating_thermostat_has_leaf
+        - binary_sensor.heating_thermostat_is_locked
+        - binary_sensor.heating_thermostat_is_using_emergency_heat
+        - sensor.heating_thermostat_humidity
+        - sensor.heating_thermostat_hvac_state
+
+tado:
+    name: Tado
+    entities:
+        - climate.bedroom
+        - climate.downstairs
+        - climate.guest_room
+        - climate.kitchen
+        - climate.living_room
+        - climate.man_cave
+        - climate.nursery
+        - climate.upstairs
+        - sensor.bedroom_tado_mode
+        - sensor.home_tado_bridge_status
+        - sensor.downstairs_tado_mode
+        - sensor.guest_room_tado_mode
+        - sensor.kitchen_tado_mode
+        - sensor.living_room_tado_mode
+        - sensor.man_cave_tado_mode
+        - sensor.upstairs_tado_mode
+        - sensor.nursery_tado_mode
+
+Climate Control:
+    entities:
+      - climate.heating
+
+Alarm:
+    entities:
+      - input_boolean.master_security
+      - input_boolean.enable_security
+      - input_boolean.panic_mode
+      - input_boolean.alarm_tripped
+
+household:
+    entities:
+      - person.chris
+      - person.aimee
+      - group.family
+
+household_lights:
+    entities:
+        - group.household
+        - group.family
+
+household_alarm:
+    entities:
+        - group.household
+        - group.family
+
+household_heating:
+    entities:
+       # - device_tracker.chris_tado
+        - device_tracker.aimee_tado
+        - group.household
+        - group.family
+
+Alarm_SafeList:
+    entities:
+        - group.household
+        - group.family
+
+googlehome_bt_tracker:
+  entities:
+      - device_tracker.19216886250_80b03dc3f653  
+      - device_tracker.19216886250_80b03dc3f653      
+
+person_chris:
+  name: Chris
+  icon: mdi:account-multiple
+  entities:
+      - device_tracker.pixel_8_pro_2
+      - device_tracker.chris_tado
+      - device_tracker.chris_bag
+      - device_tracker.chris_wallet
+      - device_tracker.chris_keys
+      - device_tracker.chris_pixel
+
+person_aimee:
+  name: Aimee
+  icon: mdi:account-multiple
+  entities:
+      - device_tracker.aimees_iphone
+      - device_tracker.aimee_phone_bluetooth
+      - device_tracker.aimee_tado
+      - device_tracker.aimee_iwatch
+      - device_tracker.aimees_iphone_3
+ 
+person_charlotte:
+  name: Charlotte
+  icon: mdi:account-multiple
+  entities:
+      - device_tracker.charlottes_iphone
+      - device_tracker.charlotesiphonelan
+
+monitor_devices:
+    name: Monitored Devices
+    entities:
+        - device_tracker.aimeesaplewatchlan
+        - device_tracker.rubylan
+
+servers:
+    name: Servers
+    entities:
+        - sensor.hpml10v2
+        - device_tracker.freenas
+        - device_tracker.pihole
+
+Scenes:
+    - scene.security
+    - scene.disable_security
+    - scene.livingroom_dim
+    - scene.livingroom_normal
+    - scene.living_room_media_playing
+
+
+Trash Schedule:
+    entities:
+      - sensor.trash_day
+      - sensor.trash_pickup_day
+      - input_select.trash_pickup_day
+
+Recycle Schedule:
+    entities:
+      - sensor.recycle_day
+      - sensor.recycle_pickup_day
+      - sensor.recycle_pickup_week
+      - input_select.recycle_pickup_day
+      - sensor.current_week
+      - input_select.recycle_pickup_week
+
+Date Time:
+    entities:
+      - sensor.time
+      - sensor.date
+      - sensor.time_utc
+      - sensor.internet_time
+      - sensor.rocket_launch_time
+      - sensor.beat
+
+weatherdashboard:
+    name: Weather
+    icon: mdi:weather-partlycloudy
+    entities:
+      - group.thermostat
+      - group.humidity
+      - group.weather
+
+automation:
+    name: Automation
+    icon: mdi:robot
+    entities:
+      - group.all_automations
+      - group.alarm
+
+google_home:
+    name: Google Home Devices
+    icon: mdi:google-home
+    entities:
+        - media_player.hallway_home
+        - media_player.living_room_home
+        - media_player.bedroom_home
+        - media_player.guest_room_home
+        - media_player.kitchen_display
+        - media_player.man_cave_room_display      
+        - media_player.dining_room_speaker
+
+automation_gh_reminders:
+    name: Google Home Reminders
+    icon: mdi:google-home
+    entities:
+        - media_player.man_cave_display
+        - media_player.kitchen_display
+        - media_player.nest_hub_display_living_room
+        - media_player.hallway_home
+        - media_player.kitchen_display
+        - media_player.dining_room_wifi
+
+htpc:
+    name: HTPC
+    icon: mdi:youtube
+    entities:
+      - group.sabnzbd
+      - group.radarr
+      - group.sonarr
+      - group.hassio_pi     
+
+troubleshooting:
+    name: Troubleshooting
+    icon: mdi:none
+    entities:
+     - group.all_devices
+     - group.scenes
+     - group.all_input_boolean
+     - group.all_switches
+     - group.all_lights
+     - group.all_scenes
+     - group.zigbee_group
+
+hassio_pi:
+  name: Pi
+  entities:
+    - sensor.cpu_temp
+  #  - sensor.disk_use_percent_
+    #- sensor.disk_use_home
+    - sensor.memory_use_percent
+    - sensor.ram_use_percent
+    - sensor.last_boot
+    - sensor.processor_use
+    - sensor.network_in_eth0
+    - sensor.network_out_eth0
+    - sensor.load_1m
+    - sensor.load_5m
+    - sensor.load_15m
+
+#switch_power_off:
+# Migrated to switch.power_off_when_away in helpers
+
+    #- switch.bedroom_tv
+    #- switch.dining_room_tv
+    #- switch.living_room_tv
+    #- switch.printer
+    #- switch.kitchen_display
+    #- switch.living_room_gang_l1
+    #- switch.living_room_gang_l2
+    #- switch.living_room_gang_l3
+    #- switch.gang_switch_2_l3
+    #- switch.sonoff_10013a9bdc # Eddie's Dinosaur light
+    #- switch.sonoff_10013e30b4 # Bedroom-Aimee plug
+    #- switch.sonoff_10013e9a29 # Bedroom-Chris plug
+    #- switch.mantle_piece 
+
+#switch_power_on:
+# Migrated to switch.power_on_when_hone in helpers
+   # - switch.kitchen_display
+    #- switch.living_room_gang_l1
+    #- switch.living_room_gang_l2
+    #- switch.living_room_gang_l3
+    #- switch.gang_switch_2_l3
+    #- switch.sonoff_10013a9bdc # Eddie's Dinosaur light
+    #- switch.sonoff_10013e30b4 # Bedroom-Aimee plug
+    #- switch.sonoff_10013e9a29 # Bedroom-Chris plug
+    #- switch.tumble_dryer
+
+lights_power_off:
+    - light.bedroom

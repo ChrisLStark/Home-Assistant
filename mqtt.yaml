@@ -1,0 +1,20 @@
+sensor:
+  - name: "Trash Pickup Day"
+    state_topic: "/home/trashpickupday"
+    value_template: "{{ value }}"
+    qos: 1  
+
+  - name: "Recycle Pickup Day"
+    state_topic: "/home/recyclepickupday"
+    value_template: "{{ value }}"
+    qos: 1
+
+  - name: "Recycle Pickup Week"
+    value_template: "{{ value }}"
+    qos: 1
+    state_topic: "/home/recyclepickupweek"
+
+# Sensor for monitoring the bridge state
+  - name: Bridge state
+    state_topic: "zigbee2mqtt/bridge/state"
+    icon: mdi:router-wireless

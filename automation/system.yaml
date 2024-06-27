@@ -1,0 +1,63 @@
+#################################################################
+## System
+#################################################################
+
+        ##########################################################
+        ## Set theme on HA start
+        ##########################################################
+
+ # - alias: Set theme at startup
+  #  initial_state: 'on'
+   # trigger:
+    # - platform: homeassistant
+     #  event: start
+    #action:
+    #  service: frontend.set_theme
+     # data:
+      #  name: slate
+
+        ##########################################################
+        ## Home Assistant
+        ##########################################################
+        
+  - alias: 'Home Assistant - Update Available Notifications'
+    initial_state: true
+    trigger:
+      - platform: state
+        entity_id: update.home_assistant_core_update
+        from: 'off'
+        to: 'on'
+    action:
+      - service: notify.telegram
+        data_template:
+          message: "Home Assistant {{ state_attr('binary_sensor.updater', 'newest_version') }} is available."
+
+        ##########################################################
+        ##  Pi Hole Control
+        ##########################################################
+
+  - id: toggle Pihole switch
+    alias: "Switch - Toggle Pi-Hole"
+    initial_state: on
+    trigger:
+      - platform: state
+        entity_id: switch.pihole_temp_disable
+        to: 'on'
+    action:
+      - delay: '00:05:01'
+      - service: switch.turn_off
+        entity_id: switch.pihole_temp_disable
+
+        ##########################################################
+        ##  Create All Lights Group on Startup
+        ##########################################################
+
+  - alias: Create All Lights Group on Startup
+    trigger:
+      platform: homeassistant
+      event: start
+    action:
+      - service: python_script.create_all_group
+        data:
+          domain: light
+          group: all_lights

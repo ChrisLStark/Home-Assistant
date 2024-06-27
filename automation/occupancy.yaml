@@ -1,0 +1,416 @@
+#################################################################
+## Occupancy Automations
+#################################################################
+
+        ##########################################################
+        ## Household Away - Master Security = on
+        ##########################################################
+
+    - alias: 'Both away - Max sab speed'
+      initial_state: on
+      trigger:
+        platform: state
+        from: 'home'
+        to: 'not_home'
+        entity_id: group.household
+
+      condition:
+      - condition: state
+        entity_id: input_boolean.master_security
+        state: 'on'
+
+      action:
+         - service: homeassistant.turn_on
+           entity_id: input_boolean.enable_security
+
+         - service: homeassistant.turn_on
+           entity_id: input_boolean.disable_downloads
+
+         - service: notify.telegram
+           data:
+            message: 'No-one home - Alarm has been armed & downloads set to unrestricted'
+
+        ##########################################################
+        ## Household - Master Security = off
+        ##########################################################
+
+    - alias: 'Both away - Max sab speed'
+      initial_state: on
+      trigger:
+        platform: state
+        from: 'home'
+        to: 'not_home'
+        entity_id: group.household
+
+      condition:
+      - condition: state
+        entity_id: input_boolean.master_security
+        state: 'off'
+
+      action:
+         - service: homeassistant.turn_on
+           entity_id: input_boolean.disable_downloads
+
+         - service: notify.telegram
+           data:
+            message: 'No-one home - Alarm not set, Security is disabled. Downloads set to unrestricted'
+
+        ##########################################################
+        ## Household is home - Master Security = on
+        ##########################################################
+
+    - alias: 'Someone is home - Limit sab speed'
+      initial_state: on
+      trigger:
+        platform: state
+        from: 'not_home'
+        to: 'home'
+        entity_id: group.household
+
+      condition:
+        - condition: time
+          after: '08:00:00'
+          before: '23:00:00'
+
+        - condition: state
+          entity_id: input_boolean.master_security
+          state: 'on'
+
+      action:
+        - service: homeassistant.turn_off
+          entity_id: input_boolean.disable_downloads
+
+        - service: homeassistant.turn_off
+          entity_id: input_boolean.enable_security  
+
+        - service: notify.telegram
+          data:
+            message: 'Someone is home - Alarm has been disarmed & downloads have been limited'
+
+        ##########################################################
+        ## Household is home - Master Security = off
+        ##########################################################
+
+    - alias: 'Someone is home - Limit sab speed'
+      initial_state: on
+      trigger:
+        platform: state
+        from: 'not_home'
+        to: 'home'
+        entity_id: group.household
+
+      condition:
+        - condition: time
+          after: '08:00:00'
+          before: '23:00:00'
+
+        - condition: state
+          entity_id: input_boolean.master_security
+          state: 'off'
+
+      action:
+        - service: homeassistant.turn_off
+          entity_id: input_boolean.disable_downloads
+
+        - service: homeassistant.turn_off
+          entity_id: input_boolean.enable_security   
+            
+        - service: notify.telegram
+          data:
+            message: 'Someone is home - Security is disabled, no disarm. Downloads have been limited'
+
+        ##########################################################
+        ## Chris is home at sunset
+        ##########################################################
+
+    - alias: 'Chris is home at sunset - turn on lights'
+      initial_state: off
+      trigger:
+        platform: state
+        from: 'not_home'
+        to: 'home'
+        entity_id: group.person_chris
+
+      condition:
+         condition: state
+         entity_id: sun.sun
+         state: 'below_horizon'
+
+      action:
+        - service: light.turn_on
+          entity_id:
+            - group.interior_lights
+            - light.outside
+            - light.porch
+          data:
+            brightness: 255
+
+        ##########################################################
+        ## Charlotte is home at sunset
+        ##########################################################
+
+    - alias: 'Charlotte is home at sunset - turn on lights'
+      initial_state: off
+      trigger:
+        platform: state
+        from: 'not_home'
+        to: 'home'
+        entity_id: group.person_charlotte
+
+      condition:
+         condition: state
+         entity_id: sun.sun
+         state: 'below_horizon'
+
+      action:
+        - service: light.turn_on
+          entity_id:
+            - group.interior_lights
+            - light.outside
+            - light.porch
+          data:
+            brightness: 255
+
+        ##########################################################
+        ## Aimee is home at sunset
+        ##########################################################
+
+    - alias: 'Aimee is home at sunset - turn on lights'
+      initial_state: off
+      trigger:
+        platform: state
+        from: 'not_home'
+        to: 'home'
+        entity_id: group.person_aimee
+
+      condition:
+         condition: state
+         entity_id: sun.sun
+         state: 'below_horizon'
+
+      action:
+        - service: light.turn_on
+          entity_id: 
+            - group.interior_lights
+            - light.outside
+            - light.porch
+          data:
+            brightness: 255
+
+        ##########################################################
+        # Household Home
+        ##########################################################
+
+    - alias: 'Household Home'
+      initial_state: off
+      trigger:
+        platform: state
+        from: 'not_home'
+        to: 'home'
+        entity_id: group.household_lights
+
+      condition:
+         condition: state
+         entity_id: sun.sun
+         state: 'below_horizon'
+
+      action:
+        - service: light.turn_on
+          entity_id: 
+            - group.interior_lights
+            - light.outside
+            - light.porch          
+          data:
+            brightness: 255  
+
+        ##########################################################
+        # Tado state change to home
+        ##########################################################
+
+    - alias: 'Tado state change to home'
+      initial_state: on
+      trigger:
+        platform: state
+        from: 'not_home'
+        to: 'home'
+        entity_id: sensor.man_cave_tado_mode
+
+      condition:
+         condition: state
+         entity_id: sun.sun
+         state: 'below_horizon'
+
+      action:
+        - service: light.turn_on
+          entity_id: 
+            - group.interior_lights
+            - light.outside
+            - light.porch   
+          data:
+            brightness: 255 
+
+        ##########################################################
+        # Nest detect someone Home
+        ##########################################################
+
+    - alias: 'Nest detect someone Home'
+      initial_state: on
+      trigger:
+        platform: state
+        from: 'not_home'
+        to: 'home'
+        entity_id: sensor.away_mode
+
+      condition:
+         condition: state
+         entity_id: sun.sun
+         state: 'below_horizon'
+
+      action:
+        - service: light.turn_on
+          entity_id: 
+            - group.interior_lights
+            - light.outside
+            - light.porch     
+          data:
+            brightness: 255
+
+        ##########################################################
+        ## Visitors
+        ##########################################################
+
+    - alias: 'Visitors arrive'
+      initial_state: on
+      trigger:
+        platform: state
+        from: 'not_home'
+        to: 'home'
+        entity_id: group.visitors
+
+      action:
+      - service: notify.telegram
+        data:
+         message: 'A visitor has arrived'
+
+        ##########################################################
+        ## Family home - Turn off baby sitter mode
+        ##########################################################
+
+    - alias: 'Family home - Turn off baby sitter mode'
+      initial_state: on
+      trigger:
+        platform: state
+        from: 'not_home'
+        to: 'home'
+        entity_id: group.family
+
+      condition:  
+        condition: state
+        entity_id: input_boolean.baby_sitter
+        state: 'on'
+
+      action:
+        - service: input_boolean.turn_off
+          entity_id: input_boolean.baby_sitter
+
+        - service: notify.telegram
+          data:
+           message: 'Baby sitter turned off'
+
+        ##########################################################
+        ## Tado state change to home
+        ##########################################################
+
+    - alias: 'Tado state change to home'
+      initial_state: on
+      trigger:
+        platform: state
+        from: 'not_home'
+        to: 'home'
+        entity_id: sensor.man_cave_tado_mode
+
+      condition:
+         condition: state
+         entity_id: sun.sun
+         state: 'below_horizon'
+
+      action:
+        - service: light.turn_on
+          entity_id: 
+            - group.interior_lights
+            - light.outside
+            - light.porch   
+          data:
+            brightness: 255 
+
+        - service: notify.telegram
+          data:
+            message: 'Tado changed to home'
+
+       ##########################################################
+        # Household Away Light
+        ##########################################################
+
+    - alias: 'Household Away Lights'
+      initial_state: on
+      trigger:
+        platform: state
+        from: 'home'
+        to: 'not_home'
+        entity_id: group.household_lights
+
+      condition:
+         condition: state
+         entity_id: sun.sun
+         state: 'below_horizon'
+
+      action:
+        - service: light.turn_off
+          entity_id:  all
+
+        - service: homeassistant.turn_off
+          entity_id: switch.mantle_piece
+
+       # - service: homeassistant.turn_off
+       #   entity_id: switch.twig_left
+
+       # - service: homeassistant.turn_off
+       #   entity_id: switch.twig_right
+
+       ##########################################################
+        # Household Away - Turn off devices
+       ##########################################################
+    
+    - alias: 'Household Away - Turn off devices'
+      initial_state: off
+      trigger:
+        platform: state
+        from: 'home'
+        to: 'not_home'
+        entity_id: group.household
+
+      action:
+        - service: homeassistant.turn_off
+          entity_id:
+            - switch.dining_room_tv
+            - switch.bedroom_tv
+            - switch.kitchen_display
+            - switch.gang_switch_2_l3
+            - switch.living_room_tv
+
+       ##########################################################
+        # Household Home - Turn on devices
+       ##########################################################
+    
+    - alias: 'Household Home - Turn off devices'
+      initial_state: off
+      trigger:
+        platform: state
+        from: 'not_home'
+        to: 'home'
+        entity_id: group.household
+
+      action:
+        - service: homeassistant.turn_on
+          entity_id:
+            - switch.kitchen_display

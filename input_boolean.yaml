@@ -1,0 +1,119 @@
+##############################################################
+## Input Boolean  ###
+##############################################################
+
+  #stream_camera_to_chromecast_livingroom:
+  #  #name: Stream Camera to Living room
+
+  #master_security:
+  #  #name: Master Security
+  #  #initial: on
+  #  #icon: mdi:shield-outline
+
+  #climate_automations:
+  #  #name: Climate Automations
+  #  #initial: on
+  #  #icon: mdi:heating
+
+  #boiler_service:
+  #  #name: Boiler Service
+  #  #initial: off
+  #  #icon: mdi:heating
+
+  #sabnzbdwarning:
+  #  #name: sabnzbd Warning
+
+  #enable_security:
+  #  #name: Alarm
+  #  #icon: mdi:shield-outline
+
+  #disable_occupancy:
+  #  #name: Occupancy Automations
+  #  #icon: mdi:eye-off
+
+  #baby_sitter:
+  #  #name: Baby Sitter
+  #  #icon: mdi:eye-off
+
+  #disable_doorbell:
+  #  #name: Doorbell Automations
+  #  #icon: mdi:bell-off
+
+  #panic_mode:
+  #  #name: Panic Mode
+  #  #initial: off
+  #  #icon: mdi:shield-outline
+
+  #alarm_tripped:
+  #  #name: Alarm Tripped
+  #  #icon: mdi:shield-outline
+
+  #disable_intruder:
+  #  #name: Intruder Detected
+
+  #disable_downloads:
+  #  #name: Disable Downloads
+
+  #boost_heating:
+  #  #initial: on
+  #  #name: Boost Heating
+
+  #heating:
+  #  #initial: on
+  #  #name: Heating
+
+  #trash_reminders:
+  #  #name: Trash Reminders
+
+  #light_automations:
+  #  #initial: on
+  #  #name: Light Automations
+  #  #icon: mdi:light
+
+# Input boolean for enabling/disabling joining
+  #zigbee_permit_join:
+  #  #name: Allow devices to join
+  #  #initial: off
+  #  #icon: mdi:cellphone-wireless
+
+  #turn_on_all_lights:
+  #  #name: Turn on all lights
+
+  #party_mode:
+  #  #name: Party Mode
+
+  #holiday_mode:
+  #  #name: Holiday Mode  # 
+  #  #icon: mdi:holiday
+
+  #on_call:
+  #  #name: Call
+  #  #icon: mdi:phone
+
+  #aircon:
+  #  #name: Aircon
+  #  #icon: mdi:fan
+
+  #heat_bathroom:
+  #  #name: Heat Bathroom
+  #  #icon: mdi:bathtub-outline
+
+  #work_mode:
+  #  #name: Work mode
+  #  #icon: mdi:book-education
+
+  #event_mode:
+  #  #name: Event mode
+  #  #icon: mdi:calendar
+
+  #man_cave_entertainment:
+  #  #name: Man Cave Entertainment
+  #  #icon: mdi:control
+
+  #chris_wfh:
+  #  #name: Chris WFH
+  #  #icon: mdi:control
+
+  #christmas_tree:
+  #  #name: Chrismas Tree
+  #  #icon: mdi:control

@@ -1,0 +1,46 @@
+#  - platform: huesensor
+ #   track_new_devices: false
+
+  #- platform: tile
+  #  username: !secret tile_user
+  #  password: !secret tile_password   
+
+  #- platform: bluetooth_tracker
+   # track_new_devices: false
+    #interval_seconds: 1
+    #consider_home: 300
+    
+  #- platform: ping
+    #track_new_devices: true
+   #interval_seconds: 5
+    #consider_home: 300
+    #scan_interval: 1
+    #hosts:
+      #aimee_phone_ping: 192.168.86.61
+    #  chris_phone_ping: 192.168.86.37
+     # keith_phone_ping: 192.168.86.54
+     # bert_phone_ping: 192.168.86.65
+      #starky_pc: 192.168.86.34
+
+  #- platform: nmap_tracker
+   # track_new_devices: true
+    #scan_options: " --privileged -sP "
+    #hosts:
+    #  - 192.168.86.0-40
+    #home_interval: 1
+    #consider_home: 300
+    #interval_seconds: 5
+
+  #- platform: nmap_tracker
+   # track_new_devices: true
+    #scan_options: " --privileged -sP "
+    #hosts:
+     # - 192.168.86.41-255
+      #- 192.168.84.0/24
+    #consider_home: 300
+   # interval_seconds: 360
+
+ # - platform: tado
+  #  username: !secret tado_user
+   # password: !secret tado_password
+   # home_id: !secret tado_home_id

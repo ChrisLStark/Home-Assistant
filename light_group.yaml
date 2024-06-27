@@ -1,0 +1,127 @@
+#################################################################
+## Light Group
+#################################################################
+
+    #- platform: group
+    #  name: Interior
+    #  entities:
+    #    #  - light.hue_downstairs_hallway_2
+    #    #  - light.hallway
+    #    #  - light.upstairs_hallway
+    #    #  - light.bottom_man_cave
+
+    #- platform: group
+    #  name: Exterior
+    #  entities:
+    #    #  - light.porch
+    #    #  - light.outside
+
+    #- platform: group
+    #  name: Hue lights
+    #  entities:
+    #    #  - light.hue_downstairs_hallway_2
+    #    #  - light.hallway
+    #    #  - light.upstairs_hallway
+    #    #  - light.bottom_man_cave
+
+    #- platform: group
+    #  name: Hue Lights Exterior
+    #  entities:
+    #    #  - light.porch
+    #    #  - light.outside
+
+    #- platform: group
+    #  name: Man Cave
+    #  entities:
+    #    #  #- light.hue_man_cave
+    #    #  #- light.man_cave_console_l
+    #    #  #- light.man_cave_console_r
+    #    #  #- light.man_cave_desk_strip
+    #    #  - light.man_cave_ceiling_light_1
+    #    #  - light.man_cave_ceiling_light_2
+    #    #  - light.man_cave_ceiling_light_3
+    #    #  - light.man_cave_ceiling_light_4
+    #    #  - light.man_cave_ceiling_light_5
+    #    #  - light.man_cave_ceiling_light_6
+    #    #  - light.man_cave_ceiling_light_7
+    #    #  #- light.man_cave_under_sofa_light
+    #    #  #- light.man_cave_tv_light_r
+    #    #  #- light.man_cave_tv_light_l
+    #    #  #- light.man_cave_desk_light_l
+    #    #  #- light.man_cave_desk_light_r
+    #    #  #- light.hue_man_cave_tv_unit
+    #    #  #- light.man_cave_console_unit
+
+    #- platform: group
+    #  name: Man Cave Gaming
+    #  entities:
+    #    #  - light.man_cave_under_sofa_light
+    #    #  - light.man_cave_tv_light_r
+    #    #  - light.man_cave_tv_light_l
+    #    #  - light.hue_man_cave_tv_unit
+    #    #  - light.man_cave_console_unit
+    #    #  - light.man_cave_console_l
+    #    #  - light.man_cave_console_r
+
+    #- platform: group
+    #  name: Living Room
+    #  entities:
+    #    #  - light.living_ceiling_light_1
+    #    #  - light.living_ceiling_light_2
+    #    #  - light.living_ceiling_light_3
+    #    #  - light.living_wall_light_1
+    #    #  - light.living_wall_light_2
+
+    #- platform: group
+    #  name: Living Room Wall
+    #  entities:
+    #    #  - light.living_wall_light_1
+    #    #  - light.living_wall_light_2
+
+    #- platform: group
+    #  name: Living Room Ceiling
+    #  entities:
+    #    #  - light.living_ceiling_light_1
+    #    #  - light.living_ceiling_light_2
+    #    #  - light.living_ceiling_light_3
+
+    #- platform: group
+    #  name: Dining Room
+    #  entities:
+    #    #  - light.hue_dining_room_1
+    #    #  - light.hue_dining_room_2
+    #    #  - light.hue_dining_room_3    # 
+
+    #- platform: group
+    #  name: Kitchen
+    #  entities:
+    #    #- light.kitchen_light_1
+    #    #- light.kitchen_light_2
+    #    #- light.kitchen_light_3
+
+    #- platform: group   
+    #  name: Bathroom
+    #  entities:
+    #    #- light.bathroom_1
+    #    #- light.bathroom_2
+    #    #- light.bathroom_3
+    #    #- light.bathroom_4
+
+    #- platform: group   
+    #  name: kitchen-dining
+    #  entities:
+    #    #- light.kitchen_light_1
+    #    #- light.kitchen_light_2
+    #    #- light.kitchen_light_3
+    #    #- light.hue_dining_room_1
+    #    #- light.hue_dining_room_2
+    #    #- light.hue_dining_room_3
+    #    #- light.hue_utility
+
+    #- platform: group   
+    #  name: dining-utility
+    #  entities:
+    #    #- light.hue_dining_room_1
+    #    #- light.hue_dining_room_2
+    #    #- light.hue_dining_room_3
+    #    #- light.hue_utility

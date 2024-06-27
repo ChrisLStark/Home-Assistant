@@ -1,0 +1,177 @@
+###############################################################################
+#  Telegram Info
+###############################################################################
+
+
+        ##########################################################
+        ## Test
+        ##########################################################
+
+         - alias: 'Telegram test'
+           initial_state: true
+           trigger:
+             platform: event
+             event_type: telegram_command
+             event_data:
+               command: '/test'
+
+           action:
+             - service: notify.telegram
+               data:
+                 message: ' What shall we do today? '
+                 data:
+                     inline_keyboard:
+                        - "Gimme Pizza:/gimmepizza"
+
+        ##########################################################
+        ## Start
+        ##########################################################
+
+         - alias: 'Telegram start'
+           initial_state: true
+           trigger:
+             platform: event
+             event_type: telegram_command
+             event_data:
+               command: '/start'
+
+           action:
+             - service: notify.telegram
+               data_template:
+                 title: 'Welcome to Automata'
+                 message: >
+                    What shall we do today?
+                 data:
+                   keyboard:
+                     - '/trash_left, /lights_off, /status, /lights, /birthday'
+                     - '/master_security_on, /master_security_off, /alarm_on, /alarm_off'
+                     - '/baby_sitter_on, /baby_sitter_off'
+
+        ##########################################################
+        ## Status
+        ##########################################################
+
+         - alias: 'Status'
+           initial_state: true
+           trigger:
+             platform: event
+             event_type: telegram_command
+             event_data:
+               command: '/status'
+
+           action:
+           - service: notify.telegram
+             data_template:
+               message: >
+                 Household status:
+
+                    {% for entity_id in states.group.household.attributes.entity_id %}{% set parts = entity_id.split('.') -%}  {{- states[parts[0]][parts[1]].name }} - {{ states[parts[0]][parts[1]].state }}
+                    {% endfor %}
+                 Security is {{ states('input_boolean.master_security') }} and the alarm is {{ states('input_boolean.enable_security') }}.
+
+
+                 Family:
+
+                    {% for entity_id in states.group.family.attributes.entity_id %}{% set parts = entity_id.split('.') -%} {{- states[parts[0]][parts[1]].name }} - {{ states[parts[0]][parts[1]].state }}
+                    {% endfor %}
+
+                 Door status:
+
+                    {% for entity_id in states.group.doors.attributes.entity_id %}{% set parts = entity_id.split('.') -%}  {{- states[parts[0]][parts[1]].name }} - {{ states[parts[0]][parts[1]].state }}
+                    {% endfor %}
+                 Temperatures:
+
+                    {% for entity_id in states.group.temperatures.attributes.entity_id %}{% set parts = entity_id.split('.') -%}  {{- states[parts[0]][parts[1]].name }} - {{ states[parts[0]][parts[1]].state }}
+                    {% endfor %}
+        ##########################################################
+        ## Lights
+        ##########################################################
+
+         - alias: 'Lights - on'
+           initial_state: true
+           trigger:
+             platform: event
+             event_type: telegram_command
+             event_data:
+               command: '/lights'
+
+           action:
+          # - service: python_script.notify_lights_on
+           - service: notify.telegram
+             data_template:
+               message: >
+                 The following lights are on:
+                  {% set domain = 'light' %}
+                  {% set state = 'on' %}
+                  {{ states[domain] | selectattr('state','eq', state) | map(attribute='entity_id') | list | join(', ') }}
+
+        ##########################################################
+        ## Help - List commands
+        ##########################################################
+
+         - alias: 'Telegram - Help'
+           initial_state: true
+           trigger:
+             platform: event
+             event_type: telegram_command
+             event_data:
+               command: '/commands'
+
+           action:
+           - service: notify.telegram
+             data:
+               message: 'The following commnds are available: .lights - Lists what lists are on .trash_reset - acknowledges trask'
+
+        #################################
+        #
+        #   Boot up Stuff
+        #
+        #################################
+
+         - alias: On Startup
+           initial_state: true
+           trigger:
+             platform: homeassistant
+             event: start
+           action:
+           - service: notify.telegram_chris
+             data:
+               message: "Home Assistant has (re)started at {{ states('sensor.time') }}"
+
+        ##########################################################
+        ## Temperatures
+        ##########################################################
+
+         - alias: 'Temperatures'
+           initial_state: true
+           trigger:
+             platform: event
+             event_type: telegram_command
+             event_data:
+               command: '/temp'
+
+           action:
+           - service: notify.telegram
+             data_template:
+               message: >
+                 Temperatures:
+
+                    {% for entity_id in states.group.temperatures.attributes.entity_id %}{% set parts = entity_id.split('.') -%}  {{- states[parts[0]][parts[1]].name }} - {{ states[parts[0]][parts[1]].state }}
+                    {% endfor %}
+
+        ##########################################################
+        ## Birthday
+        ##########################################################
+
+         - alias: 'Birthday'
+           initial_state: true
+           trigger:
+             platform: event
+             event_type: telegram_command
+             event_data:
+               command: '/birthday'
+
+           action:
+           - service: notify.telegram
+             data:
+              message: 'The next birthday is: {{states.calendar.contacts.attributes.message}} on {{states.calendar.contacts.attributes.start_time}}'

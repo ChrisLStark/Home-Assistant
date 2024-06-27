@@ -1,0 +1,99 @@
+- id: '1645207829269'
+  alias: Aqara Magic Cube Zigbee2MQTT - 2022-02-15.1
+  description: ''
+  use_blueprint:
+    path: SirGoodenough/Zigbee2MQTT - Xiaomi Cube Controller.yaml
+    input:
+      remote: sensor.aqara_cube_action
+      slide_face_0:
+      - device_id: ''
+        domain: ''
+        entity_id: ''
+      shake:
+      - type: turn_off
+        device_id: 442e955030f742af3f7bc01535a340ee
+        entity_id: light.man_cave_desk_strip
+        domain: light
+- id: '1652465805318'
+  alias: Eddies Lights
+  description: ''
+  use_blueprint:
+    path: SirGoodenough/Zigbee2MQTT - Xiaomi Cube Controller.yaml
+    input:
+      remote: sensor.aqara_cube_action
+      flipped90_face_0:
+      - service: scene.turn_on
+        target:
+          entity_id: scene.guest_room_arctic_aurora
+        metadata: {}
+      flipped180_face_0:
+      - service: scene.turn_on
+        target:
+          entity_id: scene.nursery_savanna_sunset
+        metadata: {}
+      flipped180_face_1:
+      - service: scene.turn_on
+        target:
+          entity_id: scene.guest_room_bright
+        metadata: {}
+      flipped90_face_1:
+      - service: scene.turn_on
+        target:
+          entity_id: scene.nursery_energize
+        metadata: {}
+      - service: scene.turn_on
+        target:
+          entity_id: scene.guest_room_energize
+        metadata: {}
+      flipped90_face_2: []
+      flipped180_face_2: []
+      flipped180_face_3:
+      - service: scene.turn_on
+        target:
+          entity_id: scene.guest_room_spring_blossom
+        metadata: {}
+      flipped90_face_3: []
+      flipped90_face_4: []
+      flipped180_face_4: []
+      flipped180_face_5: []
+      flipped90_face_5: []
+      shake:
+      - service: light.turn_off
+        data: {}
+        target:
+          entity_id: light.hue_edde_lightstrip_plus_1
+      fall:
+      - service: light.turn_on
+        data: {}
+        target:
+          entity_id: light.hue_edde_lightstrip_plus_1
+- id: '1682191233942'
+  alias: Offline detection for Z2M devices with last_seen
+  description: ''
+  use_blueprint:
+    path: Mr-Groch/offline-notification-for-sensors-with-last_seen.yaml
+    input:
+      actions:
+      - service: notify.telegram_chris
+        data:
+          title: Zigbee devices last seen > 24 hours
+          message: '{% set phrase = ''s are '' if states(''sensor.z2m_last_seen_entities'')|int
+            > 1 else '' is '' %}  The following sensor{{ phrase }}missing: {{ state_attr(''sensor.z2m_last_seen_entities'',
+            ''devices'') | join('', '') }}
+
+            '
+- id: '1686341458761'
+  alias: Offline detection for Z2M devices with last_seen
+  description: ''
+  use_blueprint:
+    path: Mr-Groch/offline-notification-for-sensors-with-last_seen.yaml
+    input:
+      actions:
+      - service: notify.telegram_chris
+        data:
+          title: Missing Devices
+          message: '{% set phrase = ''s are '' if states(''sensor.z2m_last_seen_entities'')|int
+            > 1 else '' is '' %}  The following sensor{{ phrase }}missing: {{ state_attr(''sensor.z2m_last_seen_entities'',
+            ''devices'') | join('', '') }}
+
+            '

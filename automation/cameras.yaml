@@ -1,0 +1,218 @@
+#################################################################
+## Cameras Automations
+#################################################################
+
+        ##########################################################
+        ## Garden
+        ##########################################################
+
+    - alias: 'Motion Garden'
+      initial_state: off
+      trigger:
+        platform: state
+        from: 'off'
+        to: 'on'
+        entity_id: binary_sensor.yi_cam_garden_motion
+
+      condition:
+         condition: state
+         entity_id: group.household
+         state: 'not_home'
+
+      action:
+      - service: camera.snapshot
+        entity_id: camera.garden
+        data:
+          filename: /config/camera_snapshot/garden.jpg
+      - delay: '00:00:06'
+      - service: notify.telegram
+        data:
+         message: 'Motion in Garden'
+      - service: notify.telegram
+        data:
+          title: 'Motion in Garden'
+          message: 'Motion in Garden'
+          data:
+            photo:    
+              file: "/config/camera_snapshot/garden.jpg"
+
+        ##########################################################
+        ## Out House
+        ##########################################################
+
+    - alias: 'Motion Out House'
+      initial_state: off
+      trigger:
+        platform: state
+        from: 'off'
+        to: 'on'
+        entity_id: binary_sensor.yi_cam_outhouse_motion
+
+      condition:
+         condition: state
+         entity_id: group.household
+         state: 'not_home'
+
+      action:
+      - service: camera.snapshot
+        entity_id: camera.outhouse
+        data:
+          filename: /config/camera_snapshot/outhouse.jpg
+      - delay: '00:00:06'
+      - service: notify.telegram
+        data:
+         message: 'Motion in outhouse'
+      - service: notify.telegram
+        data:
+          title: 'Motion in outhouse'
+          message: 'Motion in outhouse'
+          data:
+            photo:    
+              file: "/config/camera_snapshot/outhouse.jpg"
+ 
+
+        ##########################################################
+        ## Man Cave
+        ##########################################################
+
+    - alias: 'Motion Man Cave'
+      initial_state: on
+      trigger:
+        platform: state
+        from: 'off'
+        to: 'on'
+        entity_id: binary_sensor.aqara_man_cave_door_contact
+
+      condition:
+         condition: state
+         entity_id: group.household
+         state: 'not_home'
+
+      action:
+      - service: camera.snapshot
+        entity_id: camera.man_cave
+        data:
+          filename: /config/camera_snapshot/mancave.jpg
+      - delay: '00:00:03'
+      
+      - service: notify.telegram
+        data:
+         message: 'Motion in Man Cave'      
+      - service: notify.telegram
+        data:
+          title: 'Motion in Man Cave'
+          message: 'Motion in Man Cave'
+          data:
+            photo:    
+              file: "/config/camera_snapshot/mancave.jpg"
+      - service: camera.snapshot
+        entity_id: camera.man_cave_yi
+        data:
+          filename: /config/camera_snapshot/mancave_2.jpg
+      - delay: '00:00:03'
+      - service: notify.telegram
+        data:
+         message: 'Motion in Man Cave'        
+      - service: notify.telegram
+        data:
+          title: 'Motion in Man Cave'
+          message: 'Motion in Man Cave'
+          data:
+            photo:    
+              file: "/config/camera_snapshot/mancave_2.jpg"
+
+# Stream Camera to Chromecast Kitchen
+    - alias: 'Start Camera Nursery - Chromecast Living Room'
+      trigger: 
+        platform: state
+        entity_id: input_boolean.stream_camera_to_chromecast_livingroom
+        from: 'off'
+        to: 'on'
+      action:
+        - service: media_player.turn_on
+          entity_id: media_player.living_room_tv
+        - delay:
+            seconds: 3
+        - service: camera.play_stream
+          data:
+            entity_id: camera.nursery
+            media_player: media_player.living_room_tv
+
+
+        ##########################################################
+        ## Nursery
+        ##########################################################
+
+  #  - alias: 'Motion Nursery Light On'
+ #    initial_state: on
+ #     trigger:
+  #      platform: state
+   #     from: 'off'
+   #     to: 'on'
+  #      entity_id: binary_sensor.yi_cam_nursery_motion
+
+  #    condition:
+    #     condition: state
+     #    entity_id: group.household
+      #   state: 'home'
+
+    #  action:
+    #    - service: light.turn_on
+    #      data_template:
+     #       brightness_pct: 1
+      #      xy_color: [0.579,0.403]
+       #     entity_id: light.nursery
+
+        ##########################################################
+        ## Nursery
+        ##########################################################
+
+    - alias: 'Motion Nursery Light Off'
+      initial_state: on
+      trigger:
+        platform: state
+        from: 'on'
+        to: 'off'
+        entity_id: binary_sensor.yi_cam_nursery_motion
+        for: "00:10:00"
+
+      condition:
+         condition: state
+         entity_id: group.household
+         state: 'home'
+
+      action:
+        - service: light.turn_off
+          data_template:
+            entity_id: light.nursery
+
+        ##########################################################
+        ## Motion Nursery
+        ##########################################################
+
+    - alias: 'Motion Nursery'
+      initial_state: off
+      trigger:
+        platform: state
+        from: 'off'
+        to: 'on'
+        entity_id: binary_sensor.yi_cam_nursery_motion
+
+      action:
+      - service: camera.snapshot
+        entity_id: camera.nursery
+        data:
+          filename: /config/camera_snapshot/nursery.jpg
+      - delay: '00:00:05'
+      - service: notify.telegram
+        data:
+         message: 'Motion in Nursery'        
+      - service: notify.telegram
+        data:
+          title: 'Motion in Nursery'
+          message: 'Motion in Nursery'
+          data:
+            photo:    
+              file: "/config/camera_snapshot/nursery.jpg"
+
+

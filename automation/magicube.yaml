@@ -1,0 +1,20 @@
+#################################################################
+## Magic Cube Test
+#################################################################
+
+alias: Aqara Magic Cube Zigbee2MQTT - 2022-05-05
+description: ''
+use_blueprint:
+  path: SirGoodenough/Zigbee2MQTT - Xiaomi Cube Controller.yaml
+  input:
+    remote: sensor.aqara_cube_action
+    slide_face_0:
+      - service: scene.turn_on
+        target:
+          entity_id: scene.man_cave_savanna_sunset
+        metadata: {}
+    doubletap_face_0:
+      - service: scene.turn_on
+        target:
+          entity_id: scene.man_cave_relax
+        metadata: {}

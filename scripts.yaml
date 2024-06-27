@@ -1,0 +1,23 @@
+#######################
+## Alarm
+#######################
+
+  alarm_flash:
+    alias: 'Alarm Flash'
+    sequence:
+    - service: light.turn_on
+      entity_id:
+        - light.hue_lights
+      data:
+       brightness_pct: 100
+       color_name: "red"
+    - service: light.turn_on
+      entity_id:
+        - light.hue_lights_exterior
+      data:
+       brightness_pct: 100
+    - service: light.turn_on
+      entity_id:
+        - light.hue_lights
+      data:
+       flash: long

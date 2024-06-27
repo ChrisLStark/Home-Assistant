@@ -1,0 +1,92 @@
+#################################################################
+## Customize
+#################################################################
+
+    switch.pihole_temp_disable:
+        friendly_name: Disable for 5 mins
+        icon: mdi:emoticon-dead
+        assumed_state: false
+
+    binary_sensor.philips_hue:
+        decice_class: connectivity
+        friendly_name: Hue Hub
+        icon: mdi:ethernet
+    sensor.speedtest_ping:
+        icon: mdi:speedometer
+    sensor.speedtest_download:
+        icon: mdi:speedometer
+    sensor.speedtest_upload:
+        icon: mdi:speedometer
+    sensor.sabnzbd_status:
+        friendly_name: Status
+    sensor.sabnzbd_speed:
+        friendly_name: Speed
+    sensor.sabnzbd_queue:
+        friendly_name: Queue
+    sensor.sabnzbd_left:
+        friendly_name: Left
+    sensor.sabnzbd_disk:
+        friendly_name: Disk
+    sensor.sabnzbd_disk_free:
+        friendly_name: Free
+    sensor.sabnzdb_queue_count:
+        friendly_name: Count
+    binary_sensor.front_door:
+        friendly_name: Front Door
+        device_class: door
+    binary_sensor.back_door:
+        friendly_name: Back Door
+        device_class: door
+    binary_sensor.man_cave_door:
+        friendly_name: Man Cave Door
+        device_class: door
+    binary_sensor.porch_door:
+        friendly_name: Porch Door
+        device_class: door
+    binary_sensor.man_cave_motion_sensor:
+        friendly_name: Man Cave Motion
+        icon: mdi:run-fast
+
+    group.all_lights:
+      hidden: false
+    group.all_automations:
+      hidden: false
+    group.all_switches:
+      hidden: false
+      control: hidden
+    group.all_devices:
+      hidden: false
+
+    group.date_time:
+      order: 9
+    group.trash_schedule:
+      order: 10
+    group.recycle_schedule:
+      order: 11
+    group.trash_and_recycle_automations:
+      order: 12
+
+    sensor.trash_day:
+      friendly_name: Is it Trash Day today?
+      icon: mdi:delete-variant
+    sensor.recycle_day:
+      friendly_name: Is it Recycle Day today?
+      icon: mdi:recycle
+    sensor.trash_pickup_day:
+      friendly_name: Trash Pickup Day
+      icon: mdi:calendar-today
+      hidden: true
+    sensor.recycle_pickup_day:
+      friendly_name: Recycle Pickup Day
+      icon: mdi:calendar-today
+      hidden: true
+    sensor.recycle_pickup_week:
+      friendly_name: Recycle Pickup Week
+      icon: mdi:calendar-today
+      hidden: true
+    sensor.current_week:
+      friendly_name: Current Week is
+      icon: mdi:calendar-question
+    group.trash_recycle:
+      friendly_name: Trash & Recycle
+      icon: mdi:recycle

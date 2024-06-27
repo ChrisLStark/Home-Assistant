@@ -1,0 +1,24 @@
+#################################################################
+## Switches
+#################################################################
+
+  - platform: wake_on_lan
+    mac: 'E8:39:35:F0:A6:D8'
+    name: “starkpc-wol”
+    host: 192.168.86.6
+    broadcast_address: 192.168.86.255
+
+  - platform: wake_on_lan
+    mac: '18:66:DA:48:2D:EA'
+    name: “optiplex-7040”
+    host: 192.168.86.17
+    broadcast_address: 192.168.86.255
+    turn_off:
+      service: shell_command.turn_off_remote_pc
+    
+  - platform: wake_on_lan
+    mac: '38:F3:AB:6D:3C:56'   
+    name: "work-laptop"
+    host: 192.168.86.236
+    broadcast_address: 192.168.86.255
+    

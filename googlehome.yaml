@@ -1,0 +1,9 @@
+        ##########################################################
+        ## Google Home Detection
+        ##########################################################
+
+  #devices:
+  # Google Mini Hallway
+   # - host: 192.168.86.250
+    #  rssi_threshold: -100
+     # track_alarms: true

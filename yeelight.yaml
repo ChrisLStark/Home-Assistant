@@ -1,0 +1,19 @@
+#################################################################
+## Yeelight
+#################################################################      
+      devices:
+        192.168.86.45:
+          name: Man Cave Console L
+          transition: 1000
+          use_music_mode: True
+          save_on_change: False
+        192.168.86.47:
+          name: Man Cave Console R
+          transition: 1000
+          use_music_mode: True
+          save_on_change: False
+        192.168.86.43:
+          name: Man Cave Desk Light
+          transition: 1000
+          use_music_mode: False
+          save_on_change: False

@@ -1,0 +1,14 @@
+#################################################################
+## Command Line
+#################################################################
+  
+  - sensor:
+      name: CPU Temp
+      command: "/bin/cat /sys/class/thermal/thermal_zone0/temp"
+      unit_of_measurement: "ºC"
+      value_template: '{{ value | multiply(0.001) }}'
+
+  - switch:
+      name: pihole_temp_disable
+      command_on: !secret pi_enable
+      command_off: !secret pi_disable

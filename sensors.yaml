@@ -1,0 +1,550 @@
+#################################################################
+## Sensors
+#################################################################
+  
+ # - platform: season
+
+ # - platform: uptime
+
+  #- platform: garbage_collection
+
+  #- platform: metoffice
+   # api_key: !secret metoffice_api
+   # monitored_conditions:
+   #   - weather
+   #   - temperature
+   #   - feels_like_temperature
+    #  - wind_speed
+    #  - wind_direction
+    #  - wind_gust
+    #  - visibility
+    #  - visibility_distance
+    #  - uv
+    #  - precipitation
+    #  - humidity
+
+#  - platform: moon
+  
+ # - platform: radarr
+  #  host: 192.168.86.6
+   # port: 7878
+    #api_key: !secret radarr_api
+    #monitored_conditions:
+     # - upcoming
+      #- movies
+      #- status
+    #days: 7
+
+  - platform: template
+    sensors:
+      remote_front_room:
+        friendly_name: 'Front Room Remote Sensor'
+        value_template: '{{states.remote.front_room.attributes.current_activity}}' 
+
+#################################################################
+## Temperatures
+#################################################################
+
+  - platform: min_max
+    name: Average House Temp
+    type: mean
+    entity_ids:
+      - sensor.bathroom_sensor_temperature
+      - sensor.dining_room_sensor_temperature
+      - sensor.downstairs_sensor_temperature
+      - sensor.downstairs_toilet_sensor_temperature
+      - sensor.kitchen_sensor_temperature
+      - sensor.upstairs_sensor_temperature
+      - sensor.man_cave_temperature
+      - sensor.living_room_temperature
+      - sensor.bedroom_temperature
+      - sensor.flynns_room_temperature
+      - sensor.kitchen_temperature
+      - sensor.upstairs_temperature
+      - sensor.eddies_room_temperature
+      
+  - platform: min_max
+    name: Average Tado Temp
+    type: mean
+    entity_ids:
+      - sensor.bedroom_temperature
+      - sensor.downstairs_temperature
+      - sensor.eddies_room_temperature
+      - sensor.kitchen_temperature
+      - sensor.living_room_temperature
+      - sensor.man_cave_temperature
+      - sensor.flynns_room_temperature
+      - sensor.upstairs_temperature
+
+  - platform: min_max
+    name: Min Tado Temp
+    type: min
+    entity_ids:
+      - sensor.bedroom_temperature
+      - sensor.downstairs_temperature
+      - sensor.eddies_room_temperature
+      - sensor.kitchen_temperature
+      - sensor.living_room_temperature
+      - sensor.man_cave_temperature
+      - sensor.flynns_room_temperature
+      - sensor.upstairs_temperature
+
+  - platform: min_max
+    name: Target Tado Temp
+    type: max
+    entity_ids:
+      - sensor.bedroom_target_temp
+      - sensor.downstairs_target_temp
+      - sensor.eddies_room_target_temp
+      - sensor.kitchen_target_temp
+      - sensor.living_room_target_temp
+      - sensor.man_cave_target_temp
+      - sensor.flynns_room_target_temp
+      - sensor.upstairs_target_temp
+
+# Nest Heating Status
+
+ # - platform: template
+  #  sensors:
+    #  nest_heating:
+       # friendly_name: "Nest Heating"   
+      #  value_template: "{% if is_state('binary_sensor.home_away', 'off') %}on{% else %}off{% endif %}"
+
+  - platform: template
+    sensors:
+      nest_heating_status:
+        value_template: '{{ states.climate.nest.attributes.hvac_action }}'
+
+
+  - platform: template
+    sensors:
+      bedroom_target_temp:
+        value_template: '{{ states.climate.hk_tado_bedroom.attributes.temperature }}'
+
+  - platform: template
+    sensors:
+      downstairs_target_temp:
+        value_template: '{{ states.climate.hk_tado_downstairs.attributes.temperature }}'
+
+  - platform: template
+    sensors:
+      eddies_room_target_temp:
+        value_template: '{{ states.climate.hk_tado_eddies_room.attributes.temperature }}'
+
+  #- platform: template
+   # sensors:
+    #  kitchen_target_temp:
+     #   value_template: '{{ states.climate.hk_tado_kitchen.attributes.temperature }}'
+
+  - platform: template
+    sensors:
+      living_room_target_temp:
+        value_template: '{{ states.climate.hk_tado_living_room.attributes.temperature }}'
+
+  - platform: template
+    sensors:
+      man_cave_target_temp:
+        value_template: '{{ states.climate.hk_tado_man_cave.attributes.temperature }}'
+
+  - platform: template
+    sensors:
+      flynns_room_target_temp:
+        value_template: '{{ states.climate.hk_tado_flynns_room.attributes.temperature }}'
+
+  - platform: template
+    sensors:
+      upstairs_target_temp:
+        value_template: '{{ states.climate.hk_tado_upstairs.attributes.temperature }}'
+
+  - platform: template
+    sensors:
+      heating_current_temperature:
+        value_template: '{{ states.climate.nest.attributes.current_temperature }}'
+
+  - platform: template
+    sensors:
+      heating_target_temperature:
+        value_template: '{{ states.climate.nest.attributes.temperature }}'
+
+  - platform: template
+    sensors:
+      climate_kitchen_status:
+        value_template: '{{ states.climate.hk_tado_kitchen.state }}'
+
+  - platform: template
+    sensors:
+      climate_downstairs_status:
+        value_template: '{{ states.climate.hk_tado_downstairs.state }}'
+
+
+# Nest away status
+  - platform: template
+    sensors:
+      away_mode:
+        friendly_name: "Nest Location"
+        value_template: "{% if is_state('binary_sensor.home_away', 'off') %}home{% else %}not_home{% endif %}"
+
+  - platform: template
+    sensors:
+     tado_temp_met:
+        value_template: "{% if is_state('sensor.bedroom_target_temp_met', 'true') and is_state('sensor.downstairs_target_temp_met', 'true') and is_state('sensor.eddies_room_target_temp_met', 'true') and is_state('sensor.living_room_target_temp_met', 'true') and is_state('sensor.man_cave_target_temp_met', 'true') and is_state('sensor.upstairs_target_temp_met', 'true')%}true{% else %}false{% endif %}"
+
+  - platform: template
+    sensors:
+      bedroom_target_temp_met:
+        value_template: "{% if is_state_attr('climate.hk_tado_bedroom', 'hvac_action', 'heating')%}false{% else %}true{% endif %}"
+
+  - platform: template
+    sensors:
+      downstairs_target_temp_met:
+        value_template: "{% if is_state_attr('climate.hk_tado_downstairs', 'hvac_action', 'heating')%}false{% else %}true{% endif %}"
+
+  - platform: template
+    sensors:
+      eddies_room_target_temp_met:
+        value_template: "{% if is_state_attr('climate.hk_tado_eddies_room', 'hvac_action', 'heating')%}false{% else %}true{% endif %}"
+
+  #- platform: template
+   # sensors:
+    #  kitchen_target_temp_met:
+     #   value_template: "{% if is_state_attr('climate.hk_tado_kitchen', 'hvac_action', 'heating')%}false{% else %}true{% endif %}"
+
+  - platform: template
+    sensors:
+      living_room_target_temp_met:
+        value_template: "{% if is_state_attr('climate.hk_tado_living_room', 'hvac_action', 'heating')%}false{% else %}true{% endif %}"
+
+  - platform: template
+    sensors:
+      man_cave_target_temp_met:
+        value_template: "{% if is_state_attr('climate.hk_tado_man_cave', 'hvac_action', 'heating')%}false{% else %}true{% endif %}"
+
+  #- platform: template
+  #  sensors:
+   #   flynns_room_target_temp_met:
+    #    value_template: "{% if is_state_attr('climate.hk_tado_flynns_room', 'hvac_action', 'heating')%}false{% else %}true{% endif %}"
+
+  - platform: template
+    sensors:
+      upstairs_target_temp_met:
+        value_template: "{% if is_state_attr('climate.hk_tado_upstairs', 'hvac_action', 'heating')%}false{% else %}true{% endif %}"
+
+
+  - platform: template
+    sensors:
+      bathroom_target_temp_met:
+        value_template: "{% if is_state_attr('climate.hk_tado_bathroom', 'hvac_action', 'heating')%}false{% else %}true{% endif %}"
+
+  - platform: template
+    sensors:
+      proximity_home:
+        friendly_name: "Proximity Direction"
+        value_template: >
+          {% if is_state_attr('proximity.home', 'dir_of_travel', 'towards') or
+          is_state_attr('proximity.home_aimee', 'dir_of_travel', 'towards') %}
+            towards
+          {% else %}
+            {{ state_attr('proximity.home', 'dir_of_travel') }}
+          {% endif %}
+
+  - platform: template
+    sensors:
+      bedroom_hvac_action:
+        friendly_name: "Bedroom HVAC Action"
+        value_template: "{{ state_attr('climate.bedroom', 'hvac_action') }}"
+        
+      bathroom_hvac_action:
+        friendly_name: "Bathroom HVAC Action"
+        value_template: "{{ state_attr('climate.bathroom', 'hvac_action') }}"
+        
+      downstairs_hvac_action:
+        friendly_name: "Downstairs HVAC Action"
+        value_template: "{{ state_attr('climate.downstairs', 'hvac_action') }}"
+        
+      upstairs_hvac_action:
+        friendly_name: "Upstairs HVAC Action"
+        value_template: "{{ state_attr('climate.upstairs', 'hvac_action') }}"
+        
+      eddies_room_hvac_action:
+        friendly_name: "Eddie's Room HVAC Action"
+        value_template: "{{ state_attr('climate.eddies_room', 'hvac_action') }}"
+        
+      #flynns_room_hvac_action:
+       # friendly_name: "Flynn's Room HVAC Action"
+        #value_template: "{{ state_attr('climate.flynns_room', 'hvac_action') }}"
+        
+      #kitchen_hvac_action:
+       # friendly_name: "Kitchen HVAC Action"
+        #value_template: "{{ state_attr('climate.kitchen', 'hvac_action') }}"
+        
+      living_room_hvac_action:
+        friendly_name: "Living Room HVAC Action"
+        value_template: "{{ state_attr('climate.living_room', 'hvac_action') }}"
+        
+      man_cave_hvac_action:
+        friendly_name: "Man Cave HVAC Action"
+        value_template: "{{ state_attr('climate.man_cave', 'hvac_action') }}"
+
+  - platform: template
+    sensors:
+      tado_hvac_action:
+        friendly_name: "Tado HVAC Action"
+        value_template: >
+          {% set all_hvac_actions = [
+            state_attr('climate.bedroom', 'hvac_action'),
+            state_attr('climate.bathroom', 'hvac_action'),
+            state_attr('climate.downstairs', 'hvac_action'),
+            state_attr('climate.upstairs', 'hvac_action'),
+            state_attr('climate.eddies_room', 'hvac_action'),
+            state_attr('climate.living_room', 'hvac_action'),
+            state_attr('climate.man_cave', 'hvac_action')
+          ] %}
+          {% if 'heating' in all_hvac_actions %}
+            heating
+          {% else %}
+            off
+          {% endif %}
+
+  - platform: template
+    sensors:
+      bedroom_hvac_action:
+        friendly_name: "Bedroom HVAC Action"
+        value_template: "{{ state_attr('climate.bedroom', 'hvac_action') }}"
+        
+      bathroom_hvac_action:
+        friendly_name: "Bathroom HVAC Action"
+        value_template: "{{ state_attr('climate.bathroom', 'hvac_action') }}"
+        
+      downstairs_hvac_action:
+        friendly_name: "Downstairs HVAC Action"
+        value_template: "{{ state_attr('climate.downstairs', 'hvac_action') }}"
+        
+      upstairs_hvac_action:
+        friendly_name: "Upstairs HVAC Action"
+        value_template: "{{ state_attr('climate.upstairs', 'hvac_action') }}"
+        
+      eddies_room_hvac_action:
+        friendly_name: "Eddie's Room HVAC Action"
+        value_template: "{{ state_attr('climate.eddies_room', 'hvac_action') }}"
+        
+    #  flynns_room_hvac_action:
+     #   friendly_name: "Flynn's Room HVAC Action"
+      #  value_template: "{{ state_attr('climate.flynns_room', 'hvac_action') }}"
+        
+    #  kitchen_hvac_action:
+     #   friendly_name: "Kitchen HVAC Action"
+      #  value_template: "{{ state_attr('climate.kitchen', 'hvac_action') }}"
+        
+      living_room_hvac_action:
+        friendly_name: "Living Room HVAC Action"
+        value_template: "{{ state_attr('climate.living_room', 'hvac_action') }}"
+        
+      man_cave_hvac_action:
+        friendly_name: "Man Cave HVAC Action"
+        value_template: "{{ state_attr('climate.man_cave', 'hvac_action') }}"
+
+    
+  - platform: template
+    sensors:
+      proximity_home_aimee:
+        value_template: '{{ states.proximity.home_aimee.attributes.dir_of_travel }}'
+        
+  - platform: template
+    sensors:
+      holidays_calendar:
+        friendly_name: 'Holiday'
+        value_template: '{{ states.calendar.holidays_in_the_united_kingdom.attributes.message }}'
+
+  - platform: template
+    sensors:
+       aircon:
+         value_template: >-
+           {% if states.sensor.aircon_current_consumption.state | float(0) > 5 %}on
+           {% else %}off
+           {% endif %}
+
+  - platform: template
+    sensors:
+       tumble_dryer:
+         value_template: >-
+           {% if states.sensor.tumble_dryer_power.state | float(0) >15 %}on
+           {% else %}off
+           {% endif %}
+
+  - platform: template
+    sensors:
+       phone_keys:
+         value_template: >-
+           {% if distance('device_tracker.chris_keys', 'device_tracker.phone_ha')|float < 0.2 and is_state('device_tracker.phone_ha', 'not_home') and is_state('device_tracker.chris_keys', 'not_home') %}Nearby
+           {% elif is_state('device_tracker.phone_ha', 'home') and is_state('device_tracker.keys', 'home') %}Home
+           {% else %}Away
+           {% endif %}
+
+  - platform: template
+    sensors:
+       phone_backpack:
+         value_template: >-
+           {% if distance('device_tracker.chris_backpack', 'device_tracker.phone_ha')|float < 0.2 and is_state('device_tracker.phone_ha', 'not_home') and is_state('device_tracker.chris_backpack', 'not_home') %}Nearby
+           {% elif is_state('device_tracker.phone_ha', 'home') and is_state('device_tracker.chris_backpack', 'home') %}Home
+           {% else %}Away
+           {% endif %}
+
+  - platform: template
+    sensors:
+       phone_wallet:
+         value_template: >-
+           {% if distance('device_tracker.chris_wallet', 'device_tracker.phone_ha')|float < 0.2 and is_state('device_tracker.phone_ha', 'not_home') and is_state('device_tracker.chris_wallet', 'not_home') %}Nearby
+           {% elif is_state('device_tracker.phone_ha', 'home') and is_state('device_tracker.chris_wallet', 'home') %}Home
+           {% else %}Away
+           {% endif %} 
+           
+  - platform: template
+    sensors:
+       man_cave_presence:
+         value_template: >-
+           {% if is_state('media_player.man_cave_tv_lg', 'on') or is_state('binary_sensor.hue_motion_sensor_man_cave', 'on') or is_state('binary_sensor.starky_pc', 'on') or is_state('device_tracker.starky_wifi', 'home') or is_state('media_player.man_cave_display', 'playing') or is_state('binary_sensor.man_cave_back_motion_occupancy', 'on') %}occupied
+           {% else %}not_occupied
+           {% endif %}        
+
+  - platform: template
+    sensors:
+       man_cave_presence_activity:
+         value_template: >-
+           {% if is_state('media_player.man_cave_tv_lg', 'on') or is_state('binary_sensor.starky_pc', 'on') or is_state('device_tracker.starky_wifi', 'home') or is_state('media_player.man_cave_display', 'playing') %}occupied
+           {% else %}not_occupied
+           {% endif %}     
+
+
+
+
+  #- platform: apcupsd
+    #resources:
+      #- apc
+      #- date
+      #- hostname
+      #- version
+      #- upsname
+      #- cable
+      #- driver
+      #- upsmode
+      #- starttime
+      #- model
+      #- status
+      #- linev
+      #- loadpct
+      #- bcharge
+      #- timeleft
+      #- mbattchg
+      #- mintimel
+      #- maxtime
+     # - maxlinev
+    #  - minlinev
+   #   - outputv
+
+#################################################################
+## MISC
+#################################################################
+       
+
+  - platform: template
+    sensors:
+      hpml10v2:
+        value_template: '{% if is_state("device_tracker.hpml10v2", "home") %}Online{% else %}Offline{% endif %}'
+        friendly_name: 'HP ML10v2'
+
+###############################################################################
+#  Sensor Definitions
+###############################################################################
+  - platform: time_date
+    display_options:
+      - time
+      - date
+      - date_time
+      - time_date
+      - time_utc
+
+###############################################################################
+# Sensor to hold info about current week is an odd week or an even week of the year
+###############################################################################
+  - platform: template
+    sensors:
+      current_week:
+        value_template: >-
+          {% set year = states.sensor.date_time.state.split(',')[0].split('-')[0] %}
+          {% set month = states.sensor.date_time.state.split(',')[0].split('-')[1] %}
+          {% set date = states.sensor.date_time.state.split(',')[0].split('-')[2] %}
+          {% set today = strptime(year ~ '-' ~ month ~ '-' ~ date , '%Y-%m-%d') %}
+          {%- if (as_timestamp(today) | timestamp_custom('%U', true) | int ) % 2 == 0 -%}
+            Even Week (Week# {{ as_timestamp(today) | timestamp_custom('%U', true) }})
+          {%- else -%}
+            Odd Week (Week# {{ as_timestamp(today) | timestamp_custom('%U', true) }})
+          {%- endif -%}
+###############################################################################
+# Trash  - Pickup schedule is EVERY week.
+# Set the day to a day before the actual day leaving time for reminders
+###############################################################################
+  - platform: template
+    sensors:
+      trash_day:
+        value_template: >-
+          {% set year = states.sensor.date_time.state.split(',')[0].split('-')[0] %}
+          {% set month = states.sensor.date_time.state.split(',')[0].split('-')[1] %}
+          {% set date = states.sensor.date_time.state.split(',')[0].split('-')[2] %}
+          {% set today = strptime(year ~ '-' ~ month ~ '-' ~ date , '%Y-%m-%d') %}
+          {%- set pickupDay = states.sensor.trash_pickup_day.state | lower -%}      
+          {%- if as_timestamp(today)| timestamp_custom('%A', true) | lower == pickupDay -%}
+            yes
+          {%- else -%}
+            no
+          {%- endif -%}
+###############################################################################
+# Recycle - Pickup schedule is every other week.
+# Set the day to a day before the actual day leaving time for reminders
+###############################################################################
+  - platform: template
+    sensors:
+      recycle_day:
+        value_template: >-
+          {% set year = states.sensor.date_time.state.split(',')[0].split('-')[0] %}
+          {% set month = states.sensor.date_time.state.split(',')[0].split('-')[1] %}
+          {% set date = states.sensor.date_time.state.split(',')[0].split('-')[2] %}
+          {% set today = strptime(year ~ '-' ~ month ~ '-' ~ date , '%Y-%m-%d') %}    
+          {%- set pickupDay = states.sensor.recycle_pickup_day.state | lower -%}
+          {% if states.input_select.recycle_pickup_week.state | lower == "even weeks" %}
+            {%- set evenWeekPickup = "true" %}
+          {% else %}
+            {%- set evenWeekPickup = "false" %}
+          {% endif %}
+          {%- macro day_of_week(timestamp) -%}
+            {{ as_timestamp(timestamp)| timestamp_custom('%A', true) | lower }}
+          {%- endmacro %}      
+          {%- macro week_number_of_year() -%}
+            {{ as_timestamp(today) | timestamp_custom('%U', true) | int }}
+          {%- endmacro %}
+          {%- macro is_it_this_week() -%}
+            {%- if as_timestamp(today) | timestamp_custom('%U', true) | int % 2 == 0 -%}
+              {%- if evenWeekPickup == "true" -%}
+                true
+              {%- else -%}
+                false
+              {%- endif -%}
+            {%- else -%}
+              {%- if evenWeekPickup == "true" -%}
+                false
+              {%- else -%}
+                true
+              {%- endif -%}
+            {%- endif -%}
+          {%- endmacro -%}
+          {%- macro is_it_today() -%}
+          {%- if is_it_this_week() == "true" -%}
+            {%- if day_of_week(today) | lower == pickupDay -%}
+              yes
+            {%- else -%}
+              no
+            {%- endif -%}
+          {%- else -%}
+            no
+          {%- endif -%}
+          {%- endmacro -%}
+          {{- is_it_today() -}}

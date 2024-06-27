@@ -1,0 +1,73 @@
+#################################################################
+## Text Notification Automations
+#################################################################
+
+    #################################################################
+    ## Man Cave Door - Chris Not Home
+    #################################################################
+
+- alias: 'Man Cave Door - Chris Not Home'
+  initial_state: on
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.aqara_man_cave_door_contact
+      to: 'on'
+
+  condition:
+    - condition: state
+      entity_id: person.chris
+      state: 'not_home'
+
+  action:
+    - service: notify.telegram
+      data:
+       message: 'Someone has entered the Man Cave'
+
+    - service: tts.google_say
+      entity_id: media_player.man_cave_display
+      data_template:
+        message: >
+          'You are not the master, leave at once!'
+
+    ##########################################################
+    ## Front door left open
+    ##########################################################
+
+- alias: 'Front door left open > 10'
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.aqara_front_door_contact
+      to: 'on'
+      for: '00:10:00'
+  
+  action:
+    - service: notify.telegram
+      data:
+        message: 'The front door has been left opened for more than 10 minutes'
+
+    ##########################################################
+    ## Man Cave Door Open Event Mode on
+    ##########################################################
+
+- alias: 'Man Cave Door Open Event Mode on'
+  initial_state: true
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.aqara_man_cave_door_contact
+      to: 'on'
+
+  condition:
+    - condition: state
+      entity_id: input_boolean.event_mode
+      state: 'on'  
+  
+  action:
+    - service: notify.telegram
+      data:
+        message: 'Someone has entered the Man Cave'
+
+    - service: notify.mobile_app_pixel_7_pro
+      data:
+        title: Event Mode on - Someone has entered the Man Cave
+        message: Someone has entered the Man Cave.

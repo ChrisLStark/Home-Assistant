@@ -1,0 +1,1094 @@
+#################################################################
+## Thermostat Automations
+#################################################################
+
+  #################################################################
+  ## Thermostat offline
+  #################################################################
+
+    - alias: 'Thermostat offline'
+      initial_state: off
+      trigger:
+        platform: state
+        from: 'on'
+        to: 'off'
+        entity_id: binary_sensor.heating_thermostat_online
+        for: '00:05:00'
+
+      action:
+      - service: notify.telegram
+        data:
+         message: 'Thermostat has been offline for 10 minutes - please check heating'  
+
+        #########################################################
+        ## Heating - Check Heating every minute
+        #########################################################
+
+    #- alias: 'Check Heating'
+     # initial_state: off
+     # trigger:
+      #  - platform: time_pattern
+       #   minutes: "/1"
+
+      #condition:
+      # - condition: state
+       #  entity_id: input_boolean.climate_automations
+        # state: 'on'
+
+      # - condition: state
+       #  entity_id: sensor.tado_temp_met
+        # state: 'false'
+
+       #- condition: state
+       #  entity_id: climate.nest
+        # attribute: hvac_action
+         #state: 'idle'
+
+      #action:
+       #- service: climate.set_preset_mode
+         #data:
+        #   entity_id: climate.nest
+       #    preset_mode: "none"
+
+      # - delay: '00:00:05'
+
+       #- service: climate.set_temperature
+        # entity_id: climate.nest
+        # data_template:
+         #  temperature: '{{ states("sensor.heating_current_temperature") | float + 2 }}'
+        #   hvac_mode: heat
+
+       #- service: homeassistant.turn_on
+       #  entity_id: input_boolean.boost_heating
+
+        #########################################################
+        ## Heating - Boost heating, Tado calling for heat, switch Nest to heating
+        #########################################################
+
+    #- alias: 'Boost heating'
+     # initial_state: off
+
+      #trigger:
+       # platform: state
+        #entity_id: sensor.tado_temp_met
+        #from: 'true'
+        #to: 'false'
+
+      #condition:
+       #- condition: state
+        # entity_id: input_boolean.climate_automations
+         #state: 'on'
+
+      #action:
+       #- service: climate.set_preset_mode
+       #  data:
+        #   entity_id: climate.nest
+         #  preset_mode: "none"
+
+       #- delay: '00:00:05'
+
+       #- service: climate.set_temperature
+        # entity_id: climate.nest
+        # data_template:
+       #    temperature: '{{ states("sensor.heating_current_temperature") | float + 2 }}'
+
+      # - service: homeassistant.turn_on
+         #entity_id: input_boolean.boost_heating
+
+        #########################################################
+        ## Heating - Tado temp met, put Nest into eco mode
+        #########################################################
+
+    - alias: 'Decrease heating'
+      initial_state: off
+
+      trigger:
+        platform: state
+        entity_id: sensor.tado_temp_met
+        from: 'false'
+        to: 'true'
+
+      condition:
+       - condition: state
+         entity_id: input_boolean.climate_automations
+         state: 'on'
+
+      action:
+       - service: climate.set_temperature
+         entity_id: climate.nest
+         data_template:
+            temperature: '{{ states("sensor.heating_current_temperature") | float -2 }}'
+
+       - service: climate.set_preset_mode
+         data:
+           entity_id: climate.nest
+           preset_mode: "eco"
+
+       - service: homeassistant.turn_off
+         entity_id: input_boolean.boost_heating
+
+        #########################################################
+        ## Heating - Check every minute if tado temp met then turn off Nest heating if on
+        #########################################################
+
+    - alias: 'Check Nest - switch off if tado temp met'
+      initial_state: off
+      trigger:
+        - platform: time_pattern
+          minutes: "/1"
+
+      condition:
+       - condition: state
+         entity_id: input_boolean.climate_automations
+         state: 'on'
+
+       - condition: state
+         entity_id: sensor.tado_temp_met
+         state: 'true'
+
+       - condition: state
+         entity_id: input_boolean.boiler_service
+         state: 'off'
+
+       - condition: state
+         entity_id: sensor.nest_heating_status
+         state: 'heating'
+
+       - condition: state
+         entity_id: input_boolean.heat_bathroom
+         state: 'off'
+
+      action:
+       - service: climate.set_temperature
+         entity_id: climate.nest
+         data_template:
+            temperature: '{{ states("sensor.heating_current_temperature") | float -2 }}'
+
+       - service: climate.set_preset_mode
+         data:
+           entity_id: climate.nest
+           preset_mode: "eco"
+
+       - service: homeassistant.turn_off
+         entity_id: input_boolean.boost_heating
+
+        #########################################################
+        ## Heating - Check if min temperature is met when household changes to home
+        #########################################################
+
+    - alias: 'Check heating min temp when arrive home'
+      initial_state: off      
+      trigger:
+        platform: state
+        from: 'not_home'
+        to: 'home'
+        entity_id: group.automation_heating
+
+      condition:
+       - condition: state
+         entity_id: sensor.tado_temp_met
+         state: 'false'    
+
+       - condition: state
+         entity_id: input_boolean.climate_automations
+         state: 'on'
+
+      action:
+      - service: climate.set_preset_mode
+        data:
+          entity_id: climate.nest
+          preset_mode: "none"
+
+      - delay: '00:00:05'
+
+      - service: climate.set_temperature
+        entity_id: climate.nest
+        data_template:
+           temperature: '{{ states("sensor.heating_current_temperature") | float + 2 }}'
+
+      - service: homeassistant.turn_on
+        entity_id: input_boolean.boost_heating
+
+        #########################################################
+        ## Heating - Nest call for heat but Tado Temp met - Turn off
+        #########################################################
+
+    - alias: 'Nest call for heat but Tado Temp met - Turn off'
+      initial_state: off
+      trigger:
+        platform: state
+        entity_id: sensor.nest_heating_status
+        to: 'heating'
+       
+      condition:
+      - condition: state
+        entity_id: sensor.tado_temp_met
+        state: 'true'
+
+      - condition: state
+        entity_id: input_boolean.climate_automations
+        state: 'on'
+
+      - condition: state
+        entity_id: input_boolean.heat_bathroom
+        state: 'off'
+
+      action:
+      - service: climate.set_temperature
+        entity_id: climate.nest
+        data_template:
+          temperature: '{{ states("sensor.heating_current_temperature") | float - 2 }}'
+
+      - service: climate.set_preset_mode
+        data:
+         entity_id: climate.nest
+         preset_mode: "eco"
+         
+      - service: homeassistant.turn_off
+        entity_id: input_boolean.boost_heating
+
+        #########################################################
+        ## Heating > off check Tado temp met
+        #########################################################
+
+   # - alias: 'Heating > off check Tado temp met'
+    #  
+     # trigger:
+      #  platform: state
+       # from: 'heating'
+        #to: 'off'
+        #entity_id: sensor.nest_heating_status
+        #for: "00:10:00"
+
+   #   condition:
+    #  - condition: state
+     #   entity_id: sensor.tado_temp_met
+      #  state: 'false'    
+
+      #- condition: state
+      #  entity_id: input_boolean.climate_automations
+       # state: 'on'
+
+      #action:
+      #- service: climate.set_preset_mode
+       # data:
+        #  entity_id: climate.nest
+         # preset_mode: "none"
+
+      #- service: climate.set_temperature
+       # entity_id: climate.nest
+        #data_template:
+         # temperature: '{{ states("sensor.heating_current_temperature") | float + 2 }}'
+
+      #- service: homeassistant.toggle
+       # entity_id: input_boolean.boost_heating
+
+
+        #########################################################
+        ## Chris WFH 
+        #########################################################
+
+    - alias: 'Heating - Chris WFH turn off heat'
+      initial_state: off
+      
+      trigger:
+        platform: time_pattern
+        minutes: "/1"
+
+      condition:
+      - condition: state
+        entity_id: person.chris
+        state: 'home'   
+
+      - condition: state
+        entity_id: person.aimee
+        state: 'not_home' 
+
+      - condition: state
+        entity_id: group.family
+        state: 'not_home'   
+
+      - condition: state
+        entity_id: input_boolean.climate_automations
+        state: 'on'
+
+      - condition: state
+        entity_id: input_boolean.baby_sitter
+        state: 'off'
+
+      - condition: time
+        after: "08:00:00"
+        before: "16:00:00"
+        weekday:
+          - mon
+          - tue
+          - wed
+          - thu
+          - fri
+
+      action:
+      - service: climate.set_temperature
+        entity_id: 
+          - climate.hk_tado_bedroom
+          - climate.hk_tado_downstairs
+          - climate.hk_tado_downstairs1
+          - climate.hk_tado_guest_room
+          - climate.hk_tado_kitchen
+          - climate.hk_tado_kitchen1
+          - climate.hk_tado_living_room
+          - climate.hk_tado_man_cave
+          - climate.hk_tado_upstairs
+          - climate.hk_tado_nursery   
+        data_template:
+          temperature: 10
+
+      - service: homeassistant.turn_off
+        entity_id: input_boolean.boost_heating
+
+        #########################################################
+        ## Heating - Chris work day finishes
+        #########################################################
+
+    - alias: 'Heating - Chris work day finishes'
+      initial_state: off
+      trigger:
+        platform: time
+        at: "16:01:00"
+
+      condition:
+      - condition: state
+        entity_id: input_boolean.climate_automations
+        state: 'on'
+
+      - condition: state
+        entity_id: person.chris
+        state: 'home'
+
+      - condition: time
+        weekday:
+          - mon
+          - tue
+          - wed
+          - thu
+          - fri
+
+      action:
+      - service: climate.set_preset_mode
+        data:
+          entity_id: climate.nest
+          preset_mode: "none"
+
+      - delay: '00:00:05'
+
+      - service: climate.set_temperature
+        entity_id: climate.nest
+        data_template:
+           temperature: '{{ states("sensor.heating_current_temperature") | float + 2 }}'
+
+      - service: climate.set_hvac_mode
+        entity_id: 
+          - climate.bedroom
+          - climate.downstairs
+          - climate.guest_room
+          - climate.kitchen
+          - climate.living_room
+          - climate.man_cave
+          - climate.nursery
+          - climate.upstairs
+          - climate.bathroom
+        data_template:
+            hvac_mode: 'auto'
+
+      - service: homeassistant.turn_on
+        entity_id: input_boolean.boost_heating
+
+        #########################################################
+        ## Back door open, turn off kitchen heating
+        #########################################################
+
+    - alias: Back door open, turn off kitchen heating
+      initial_state: off
+      trigger:
+        platform: state
+        entity_id: binary_sensor.aqara_back_door_contact
+        from: 'off'
+        to: 'on'
+
+      condition:
+        - condition: state
+          entity_id: input_boolean.climate_automations
+          state: 'on'
+
+        - condition: state
+          entity_id: climate.kitchen
+          state: 'auto'
+
+      action:
+      - service: climate.set_hvac_mode
+        entity_id: 
+          - climate.hk_tado_kitchen
+          - climate.hk_tado_kitchen1
+        data_template:
+            hvac_mode: 'off'
+
+        #########################################################
+        ## Back door closed, turn on Kitchen heating
+        #########################################################
+
+    - alias: Back door closed, turn on heating
+      initial_state: off
+      trigger:
+        platform: state
+        entity_id: binary_sensor.aqara_back_door_contact
+        from: 'on'
+        to: 'off'
+
+      condition:
+        - condition: state
+          entity_id: input_boolean.climate_automations
+          state: 'on'
+
+        - condition: state
+          entity_id: climate.hk_tado_kitchen
+          state: 'off'
+
+      action:
+      - service: climate.set_hvac_mode
+        entity_id: 
+          - climate.kitchen
+        data_template:
+            hvac_mode: 'auto'
+
+        #########################################################
+        ## Heating - Aimee comes home
+        #########################################################
+
+    - alias: 'Heating - Aimee comes home'
+      initial_state: off
+      trigger:
+        platform: state
+        from: 'not_home'
+        to: 'home'
+        entity_id: person.aimee
+
+      condition:
+      - condition: state
+        entity_id: input_boolean.climate_automations
+        state: 'on'
+
+      action:
+      - service: climate.set_preset_mode
+        data:
+          entity_id: climate.nest
+          preset_mode: "none"
+
+      - delay: '00:00:05'
+
+      - service: climate.set_temperature
+        entity_id: climate.nest
+        data_template:
+           temperature: '{{ states("sensor.heating_current_temperature") | float + 2 }}'
+
+      - service: climate.set_hvac_mode
+        entity_id: 
+          - climate.bedroom
+          - climate.downstairs
+          - climate.guest_room
+          - climate.kitchen
+          - climate.living_room
+          - climate.man_cave
+          - climate.nursery
+          - climate.upstairs
+          - climate.bathroom
+        data_template:
+            hvac_mode: 'auto'
+
+      - service: homeassistant.turn_on
+        entity_id: input_boolean.boost_heating
+
+        #########################################################
+        ## Heating - Baby sitter mode on
+        #########################################################
+
+    - alias: 'Heating - Baby sitter mode on'
+      initial_state: off
+      trigger:
+        platform: state
+        from: 'off'
+        to: 'on'
+        entity_id: input_boolean.baby_sitter
+
+      condition:
+      - condition: state
+        entity_id: input_boolean.climate_automations
+        state: 'on'
+
+      - condition: state
+        entity_id: group.family
+        state: 'not_home'   
+
+      action:
+      - service: climate.set_preset_mode
+        data:
+          entity_id: climate.nest
+          preset_mode: "none"
+
+      - delay: '00:00:05'
+
+      - service: climate.set_temperature
+        entity_id: climate.nest
+        data_template:
+           temperature: '{{ states("sensor.heating_current_temperature") | float + 2 }}'
+
+      - service: climate.set_hvac_mode
+        entity_id: 
+          - climate.bedroom
+          - climate.downstairs
+          - climate.guest_room
+          - climate.kitchen
+          - climate.living_room
+          - climate.man_cave
+          - climate.nursery
+          - climate.upstairs
+          - climate.bathroom
+        data_template:
+            hvac_mode: 'auto'
+
+      - service: homeassistant.turn_on
+        entity_id: input_boolean.boost_heating
+
+        #########################################################
+        ## Heating - Turn to auto if Upstairs set to Heat
+        #########################################################
+
+    - alias: 'Turn to auto if Upstairs set to Heat'
+      initial_state: off      
+      trigger:
+        platform: time_pattern
+        minutes: "/1"
+
+      condition:
+      - condition: state
+        entity_id: input_boolean.climate_automations
+        state: 'on'
+
+      - condition: state
+        entity_id: climate.upstairs
+        state: 'heat' #heat instead of auto to determine what state the heating is in
+        
+      - condition: or
+        conditions:
+          - condition: state
+            entity_id: group.family
+            state: 'home'
+            
+          - condition: state
+            entity_id: person.aimee
+            state: 'home'
+        
+      action:
+      - service: climate.set_preset_mode
+        data:
+         entity_id: climate.nest
+         preset_mode: "none"
+
+      - delay: '00:00:05'
+
+      - service: climate.set_temperature
+        entity_id: climate.nest
+        data_template:
+           temperature: '{{ states("sensor.heating_current_temperature") | float + 2 }}'
+
+      - service: climate.set_hvac_mode
+        entity_id: 
+          - climate.bedroom
+          - climate.downstairs
+          - climate.guest_room
+          - climate.kitchen
+          - climate.living_room
+          - climate.man_cave
+          - climate.nursery
+          - climate.upstairs
+          - climate.bathroom
+
+        data_template:
+            hvac_mode: 'auto'
+
+      - service: homeassistant.turn_on
+        entity_id: input_boolean.boost_heating
+
+        #########################################################
+        ## Heating - Man Cave > 25c
+        #########################################################
+
+    - alias: 'Heating - Man Cave > 25c'
+      initial_state: off
+      trigger:
+        platform: numeric_state
+        above: '24'
+        entity_id: sensor.ble_temperature_man_cave_ble
+
+      condition:
+          - condition: state
+            entity_id: person.chris
+            state: 'home'
+
+      action:
+      - service: notify.telegram
+        data:
+          message: 'Man Cave Temperature: {{ states.sensor.ble_temperature_man_cave_ble.state }}'
+
+        #########################################################
+        ## Heating - Man Cave < 25c
+        #########################################################
+
+    - alias: 'Heating - Man Cave < 25c'
+      initial_state: off     
+      trigger:
+        platform: numeric_state
+        below: '25'
+        entity_id: sensor.ble_temperature_man_cave_ble
+
+      condition:
+          - condition: state
+            entity_id: person.chris
+            state: 'home'
+
+      action:
+      - service: notify.telegram
+        data:
+          message: 'Man Cave Temperature: {{ states.sensor.ble_temperature_man_cave_ble.state }}'
+
+        #########################################################
+        ## Back door open 1 minute, turn off heating
+        #########################################################
+
+    - alias: Back door open, turn off heating
+      initial_state: off
+      trigger:
+        platform: state
+        entity_id: binary_sensor.aqara_back_door_contact
+        to: "on"
+        for: "00:01:00"
+
+      condition:
+      - condition: state
+        entity_id: sensor.season
+        state: 'spring'
+
+      - condition: state
+        entity_id: input_boolean.climate_automations
+        state: 'on'
+
+      - condition: state
+        entity_id: climate.kitchen
+        state: 'auto'
+
+      action:
+      - service: climate.set_hvac_mode
+        entity_id: 
+          - climate.hk_tado_bedroom
+          - climate.hk_tado_downstairs
+          - climate.hk_tado_downstairs1
+          - climate.hk_tado_guest_room
+          - climate.hk_tado_kitchen
+          - climate.hk_tado_kitchen1
+          - climate.hk_tado_living_room
+          - climate.hk_tado_nursery
+          - climate.hk_tado_upstairs
+          - climate.hk_tado_bathroom
+        data_template:
+            hvac_mode: 'off'
+
+      - service: climate.set_temperature
+
+        entity_id: climate.nest
+        data_template:
+          temperature: '{{ states("sensor.heating_current_temperature") | float - 2 }}'
+
+      - service: climate.set_preset_mode
+        data:
+         entity_id: climate.nest
+         preset_mode: "eco"
+
+      - service: homeassistant.turn_off
+        entity_id: input_boolean.boost_heating
+
+        #########################################################
+        ## Summer - Turn off heating
+        #########################################################
+
+    - alias: Summer - Turn off heating
+      initial_state: off
+      trigger:
+        platform: time_pattern
+        minutes: "/15"
+
+      condition:
+      - condition: state
+        entity_id: sensor.season
+        state: 'summer'
+
+      - condition: state
+        entity_id: sensor.bathroom_target_temp_met
+        state: 'true'
+
+      - condition: state
+        entity_id: input_boolean.climate_automations
+        state: 'on'
+
+      action:
+      - service: climate.set_hvac_mode
+        entity_id: 
+          - climate.hk_tado_bedroom
+          - climate.hk_tado_downstairs
+          - climate.hk_tado_downstairs1
+          - climate.hk_tado_guest_room
+          - climate.hk_tado_kitchen
+          - climate.hk_tado_kitchen1
+          - climate.hk_tado_living_room
+          - climate.hk_tado_nursery
+          - climate.hk_tado_upstairs
+          - climate.hk_tado_bathroom
+        data_template:
+            hvac_mode: 'off'
+
+      - service: climate.set_temperature
+        entity_id: climate.nest
+        data_template:
+          temperature: '{{ states("sensor.heating_current_temperature") | float - 2 }}'
+
+      - service: climate.set_preset_mode
+        data:
+         entity_id: climate.nest
+         preset_mode: "eco"
+
+      - service: homeassistant.turn_off
+        entity_id: input_boolean.boost_heating
+
+
+        #########################################################
+        ## Season change <> Summer - Turn on heating
+        #########################################################
+
+    - alias: Season change <> Summer 
+      initial_state: off
+      trigger:
+        platform: state
+        entity_id: sensor.season
+        to: "autumn"
+    
+      condition:
+         - condition: state
+           entity_id: input_boolean.climate_automations
+           state: 'on'
+
+      action:
+      - service: climate.set_hvac_mode
+        entity_id: 
+          - climate.bedroom
+          - climate.downstairs
+          - climate.guest_room
+          - climate.kitchen
+          - climate.living_room
+          - climate.nursery
+          - climate.upstairs
+          # climate.bathroom
+        data_template:
+            hvac_mode: 'auto'
+
+      - service: climate.set_temperature
+        entity_id: climate.nest
+        data_template:
+          temperature: '{{ states("sensor.heating_current_temperature") | float + 2 }}'
+
+      - service: climate.set_preset_mode
+        data:
+         entity_id: climate.nest
+         preset_mode: "none"
+
+      - service: hhomeassistant.turn_on
+        entity_id: input_boolean.boost_heating
+
+
+        #########################################################
+        ##  Boiler Service On
+        #########################################################
+
+    - alias: Boiler Service
+      initial_state: off
+      trigger:
+        platform: state
+        entity_id: input_boolean.boiler_service
+        to: "on"
+
+      action:
+      - service: climate.set_hvac_mode
+        entity_id: 
+          - climate.hk_tado_bedroom
+          - climate.hk_tado_downstairs
+          - climate.hk_tado_guest_room
+          - climate.hk_tado_kitchen
+          - climate.hk_tado_living_room
+          - climate.hk_tado_nursery
+          - climate.hk_tado_upstairs
+          - climate.hk_tado_bedroom
+          - climate.hk_tado_man_cave
+          - climate.hk_tado_bathroom
+        data_template:
+            hvac_mode: 'heat'
+
+      - service: climate.set_temperature
+        entity_id: 
+          - climate.hk_tado_bedroom
+          - climate.hk_tado_downstairs
+          - climate.hk_tado_guest_room
+          - climate.hk_tado_kitchen
+          - climate.hk_tado_living_room
+          - climate.hk_tado_nursery
+          - climate.hk_tado_upstairs
+          - climate.hk_tado_bedroom
+          - climate.hk_tado_man_cave
+          - climate.hk_tado_bathroom
+        data_template:
+          temperature: 30
+
+      - service: homeassistant.turn_off
+        entity_id: input_boolean.climate_automations
+
+      - service: climate.set_preset_mode
+        data:
+         entity_id: climate.nest
+         preset_mode: "none"
+
+      - service: climate.set_temperature
+        entity_id: climate.nest
+        data_template:
+          temperature: '30'
+
+      - service: homeassistant.turn_on
+        entity_id: input_boolean.boost_heating
+
+        #########################################################
+        ##  Boiler Service OFF
+        #########################################################
+
+    - alias: Boiler Service OFF
+      initial_state: off
+      trigger:
+        platform: state
+        entity_id: input_boolean.boiler_service
+        to: "off"
+
+      action:
+      - service: climate.set_hvac_mode
+        entity_id: 
+          - climate.bedroom
+          - climate.downstairs
+          - climate.guest_room
+          - climate.kitchen
+          - climate.living_room
+          - climate.nursery
+          - climate.upstairs
+          - climate.bedroom
+          - climate.man_cave
+          - climate.bathroom
+        data_template:
+            hvac_mode: 'auto'
+
+      - service: homeassistant.turn_on
+        entity_id: input_boolean.climate_automations
+
+      - service: climate.set_temperature
+        entity_id: climate.nest
+        data_template:
+          temperature: '{{ states("sensor.heating_current_temperature") | float - 2 }}'
+
+      - service: climate.set_preset_mode
+        data:
+         entity_id: climate.nest
+         preset_mode: "eco"
+
+      - service: homeassistant.turn_off
+        entity_id: input_boolean.boost_heating
+
+        #########################################################
+        ## Tumble Dryer on turn off kitchen heating
+        #########################################################
+
+    - alias: Tumble Dryer on turn off kitchen heating
+      initial_state: off
+      trigger:
+        platform: state
+        entity_id: sensor.tumble_dryer
+        from: 'off'
+        to: 'on'
+
+      condition:
+        - condition: state
+          entity_id: input_boolean.climate_automations
+          state: 'on'
+
+      action:
+      - service: climate.set_hvac_mode
+        entity_id: 
+          - climate.hk_tado_kitchen
+          - climate.hk_tado_kitchen1
+        data_template:
+            hvac_mode: 'off'
+
+        #########################################################
+        ## Tumble Dryer off turn on kitchen heating
+        #########################################################
+
+    - alias: Tumble Dryer on turn off kitchen heating
+      initial_state: off
+      trigger:
+        platform: state
+        entity_id: sensor.tumble_dryer
+        from: 'on'
+        to: 'off'
+
+      condition:
+        - condition: state
+          entity_id: input_boolean.climate_automations
+          state: 'on'
+
+        - condition: state
+          entity_id: climate.hk_tado_kitchen
+          state: 'off'
+
+      action:
+      - service: climate.set_hvac_mode
+        entity_id: 
+          - climate.kitchen
+        data_template:
+            hvac_mode: 'auto'
+
+        #########################################################
+        ## Bathroom heat 06.00 summer to dry towels
+        #########################################################
+
+    - alias: Bathroom heat 06.00
+      initial_state: off
+      trigger:
+        platform: time
+        at: "06:00:00"
+
+      condition:
+        - condition: state
+          entity_id: input_boolean.climate_automations
+          state: 'on'
+
+        - condition: state
+          entity_id: sensor.season
+          state: 'summer'
+
+      action:
+      - service: climate.set_hvac_mode
+        entity_id: 
+          - climate.hk_tado_bathroom
+        data_template:
+            hvac_mode: 'heat'
+
+      - service: climate.set_temperature
+        entity_id:       
+          - climate.hk_tado_bathroom
+        data_template:
+          temperature: 25
+      - service: homeassistant.turn_on
+        entity_id:
+          - input_boolean.heat_bathroom
+
+
+        #########################################################
+        ## Bathroom auto 07.00 summer
+        #########################################################
+
+    - alias: Bathroom heat 06.00
+      initial_state: off
+      trigger:
+        platform: time
+        at: "07:00:00"
+
+      condition:
+        - condition: state
+          entity_id: input_boolean.climate_automations
+          state: 'on'
+
+        - condition: state
+          entity_id: sensor.season
+          state: 'summer'
+
+      action:
+      - service: climate.set_hvac_mode
+        entity_id: 
+          - climate.bathroom
+        data_template:
+            hvac_mode: 'auto'
+      - service: homeassistant.turn_off
+        entity_id:
+          - input_boolean.heat_bathroom
+
+        #########################################################
+        ## Bathroom heat off
+        #########################################################
+
+    - alias: Bathroom heat off
+      initial_state: off
+      trigger:
+        platform: state
+        entity_id: input_boolean.heat_bathroom
+        from: 'on'
+        to: 'off'
+
+      condition:
+        - condition: state
+          entity_id: input_boolean.climate_automations
+          state: 'on'
+          
+      action:
+      - service: climate.set_hvac_mode
+        entity_id: 
+          - climate.bathroom
+        data_template:
+            hvac_mode: 'auto'
+
+        #########################################################
+        ## Bathroom heat on
+        #########################################################
+
+    - alias: Bathroom heat on
+      initial_state: off
+      trigger:
+        platform: state
+        entity_id: input_boolean.heat_bathroom
+        from: 'off'
+        to: 'on'
+
+      condition:
+        - condition: state
+          entity_id: input_boolean.climate_automations
+          state: 'on'
+          
+      action:
+      - service: climate.set_hvac_mode
+        entity_id: 
+          - climate.bathroom
+        data_template:
+            hvac_mode: 'auto'
+
+      - service: climate.set_preset_mode
+        data:
+          entity_id: climate.nest
+          preset_mode: "none"
+
+      - delay: '00:00:01'
+
+      - service: climate.set_temperature
+        entity_id: climate.nest
+        data_template:
+          temperature: '{{ states("sensor.heating_current_temperature") | float + 2 }}'
+
+      - service: homeassistant.turn_on
+        entity_id: input_boolean.boost_heating

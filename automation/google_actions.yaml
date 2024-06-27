@@ -1,0 +1,49 @@
+#################################################################
+## Google Actions
+#################################################################
+
+       ##########################################################
+        ## Reset Google Home Volume
+        ##########################################################
+
+    - alias: 'Reset Goolge Home Volume'
+      initial_state: on
+      trigger:
+        platform: time
+        at: '07:00:00'
+
+      action:
+      - service: media_player.volume_set
+        data_template:
+          entity_id: media_player.man_cave_room_display
+          volume_level: 0.3            
+
+      - service: media_player.volume_set
+        data_template:
+          entity_id: media_player.hallway_home
+          volume_level: 0.3              
+
+      - service: media_player.volume_set
+        data_template:
+          entity_id: media_player.bedroom_home
+          volume_level: 0.4
+
+      - service: media_player.volume_set
+        data_template:
+          entity_id: media_player.kitchen_display
+          volume_level: 0.5    
+          
+      - service: media_player.volume_set
+        data_template:
+          entity_id: media_player.guest_room_home
+          volume_level: 0.4
+
+      - service: media_player.volume_set
+        data_template:
+          entity_id: media_player.dining_room_speaker
+          volume_level: 0.4
+
+      - service: media_player.volume_set
+        data_template:
+          entity_id: media_player.living_room_display
+          volume_level: 0.4

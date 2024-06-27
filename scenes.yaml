@@ -1,0 +1,81 @@
+#################################################################
+## Scenes
+#################################################################
+
+  - name: Security
+    entities:
+        input_boolean.alarm_tripped:
+            state: on
+        light.hue_lights:
+            state: on
+            flash: long
+            brightness: 100
+            xy_color: [0.6531,0.2834]
+        light.hue_lights_exterior:
+            state: on
+            brightness: 100
+
+  - name: Disable Security
+    entities:
+        input_boolean.alarm_tripped:
+            state: off
+        light.hue_lights_exterior:
+            state: off
+
+  - name: Living Room Media playing
+    entities:
+        light.hue_livingroom_lightstrip:
+           state: on
+           brightness: 70
+           xy_color: [0.541,0.386]
+
+        light.living_room_wall:
+           state: on
+           brightness: 20
+           transition: 2
+
+        light.living_room_ceiling:
+          state: off
+
+  - name: Livingroom Dim
+    entities:
+        light.living_room:
+           state: on
+           brightness: 20
+           transition: 2
+
+  - name: Livingroom Normal
+    entities:
+        light.living_room:
+           state: on
+           brightness: 40
+           transition: 2
+
+  - name: Study Mode
+    entities:
+         light.man_cave:
+           state: on
+           brightness: 75
+
+
+  - name: Man Cave Dim
+    entities:
+        light.man_cave:
+           state: off
+           brightness: 5
+           transition: 2
+        light.console:
+           state: on
+           brightness: 5
+           transition: 2
+
+  - name: Man Cave Normal
+    entities:
+        light.man_cave:
+           state: on
+           brightness: 80
+           transition: 2
+        light.console:
+           state: on
+           brightness: 60
+           transition: 2

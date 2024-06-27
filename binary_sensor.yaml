@@ -1,0 +1,12 @@
+#################################################################
+## Binary Sensors
+#################################################################
+
+  #- platform: huesensor
+
+  #- platform: mqtt
+   # state_topic: "yicam_outhouse/motion"
+   # name: "Yi Cam Out House Motion"
+   # payload_on: "motion_start"
+   # payload_off: "motion_stop"
+   # device_class: motion       

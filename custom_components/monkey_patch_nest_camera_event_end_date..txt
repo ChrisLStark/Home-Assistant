@@ -1,0 +1,5 @@
+https://community.home-assistant.io/t/configuration-of-nest-hello-binary-sensors/86315/3
+
+https://community.home-assistant.io/t/configuration-of-nest-hello-binary-sensors/86315/3
+
+https://github.com/snicker/twohunnid_ha/blob/master/custom_components/monkey_patch_nest_camera_event_end_date.py

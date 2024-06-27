@@ -1,0 +1,49 @@
+#################################################################
+## Cloud
+#################################################################        
+        
+        ##########################################################
+        ## Google
+        ##########################################################
+
+     google_actions:
+      filter:
+        include_entities:
+            - sensor.trash_day
+            - sensor.recycle_day
+            - camera.nursery
+            - camera.upstairs
+            - camera.kitchen
+            - camera.downstairs
+            - camera.outhouse
+            - camera.garden
+            - input_boolean.stream_camera_to_chromecast_living_room
+            - light.man_cave
+            - switch.mantle_piece
+           # - switch.twig_left
+            #- switch.twig_right
+            - switch.hallway_lamp
+            #- switch.dining_room_tv
+            - automation.man_cave_entertainment_turn_on
+            - automation.man_cave_entertainment_turn_off
+            - automation.turn_off_christmas_tree_lights
+            - automation.turn_on_christmas_tree_lights
+            - input_boolean.work_mode
+            - input_boolean.christmas_tree
+            - switch.pc
+            - switch.living_room_tv
+        include_domains:
+            - automation
+            - input_boolean
+            - scene
+            - sensor
+            #- switch
+        exclude_domains:
+            - alert
+            - cover
+            - fan
+            - group
+            - lock
+            - light
+            - media_player
+        

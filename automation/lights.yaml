@@ -1,0 +1,351 @@
+#################################################################
+## Lights Automations
+#################################################################
+
+        ##########################################################
+        ## Porch Door - Open
+        ##########################################################
+
+    - alias: Porch Door - Open
+      initial_state: on
+      trigger:
+        platform: state
+        entity_id: binary_sensor.aqara_porch_door_contact
+        from: 'off'
+        to: 'on'
+
+      action:
+        - service: light.turn_on
+          entity_id:
+             - light.porch 
+             - group.interior_lights
+
+        ##########################################################
+        ## Front Door - Open
+        ##########################################################
+
+    - alias: Front Door - Open
+      initial_state: on
+      trigger:
+        platform: state
+        entity_id: binary_sensor.aqara_front_door_contact
+        from: 'off'
+        to: 'on'
+
+      action:
+        - service: light.turn_on
+          entity_id:
+             - light.porch
+
+        ##########################################################
+        ## Front Door - Open & Sunset
+        ##########################################################
+
+    - alias: Front Door - Open & Sunset
+      initial_state: on
+      trigger:
+        platform: state
+        entity_id: binary_sensor.aqara_front_door_contact
+        from: 'off'
+        to: 'on'
+
+      condition:
+        condition: state
+        entity_id: sun.sun
+        state: below_horizon
+
+      action:
+        - service: light.turn_on
+          entity_id:
+             - light.outside
+
+        ##########################################################
+        ## Upstairs motion - Turn on Man Cave Landing & Stair Light
+        ##########################################################
+
+    - alias: 'Upstairs motion - Turn on Man Cave Landing & Stair Light'
+      initial_state: on
+      trigger:
+        - platform: state
+          entity_id: binary_sensor.upstairs_sensor_motion
+          to: 'on'
+
+      condition:
+        condition: and
+        conditions:
+
+          - condition: state
+            entity_id: sun.sun
+            state: below_horizon
+
+          - condition: state
+            entity_id: light.upstairs_hallway
+            state: 'on'
+
+          - condition: state
+            entity_id: input_boolean.on_call
+            state: 'off'
+
+      action:
+        - service: light.turn_on
+          entity_id: light.hue_man_cave_landing
+          data_template:
+            brightness: '{% if now().hour > 18 %}64{% else %}100{% endif %}'
+
+        ##########################################################
+        ## Upstairs motion - Turn off Man Cave Landing
+        ##########################################################
+
+    - alias: 'Upstairs motion - Turn off Man Cave Landing'
+      initial_state: on
+      trigger:
+        - platform: state
+          entity_id: binary_sensor.upstairs_sensor_motion
+          to: 'off'
+          for: '00:01:00'
+
+      condition:
+        - condition: state
+          entity_id: input_boolean.on_call
+          state: 'off'
+
+      action:
+        - service: light.turn_off
+          entity_id:
+            - light.hue_man_cave_landing
+
+        ##########################################################
+        ## No-one home - lights on
+        ##########################################################
+
+    - alias: 'No One Home - Lights on'
+      initial_state: on
+      trigger:
+        platform: state
+        from: 'off'
+        to: 'on'
+        entity_id: group.all_lights
+
+      action:
+        - delay: 00:02:00
+        - condition: template
+          value_template: "{{ is_state('group.household_lights.state', 'not_home') }}"
+        - service: notify.telegram
+          data_template:
+            message: >
+              The following lights are on:
+              {%- for entity_id in states.group.all_lights.attributes.entity_id -%}
+                {% set parts = entity_id.split('.') -%}
+                {%- if states(entity_id) == 'on' %}
+                {%- if loop.first %} {% elif loop.last %} and the {% else %}, the {% endif -%}{{ states[parts[0]][parts[1]].name }}{% endif -%}
+              {%- endfor %}
+
+        ##########################################################
+        ## No-one home - Hue lights on
+        ##########################################################
+
+    - alias: 'No One Home - Hue Lights on'
+      initial_state: on
+      trigger:
+        platform: state
+        from: 'off'
+        to: 'on'
+        entity_id: light.hue_lights
+
+      action:
+        - delay: 00:02:00
+        - condition: template
+          value_template: "{{ is_state('group.household_lights.state', 'not_home') }}"
+        - service: notify.telegram
+          data_template:
+            message: >
+              The following lights are on:
+              {%- for entity_id in states.light.hue_lights.attributes.entity_id -%}
+                {% set parts = entity_id.split('.') -%}
+                {%- if states(entity_id) == 'on' %}
+                {%- if loop.first %} {% elif loop.last %} and the {% else %}, the {% endif -%}{{ states[parts[0]][parts[1]].name }}{% endif -%}
+              {%- endfor %}
+
+        ##########################################################
+        ## Turn off Hallway Lamp at 23:00
+        ##########################################################
+
+    - alias: 'Turn off Hallway Lamp at 23:00'
+      initial_state: off
+      trigger:
+        platform: time
+        at: '23:00:00'
+
+      condition:
+        condition: state
+        entity_id: input_boolean.light_automations
+        state: 'on'
+
+      action:
+       - service: homeassistant.turn_off
+         entity_id: switch.hallway_lamp
+
+        ##########################################################
+        ## Turn on Hallway Lamp at sunset
+        ##########################################################
+
+    - alias: 'Turn on Hallway Lamp at sunset'
+      initial_state: off
+      trigger:
+        platform: sun
+        event: sunset
+        offset: '+00:00:00'       
+
+      condition:
+        - condition: state
+          entity_id: input_boolean.light_automations
+          state: 'on'    
+
+        - condition: state
+          entity_id: group.household_lights
+          state: 'home'
+
+      action:
+       - service: homeassistant.turn_on
+         entity_id: switch.hallway_lamp
+
+        ##########################################################
+        ## Exterior_Doors closed for 10 mins
+        ##########################################################
+
+    - alias: Exterior Doors Closed for 10 mins
+      initial_state: on
+      trigger:
+        platform: state
+        entity_id: group.exterior_doors
+        from: 'on'
+        to: 'off'
+        for:
+          minutes: 3
+
+      condition:
+        condition: state
+        entity_id: input_boolean.light_automations
+        state: 'on'
+
+      action:
+        service: light.turn_off
+        entity_id:
+             - light.porch
+             - light.outside
+
+
+
+        ##########################################################
+        ## Porch on for 5 minutes
+        ##########################################################
+
+    - alias: Porch on for 5 minutes
+      initial_state: on
+      trigger:
+        platform: state
+        entity_id: light.porch
+        from: 'off'
+        to: 'on'
+        for:
+          minutes: 5
+
+      condition:
+        condition: state
+        entity_id: input_boolean.light_automations
+        state: 'on'
+
+      action:
+        service: light.turn_off
+        entity_id:
+             - light.porch
+
+        ##########################################################
+        ## Nursery Bedroom Button Pressed
+        ##########################################################
+ #   - alias: Nursery Single Button Press
+  #    initial_state: on    
+   #   trigger:
+    #    platform: state
+     #   entity_id: sensor.mijia_nursery_wireless_switch_click
+      #  to: 'single'
+
+      #action:
+       # - service_template: >
+        #    {% if is_state('light.nursery', 'on') %}
+         #   light.turn_off
+          #  {% else %}
+           # light.turn_on
+            #{% endif %}
+          #data_template:
+           # entity_id: light.nursery
+
+        ##########################################################
+        ## Nursery Bedroom Double Button Press
+        ##########################################################
+
+
+    #- alias: Nursery Bedroom Double Button Press
+     # initial_state: on    
+      #trigger:
+       # platform: state
+        #entity_id: sensor.mijia_nursery_wireless_switch_click
+        #to: 'double'
+
+   #   action:
+    #    - service: light.turn_on
+     #     data_template:
+      #      brightness_pct: 1
+       #     xy_color: [0.579,0.403]
+#            entity_id: light.nursery
+
+        ##########################################################
+        ## Nursery Bedroom Long Press
+        ##########################################################
+
+
+  #  - alias: Nursery Bedroom Long Button Press
+   #   initial_state: on    
+    #  trigger:
+     #   platform: state
+      #  entity_id: sensor.mijia_nursery_wireless_switch_click
+       # to: 'long'
+
+      #action:
+       # - service: light.turn_on
+        #  data_template:
+         #   brightness_pct: 100
+          #  xy_color: [0.323,0.329]
+           # entity_id: light.nursery
+
+        ##########################################################
+        ## Turn off outside light at sunrise
+        ##########################################################
+
+   # - alias: Turn off outside light at sunrise
+    #  initial_state: on
+     # trigger:
+      #  platform: sun
+       # event: sunrise
+
+      #action:
+       # service: light.turn_off
+        #entity_id:
+         #    - light.outside
+
+        ##########################################################
+        ## Turn on outside light at sunset
+        ##########################################################
+
+#    - alias: Turn on outside light at sunset
+ #     initial_state: on
+  #    trigger:
+   #     platform: sun
+    #    event: sunset
+     #   offset: "+00:30:00"
+
+      #action:
+       # service: light.turn_on
+        #entity_id:
+
+         #    - light.outside

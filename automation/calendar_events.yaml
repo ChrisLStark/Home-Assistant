@@ -1,0 +1,21 @@
+#################################################################
+## Calendar Events
+#################################################################
+
+        ##########################################################
+        ## Birthdays
+        ##########################################################
+
+  #  - alias: 'Birthday notification'
+  #    initial_state: on
+  #    trigger:
+  #      platform: state
+  #      entity_id: calendar.contacts
+  #      from: 'off'
+  #      to: 'on'
+
+    #  action:
+    #   - service: tts.google_say
+    #     entity_id: media_player.man_cave_home
+    #     data_template:
+    #       message: 'The next birthday is: {{states.calendar.contacts.attributes.message}} on {{states.calendar.contacts.attributes.start_time}}'

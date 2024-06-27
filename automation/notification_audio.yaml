@@ -1,0 +1,248 @@
+#################################################################
+## Audio Notification Automations
+#################################################################
+
+        ##########################################################
+        ## Welcome Home Audio Notification - Chris
+        ##########################################################
+
+- alias: 'Chris is home'
+  initial_state: off
+  trigger:
+    platform: state
+    from: 'not_home'
+    to: 'home'
+    entity_id: group.person_chris
+
+  condition:
+    - condition: time
+      after: '08:00:00'
+      before: '22:00:00'
+
+  action:
+    - wait_template: "{{ states.binary_sensor.aqara_porch_door_contact.state == 'on' }}"
+      timeout: 00:05:00
+      continue_on_timeout: 'false'
+    - delay: 00:00:01
+    - service: media_player.volume_set
+      data_template:
+        entity_id: media_player.hallway_home
+        volume_level: 0.5
+    - service: tts.google_say
+      entity_id: media_player.hallway_home
+      data_template:
+        #volume_level: .82
+        message: !include random_welcome/chris.yaml
+
+
+        ##########################################################
+        ## Welcome Home Audio Notification - Aimee
+        ##########################################################
+
+- alias: 'Aimee is home'
+  initial_state: off
+  trigger:
+    platform: state
+    from: 'not_home'
+    to: 'home'
+    entity_id: group.person_aimee
+
+  condition:
+    - condition: time
+      after: '08:00:00'
+      before: '22:00:00'
+
+  action:
+    - wait_template: "{{ states.binary_sensor.aqara_porch_door_contact.state == 'on' }}"
+      timeout: 00:05:00
+      continue_on_timeout: 'false'
+    - delay: 00:00:01
+    - service: media_player.volume_set
+      data_template:
+        entity_id: media_player.hallway_home
+        volume_level: 0.5
+    - service: tts.google_say
+      entity_id: media_player.hallway_home
+      data_template:
+       #volume_level: .82
+       message: !include random_welcome/aimee.yaml
+
+        ##########################################################
+        ## Welcome Home Audio Notification - Keith
+        ##########################################################
+
+#- alias: 'Keith has arrived'
+ # initial_state: on
+ # trigger:
+  #  platform: state
+   # from: 'not_home'
+    #to: 'home'
+    #entity_id: group.person_keith
+
+ # condition:
+  #  - condition: time
+   #   after: '07:00:00'
+    #  before: '22:00:00'
+
+  #action:
+   # - wait_template: "{{ is_state('binary_sensor.aqara_front_door_contact', 'on') or is_state('binary_sensor.aqara_back_door_contact', 'on') }}"
+    #  timeout: 00:03:00
+     # continue_on_timeout: 'false'
+
+    #- delay: 00:00:03
+
+    #- service: media_player.volume_set
+     # data_template:
+      #  entity_id: >
+       #   {% if is_state('binary_sensor.aqara_front_door_contact', 'on') %}
+        #    media_player.hallway_home  
+         # {% else %}
+          #  media_player.dining_room_speaker
+          #{% endif %}
+          #volume_level: 0.5
+
+    #- service: tts.google_say
+     # data_template:
+      #entity_id: >
+       #   {% if is_state('binary_sensor.aqara_front_door_contact', 'on') %}
+        #    media_player.hallway_home
+         #   message: !include random_welcome/keith.yaml
+         # {% else %}
+          #  media_player.dining_room_speaker
+           # message: !include random_welcome/keith.yaml
+          #{% endif %}`
+
+        ##########################################################
+        ## Welcome Home Audio Notification - Charlotte
+        ##########################################################
+
+- alias: 'Charlotte is home'
+  initial_state: on
+  trigger:
+    platform: state
+    from: 'not_home'
+    to: 'home'
+    entity_id: group.person_charlotte
+
+  condition:
+    - condition: time
+      after: '08:00:00'
+      before: '22:00:00'
+
+  action:
+    - wait_template: "{{ states.binary_sensor.aqara_porch_door_contact.state == 'on' }}"
+      timeout: 00:05:00
+      continue_on_timeout: 'false'      
+    - delay: 00:00:01
+    - service: media_player.volume_set
+      data_template:
+        entity_id: media_player.hallway_home
+        volume_level: 0.5
+    - service: tts.google_say
+      entity_id: media_player.hallway_home
+      data_template:
+        ##volume_level: .82
+        message: !include random_welcome/charlotte.yaml
+
+        ##########################################################
+        ## Washing Machine
+        ##########################################################
+
+
+- alias: 'Washing Machine on'
+  initial_state: off
+  trigger:
+    platform: state
+    from: 'vibration'
+    entity_id: sensor.washing_machine_action
+
+  action:    
+    - delay: '00:15:00'
+
+    - condition: template
+      value_template: "{{ not is_state('sensor.washing_machine_action', 'vibration') }}"
+        
+    - service: media_player.volume_set
+      data_template:
+        entity_id: group.google_home
+        volume_level: 0.2
+
+    - service: tts.google_say
+      entity_id: group.google_home
+      data:
+        message: 'The washing machine has finished'
+
+        ##########################################################
+        ## Study mode on
+        ##########################################################
+
+
+- alias: 'Study mode on'
+  initial_state: on
+  trigger:
+    platform: state
+    entity_id: input_boolean.work_mode
+    to: 'on'
+
+  action:    
+    - delay: '00:00:03'
+    - service: media_player.volume_set
+      data_template:
+        entity_id: group.google_home
+        volume_level: 0.3
+
+    - service: tts.google_say
+      entity_id: media_player.dining_room_speaker
+      data:
+        message: 'Work mode on'
+
+        ##########################################################
+        ## Study mode off
+        ##########################################################
+        
+- alias: 'Work mode off'
+  initial_state: on
+  trigger:
+    platform: state
+    entity_id: input_boolean.work_mode
+    to: 'off'
+
+  action:    
+    - delay: '00:00:03'
+    - service: media_player.volume_set
+      data_template:
+        entity_id: group.google_home
+        volume_level: 0.3
+
+    - service: tts.google_say
+      entity_id: media_player.dining_room_speaker
+      data:
+        message: 'Work mode off timer has ended'
+        ##########################################################
+        ## Heating Tamper
+        ##########################################################
+
+#- alias: 'Heating Tamper'
+#  initial_state: on
+ # trigger:
+  #  platform: state
+   # from: 'idle'
+    #to: 'heating'
+    #entity_id: sensor.nest_heating_status
+
+ # condition:
+  #  - condition: state
+   #   entity_id: sensor.tado_temp_met
+    #  state: 'true'    
+
+    #- condition: state
+     # entity_id: group.household
+      #state: 'home'   
+
+  #action:    
+   # - service: tts.google_say
+    #  entity_id: media_player.dining_room_speaker
+     # data:
+      #  message: 'Heating is controlled via the Tado app'
+
+  

@@ -1,0 +1,14 @@
+# Example .gitignore file for your config dir
+*
+!*.yaml
+!*.py
+!*.txt
+!automation/
+!custom_components/
+!custom_components/huesensor
+!.gitignore
+!readme.md
+secrets.yaml
+known_devices.yaml
+google_calendars.yaml
+automation/security.yaml

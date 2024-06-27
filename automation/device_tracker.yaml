@@ -1,0 +1,126 @@
+#################################################################
+## Device Tracker
+#################################################################
+
+        ##########################################################
+        ## Home Assistant
+        ##########################################################
+
+  #  - alias: Notify for new devices
+    #  initial_state: true
+   #   trigger:
+    #    platform: event
+   #     event_type: device_tracker_new_device
+   #   action:
+   #     - service: notify.telegram_chris
+      #    data_template:
+   #         message: >
+        #      New device:
+       #       {{trigger.event.data.host_name}}
+       #       ({{trigger.event.data.entity_id}})
+      #      title: New device
+
+#################################################################
+## https://www.reddit.com/r/homeassistant/comments/a9sj4y/i_successfully_got_room_presence_working_using/
+#################################################################
+
+    # chris is in the living Room using Google Home BT tracking
+    - alias: Chris in Living Room
+      initial_state: 'on'
+      trigger:
+        platform: state
+        entity_id: sensor.livingroom_chris_gh_rssi
+      condition:
+        condition: and
+        conditions:
+        - condition: template
+          value_template: "{{ ( states.sensor.mancave_chris_gh_rssi.state ) > ( states.sensor.livingroom_chris_gh_rssi.state )  }}"
+        - condition: template
+          value_template: "{{ ( states.sensor.bedroom_chris_gh_rssi.state ) > ( states.sensor.livingroom_chris_gh_rssi.state )  }}"
+      action:
+        - delay: '00:00:05'
+        - condition: and
+          conditions:
+          - condition: template
+            value_template: "{{ ( states.sensor.mancave_chris_gh_rssi.state ) > ( states.sensor.livingroom_chris_gh_rssi.state )  }}"
+          - condition: template
+            value_template: "{{ ( states.sensor.bedroom_chris_gh_rssi.state ) > ( states.sensor.livingroom_chris_gh_rssi.state )  }}"
+        - service: input_boolean.turn_on
+          data:
+            entity_id: input_boolean.chris_living_room_presence
+        - service: input_boolean.turn_off
+          data:
+            entity_id: input_boolean.chris_bedroom_presence
+        - service: input_boolean.turn_off
+          data:
+            entity_id: input_boolean.chris_mancave_presence
+        - service: input_select.select_option
+          data:
+            entity_id: input_select.chris_room_location
+            option: Living Room
+
+    # Chris is in the mancave using Google Home BT tracking
+    - alias: Chris in mancave
+      initial_state: 'on'
+      trigger:
+      - platform: state
+        entity_id: sensor.mancave_chris_gh_rssi
+      condition:
+        condition: and
+        conditions:
+        - condition: template
+          value_template: "{{ ( states.sensor.livingroom_chris_gh_rssi.state ) > ( states.sensor.mancave_chris_gh_rssi.state  )  }}"
+        - condition: template
+          value_template: "{{ ( states.sensor.bedroom_chris_gh_rssi.state ) > ( states.sensor.mancave_chris_gh_rssi.state )  }}"
+      action:
+        - delay: '00:00:05'
+        - condition: and
+          conditions:
+          - condition: template
+            value_template: "{{ ( states.sensor.livingroom_chris_gh_rssi.state ) > ( states.sensor.mancave_chris_gh_rssi.state  )  }}"
+          - condition: template
+            value_template: "{{ ( states.sensor.bedroom_chris_gh_rssi.state ) > ( states.sensor.mancave_chris_gh_rssi.state )  }}"
+        - service: input_boolean.turn_off
+          data:
+            entity_id: input_boolean.chris_living_room_presence
+        - service: input_boolean.turn_off
+          data:
+            entity_id: input_boolean.chris_bedroom_presence
+        - service: input_boolean.turn_on
+          data:
+            entity_id: input_boolean.chris_mancave_presence
+        - service: input_select.select_option
+          data:
+            entity_id: input_select.chris_room_location
+            option: mancave
+
+    # Chris is in the bedroom using Google Home BT tracking
+    - alias: chris in Bedroom
+      initial_state: 'on'
+      trigger:
+        platform: state
+        entity_id: sensor.bedroom_chris_gh_rssi
+      condition:
+        condition: and
+        conditions:
+        - condition: template
+          value_template: "{{ ( states.sensor.livingroom_chris_gh_rssi.state ) > ( states.sensor.bedroom_chris_gh_rssi.state )  }}"
+        - condition: template
+          value_template: "{{ ( states.sensor.mancave_chris_gh_rssi.state ) > ( states.sensor.bedroom_chris_gh_rssi.state )  }}"
+      action:
+        - delay: '00:00:05'
+        - condition: and
+          conditions:
+          - condition: template
+            value_template: "{{ ( states.sensor.livingroom_chris_gh_rssi.state ) > ( states.sensor.bedroom_chris_gh_rssi.state )  }}"
+          - condition: template
+            value_template: "{{ ( states.sensor.mancave_chris_gh_rssi.state ) > ( states.sensor.bedroom_chris_gh_rssi.state )  }}"
+        - service: input_boolean.turn_off
+          data:
+            entity_id: input_boolean.chris_living_room_presence
+        - service: input_boolean.turn_on
+          data:
+            entity_id: input_boolean.chris_bedroom_presence
+        - service: input_boolean.turn_off
+          data:
+            entity_id: input_boolean.chris_mancave_presene    

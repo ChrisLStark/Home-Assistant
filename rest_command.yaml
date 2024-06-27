@@ -1,0 +1,17 @@
+#################################################################
+## Rest Commands
+#################################################################
+
+ #   speed_limit_restricted:
+  #    url: !secret speed_limit_restricted_url
+
+   # speed_limit_unlimited:
+    #  url: !secret speed_limit_unlimited_url
+
+    reset_alarm_button:
+      method: POST
+      url: !secret reset_alarm_button_url
+      headers:
+        content-type: application/json
+        password: !secret api_password
+      payload: '{"state": "reset"}'

@@ -1,0 +1,224 @@
+    - alias: 'Turn on Christmas Tree Lights'
+      initial_state: on
+      trigger:
+        platform: time
+        at: '17:00:00'
+
+      condition:
+        - condition: state
+          entity_id: group.automation_lights
+          state: 'home'
+
+        - condition: state
+          entity_id: input_select.season
+          state: 'Christmas'
+
+      action:
+        - service: homeassistant.turn_on
+          entity_id: switch.living_room_gang_l3
+
+    -  alias: 'Turn off Christmas Tree Lights'
+       initial_state: on
+
+       trigger:
+          platform: time
+          at: '22:00:00'
+
+       condition:
+          - condition: state
+            entity_id: group.automation_lights
+            state: 'home'
+
+          - condition: state
+            entity_id: input_select.season
+            state: 'Christmas'
+
+       action:
+          - service: homeassistant.turn_off
+            entity_id: switch.living_room_gang_l3
+
+      ##########################################################
+      ## Turn off switch living_room_gang_l1 at 22.00
+      ##########################################################
+
+    - alias: 'Turn off switch living_room_gang_l1 at 20:00'
+      initial_state: on
+      trigger:
+        platform: time
+        at: '20:00:00'
+      
+      action:
+        - service: homeassistant.turn_off
+          entity_id: switch.living_room_gang_l1
+
+      ##########################################################
+      ## Turn off switch living_room_gang_l2 at 22.00
+      ##########################################################
+
+    - alias: 'Turn off switch living_room_gang_l2 at 20:00'
+      initial_state: on
+      trigger:
+        platform: time
+        at: '20:00:00'
+      
+      action:
+        - service: homeassistant.turn_off
+          entity_id: switch.living_room_gang_l2
+
+      ##########################################################
+      ## Turn on switch.living_room_gang_l1 at 08.00
+      ##########################################################
+
+    - alias: 'Turn off switch living_room_gang_l1 at 08:00'
+      initial_state: on
+      trigger:
+        platform: time
+        at: '08:00:00'
+      
+      action:
+        - service: homeassistant.turn_on
+          entity_id: switch.living_room_gang_l1
+
+      ##########################################################
+      ## Turn on switch.living_room_gang_l2 at 08.00
+      ##########################################################
+
+    - alias: 'Turn off switch living_room_gang_l2 at 08:00'
+      initial_state: on
+      trigger:
+        platform: time
+        at: '08:00:00'
+      
+      action:
+        - service: homeassistant.turn_on
+          entity_id: switch.living_room_gang_l2
+
+        ##########################################################
+        ## Turn on sub
+        ##########################################################
+
+    - alias: 'Sub turn on'
+      initial_state: on
+      trigger:
+       platform: state
+       entity_id: switch.living_room_tv
+       to: 'on'
+
+      action:
+      - service: homeassistant.turn_on
+        entity_id:
+          - switch.living_room_sub
+
+        ##########################################################
+        ## Turn off sub
+        ##########################################################
+
+    - alias: 'Sub turn off'
+      initial_state: on
+      trigger:
+        platform: state
+        entity_id: switch.living_room_tv
+        to: 'off'
+
+      action:
+        - service: homeassistant.turn_off
+          entity_id:
+            - switch.living_room_sub
+
+        ##########################################################
+        ## Power on STARKNAS
+        ##########################################################
+
+    - alias: 'Power on STARKNAS'
+      initial_state: off
+      trigger:
+        platform: time
+        at: '17:00:00'
+
+      condition:
+      - condition: state
+        entity_id: input_boolean.holiday_mode
+        state: 'off'
+
+      action:
+        - service: homeassistant.turn_on
+          entity_id:
+            - switch.starkpc
+
+        ##########################################################
+        ## Power on optiplex-7040
+        ##########################################################
+
+    - alias: 'Power on optiplex-7040'
+      initial_state: off
+      trigger:
+        platform: time
+        at: '17:10:00'
+
+      condition:
+      - condition: state
+        entity_id: input_boolean.holiday_mode
+        state: 'off'
+
+      action:
+        - service: homeassistant.turn_on
+          entity_id:
+            - switch.optiplex_7040
+
+        ##########################################################
+        ## Power on work laptop
+        ##########################################################
+
+    - alias: 'Power on work-laptop'
+      initial_state: on
+      trigger:
+        platform: state
+        entity_id: binary_sensor.aqara_man_cave_door_contact
+        from: 'off'
+        to: 'on'
+
+      action:
+        - service: homeassistant.turn_on
+          entity_id:
+            - switch.work_laptop
+
+        ##########################################################
+        ## Power off optiplex-7040 sun-thu
+        ##########################################################
+
+    - alias: 'Power off optiplex-7040'
+      initial_state: off
+      trigger:
+        platform: time
+        at: '22:00:00'
+
+      condition:
+        - condition: time
+          weekday:
+            - sun
+            - mon
+            - tue
+            - wed
+            - thu
+
+      action:
+        - service: shell_command.turn_off_optiplex_7040
+
+        ##########################################################
+        ## Power off optiplex-7040 sat-sun
+        ##########################################################
+
+    - alias: 'Power off optiplex-7040 - sat-sun'
+      initial_state: off
+      trigger:
+        platform: time
+        at: '01:00:00'
+
+      condition:
+        - condition: time
+          weekday:
+            - sat
+            - sun
+
+      action:
+        - service: shell_command.turn_off_optiplex_7040

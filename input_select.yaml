@@ -1,0 +1,56 @@
+###############################################################################
+#  #UI Elements
+###############################################################################
+
+# Input select for Zigbee2mqtt debug level
+  #zigbee2mqtt_log_level:
+  #  #name: Zigbee2mqtt Log Level
+  #  #options:
+  #  #  #- debug
+  #  #  #- info
+  #  #  #- warn
+  #  #  #- error
+  #  #initial: info
+  #  #icon: mdi:format-list-bulleted
+
+  #trash_pickup_day:
+  #  #name: Current Trash Pickup Day (Opposite to Recycle Week)
+  #  #options:
+  #  # - Monday
+  #  # - Tuesday
+  #  # - Wednesday
+  #  # - Thursday
+  #  # - Friday
+  #  # - Saturday
+  #  # - Sunday
+  #  # - unknown
+  #  #icon: mdi:delete-variant
+
+  #recycle_pickup_day:
+  #  #name: Current Recycle Pickup Day (Every Other Week)
+  #  #options:
+  #  # - Monday
+  #  # - Tuesday
+  #  # - Wednesday
+  #  # - Thursday
+  #  # - Friday
+  #  # - Saturday
+  #  # - Sunday
+  #  # - unknown
+  #  #icon: mdi:recycle
+
+  #recycle_pickup_week:
+  #  #name: Select Recycle Pickup Week based on Current Week above
+  #  #options:
+  #  # - Even Weeks
+  #  # - Odd Weeks
+  #  # - unknown
+  #  #icon: mdi:recycle
+
+  #season:
+  #  #name: Which season is it?
+  #  #options:
+  #  #  #- No season
+  #  #  #- Easter
+  #  #  #- Christmas
+  #  #  #- Halloween

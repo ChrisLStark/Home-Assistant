@@ -1,0 +1,137 @@
+###############################################################################
+#  Telegram Actions
+###############################################################################
+
+        ##########################################################
+        ## Disarm Alarm
+        ##########################################################
+
+         - alias: 'Disarm Alarm'
+           initial_state: true
+           trigger:
+             platform: event
+             event_type: telegram_command
+             event_data:
+               command: '/alarm_off'
+
+           action:
+           - service: homeassistant.turn_off
+             entity_id: input_boolean.enable_security
+           - service: notify.telegram
+             data:
+               message: 'The Alarm has been disarmed'
+
+        ##########################################################
+        ## Arm Alarm
+        ##########################################################
+
+         - alias: 'Arm Alarm'
+           initial_state: true
+           trigger:
+             platform: event
+             event_type: telegram_command
+             event_data:
+               command: '/alarm_on'
+
+           action:
+           - service: homeassistant.turn_on
+             entity_id: input_boolean.enable_security
+           - service: notify.telegram
+             data:
+               message: 'The Alarm has been armed'
+
+        ##########################################################
+        ## Disable Master Security
+        ##########################################################
+
+         - alias: 'Disable Master Security'
+           initial_state: true
+           trigger:
+             platform: event
+             event_type: telegram_command
+             event_data:
+               command: '/master_security_off'
+
+           action:
+           - service: homeassistant.turn_off
+             entity_id: input_boolean.master_security
+           - service: notify.telegram
+             data:
+               message: 'Master Security has been disabled'
+
+        ##########################################################
+        ## Enable Master Security
+        ##########################################################
+
+         - alias: 'Enable Master Security'
+           initial_state: true
+           trigger:
+             platform: event
+             event_type: telegram_command
+             event_data:
+               command: '/master_security_on'
+
+           action:
+           - service: homeassistant.turn_on
+             entity_id: input_boolean.master_security
+           - service: notify.telegram
+             data:
+               message: 'Master Security has been enabled'
+
+        ##########################################################
+        ## Baby Sitter Turn On
+        ##########################################################
+
+         - alias: 'Baby Sitter'
+           initial_state: true
+           trigger:
+             platform: event
+             event_type: telegram_command
+             event_data:
+               command: '/baby_sitter_on'
+
+           action:
+           - service: homeassistant.turn_on
+             entity_id: input_boolean.baby_sitter
+           - service: notify.telegram
+             data:
+               message: 'Baby Sitter turned on'
+
+        ##########################################################
+        ## Baby Sitter Turn Off
+        ##########################################################
+
+         - alias: 'Baby Sitter'
+           initial_state: true
+           trigger:
+             platform: event
+             event_type: telegram_command
+             event_data:
+               command: '/baby_sitter_off'
+
+           action:
+           - service: homeassistant.turn_off
+             entity_id: input_boolean.baby_sitter
+           - service: notify.telegram
+             data:
+               message: 'Baby Sitter turned off'
+
+
+        ##########################################################
+        ## Lights off
+        ##########################################################
+
+         - alias: 'Lights off'
+           initial_state: true
+           trigger:
+             platform: event
+             event_type: telegram_command
+             event_data:
+               command: '/lights_off'
+
+           action:
+           - service: homeassistant.turn_off
+             entity_id: group.all_lights
+           - service: notify.telegram
+             data:
+               message: 'All the lights have been turned off '

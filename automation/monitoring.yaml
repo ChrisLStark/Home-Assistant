@@ -1,0 +1,149 @@
+- alias: Notify When LKERS-DC01 is down
+  initial_state: on
+  description: ''
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.lkers_dc01
+      from: 'on'
+      to: 'off'
+  condition: []
+  action:
+    - service: notify.mobile_app_pixel_7_pro
+      data:
+        title: LKERS-DC01 is down!
+        message: Your host host has gone offline.
+
+- alias: Notify When CSTARKNAS is down
+  initial_state: on
+  description: ''
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.cstarknas
+      from: 'on'
+      to: 'off'
+  condition: []
+  action:
+    - service: notify.mobile_app_pixel_7_pro
+      data:
+        title: CSTARKNAS is down!
+        message: Your host host has gone offline.
+
+- alias: Notify When LKERS-DC01 is up
+  initial_state: on
+  description: ''
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.lkers_dc01
+      from: 'of'
+      to: 'on'
+  condition: []
+  action:
+    - service: notify.mobile_app_pixel_7_pro
+      data:
+        title: LKERS-DC01 is up!
+        message: Your host host is back online
+
+- alias: Notify When CSTARKNAS is up
+  initial_state: on
+  description: ''
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.cstarknas
+      from: 'of'
+      to: 'on'
+  condition: []
+  action:
+    - service: notify.mobile_app_pixel_7_pro
+      data:
+        title: CSTARKNAS is up!
+        message: Your host host is back online
+
+- alias: Notify When STARKNAS is down
+  initial_state: on
+  description: ''
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.starknas
+      from: 'on'
+      to: 'off'
+  condition: []
+  action:
+    - service: notify.mobile_app_pixel_7_pro
+      data:
+        title: STARKNAS is down!
+        message: Your host host has gone offline.
+
+- alias: Notify When STARKNAS is up
+  initial_state: on
+  description: ''
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.lkers_dc01
+      from: 'of'
+      to: 'on'
+  condition: []
+  action:
+    - service: notify.mobile_app_pixel_7_pro
+      data:
+        title: STARKNAS is up!
+        message: Your host host is back online
+
+- alias: Notify When esxi-OptiPlex-7040 is down
+  initial_state: on
+  description: ''
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.esxi_OptiPlex_7040
+      from: 'on'
+      to: 'off'
+  condition: []
+  action:
+    - service: notify.mobile_app_pixel_7_pro
+      data:
+        title: esxi-OptiPlex-7040 is down!
+        message: Your host host has gone offline.
+
+- alias: Notify When esxi-OptiPlex-7040 is up
+  initial_state: on
+  description: ''
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.esxi_OptiPlex_7040
+      from: 'of'
+      to: 'on'
+  condition: []
+  action:
+    - service: notify.mobile_app_pixel_7_pro
+      data:
+        title: esxi-OptiPlex-7040 is up!
+        message: Your host host is back online
+
+- alias: Notify When starkybuntu is down
+  initial_state: on
+  description: ''
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.starkybuntu
+      from: 'on'
+      to: 'off'
+  condition: []
+  action:
+    - service: notify.mobile_app_pixel_7_pro
+      data:
+        title: starkybuntu is down!
+        message: Your host host has gone offline.
+
+- alias: Notify When starkybuntu is up
+  initial_state: on
+  description: ''
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.starkybuntu
+      from: 'of'
+      to: 'on'
+  condition: []
+  action:
+    - service: notify.mobile_app_pixel_7_pro
+      data:
+        title: starkybuntu is up!
+        message: Your host host is back online
