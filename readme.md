@@ -30,7 +30,7 @@ Running <a href="https://github.com/danielwelch/hassio-zigbee2mqtt">zigbee2mqtt<
 
 <b>Internet:</b>
 <br /><br />
-Opnsense - 4xi226-V 2.5G 12th Gen Intel Firewall Mini PC Alder Lake i3 N305 8 Core N200 N100 DDR <br />
+Opnsense - 4xi226-V 2.5G 12th Gen Intel Firewall Mini PC Alder Lake i3 N305 8 Core N200 8GB DDR5<br />
 
 <b>Cameras:</b>
 
