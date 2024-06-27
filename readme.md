@@ -4,7 +4,7 @@
 
 <br /><br />
 
-I've gont from a Pi 4 to a Pi 5, Home Assistant Blue, and now Home Assistant Yellow PoE with a NVME.<br /><br />
+I've gone from a Pi 4 to a Pi 5, Home Assistant Blue, and now Home Assistant Yellow PoE with a NVME.<br /><br />
 To do: Update the list below.<br /><br />
 Using Home Assistant running on hassio to control all things smart.<br />
 
@@ -30,16 +30,9 @@ Running <a href="https://github.com/danielwelch/hassio-zigbee2mqtt">zigbee2mqtt<
 
 <b>Internet:</b>
 
-<a href="https://store.google.com/gb/product/nest_wifi">2x Nest Wifi Router</a>
-<a href="https://store.google.com/gb/product/nest_wifi">1x Nest Wifi AP</a>
-<a href="https://amzn.to/35OQ7wh">1x Google Wifi</a>
 
 <b>Cameras:</b>
 
-<a href="https://amzn.to/2RnA17xp">1x YI Dome Camera 1080p  (Running yi-hackv4)</a><br />
-<a href="https://amzn.to/38MTDbl">1x YI Dome Camera 720p (Running yi-hackv4)</a><br />
-<a href="https://amzn.to/2NWOxkw">3x Yi Home Camera 1080p (Running yi-hackv4)</a><br />
-<a href="https://amzn.to/30Q9ZwQ">1x YI Outdoor Camera 1080p (Running yi-hackv4)</a>
 
 <b>Lights:</b>
 
@@ -100,3 +93,16 @@ Running <a href="https://github.com/danielwelch/hassio-zigbee2mqtt">zigbee2mqtt<
 1x HP ML110 G7 running unRaid | Docker containers running Tautulli, OpenVPN, Sabnzbd, Sonarr, Radarr & Duck DNS.
 <br>
 <h1>Retired</h2>
+
+<b>Cameras:</b>
+
+<a href="https://amzn.to/2RnA17xp">1x YI Dome Camera 1080p  (Running yi-hackv4)</a><br />
+<a href="https://amzn.to/38MTDbl">1x YI Dome Camera 720p (Running yi-hackv4)</a><br />
+<a href="https://amzn.to/2NWOxkw">3x Yi Home Camera 1080p (Running yi-hackv4)</a><br />
+<a href="https://amzn.to/30Q9ZwQ">1x YI Outdoor Camera 1080p (Running yi-hackv4)</a>
+
+<b>Internet:</b>
+
+<a href="https://store.google.com/gb/product/nest_wifi">2x Nest Wifi Router</a>
+<a href="https://store.google.com/gb/product/nest_wifi">1x Nest Wifi AP</a>
+<a href="https://amzn.to/35OQ7wh">1x Google Wifi</a>
