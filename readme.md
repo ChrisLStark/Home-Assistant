@@ -1,5 +1,11 @@
 <b>Updated 07-02-2021</b><br /><br />
+<br /><br />
+<b>Update: 27-06-2024 - Wow over 3 years last I last updated this repository! Some things have changed, my go to for automations is now Node Red and I make use of the helpers. Also hardware and devices has changed....
 
+<br /><br />
+
+I've gont from a Pi 4 to a Pi 5, Home Assistant Blue, and now Home Assistant Yellow PoE with a NVME.<br /><br />
+To do: Update the list below.<br /><br />
 Using Home Assistant running on hassio to control all things smart.<br />
 
 <b>Special thanks to the following github pages:</b>
@@ -92,3 +98,5 @@ Running <a href="https://github.com/danielwelch/hassio-zigbee2mqtt">zigbee2mqtt<
 1x HP Microserver N54L running TrueNAS (previosuly called FreeNAS)<br />
 1x HP Microserver Gen 8 running unRaid<br />
 1x HP ML110 G7 running unRaid | Docker containers running Tautulli, OpenVPN, Sabnzbd, Sonarr, Radarr & Duck DNS.
+<br>
+<h1>Retired</h2>
