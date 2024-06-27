@@ -16,7 +16,7 @@ Using Home Assistant running on hassio to control all things smart.<br />
 
 <b>Controller:</b>
 
-Raspberry Pi 4 running Hassio (Home Assistant)<br />
+Home Assitant Yellow POE - COMPUTE MODULE 4 LITE, 8GB RAM - 256GB NVME<br />
 Running <a href="https://github.com/danielwelch/hassio-zigbee2mqtt">zigbee2mqtt</a> on CC2652R - Electrolama zig-a-zig-ah! (zzh!).
 
 <b>Assistants:</b>
@@ -29,7 +29,7 @@ Running <a href="https://github.com/danielwelch/hassio-zigbee2mqtt">zigbee2mqtt<
 <a href="https://store.google.com/gb/product/nest_audio">2x Google Nest Audio</a><br />
 
 <b>Internet:</b>
-
+Opnsense - 4xi226-V 2.5G 12th Gen Intel Firewall Mini PC Alder Lake i3 N305 8 Core N200 N100 DDR <br />
 
 <b>Cameras:</b>
 
